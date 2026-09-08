@@ -1,0 +1,2776 @@
+{
+  "note": "Source inventory and provenance, not a claim that every original assertion has an identical Dart assertion. See doc/test-migration.md for applicable scenarios and exclusions.",
+  "sources": [
+    {
+      "repository": "js-ephemeris-lite",
+      "commit": "ad51da27c3ad1e8d5d17bf98a4add1f2ca96e3f7",
+      "files": [
+        {
+          "path": "test/apparent.test.js",
+          "sha256": "2a744667097a61c26648bf9b324d6776ceaef161471e18ec1ae8064eb1772a98",
+          "testDeclarations": [
+            {
+              "line": 17,
+              "title": "fixed J2000, mean date and true date are distinct explicit frames"
+            },
+            {
+              "line": 34,
+              "title": "Pluto light-time and apparent rates remain computable across near/fallback joins and remote dates"
+            },
+            {
+              "line": 43,
+              "title": "turning physical corrections off recovers native J2000 geometry, with Moon km converted to AU"
+            },
+            {
+              "line": 55,
+              "title": "light-time stays finite for the solar origin and satisfies range/c"
+            },
+            {
+              "line": 65,
+              "title": "all apparent rates include the changing frame and survive longitude wrap"
+            },
+            {
+              "line": 81,
+              "title": "81 C++/DE441 reference states: nine bodies, three epochs, three reference frames"
+            },
+            {
+              "line": 98,
+              "title": "bad body, nonfinite time, invalid frame and sidereal input fail explicitly"
+            },
+            {
+              "line": 109,
+              "title": "apparent positions pass the selected ephemeris accuracy through the complete light-time chain"
+            },
+            {
+              "line": 122,
+              "title": "new sky chain remains finite across the lite model span and correction bridges"
+            }
+          ]
+        },
+        {
+          "path": "test/calendar-events.test.js",
+          "sha256": "d9fad7fe8b7771115a62cd16dcfab9cf265723148b49d4e3bbbdfc1a50c5f7f2",
+          "testDeclarations": [
+            {
+              "line": 36,
+              "title": "event results contain only TT, UT1 and delta T in every accuracy mode"
+            },
+            {
+              "line": 51,
+              "title": "event accuracy is per call and omitted accuracy remains mid"
+            },
+            {
+              "line": 84,
+              "title": "fast and accurate solve routes select the nearer occurrence on both sides of half-cycle boundaries"
+            },
+            {
+              "line": 98,
+              "title": "accurate route converges at remote dates without cycle-rounding loss"
+            },
+            {
+              "line": 106,
+              "title": "fast and physical event routes share cycle selection, but accurate roots use apparent positions"
+            },
+            {
+              "line": 135,
+              "title": "accurate solar and lunar event roots include aberration and iterated light time"
+            },
+            {
+              "line": 145,
+              "title": "value-only event models preserve positions and short slopes stay close to analytic rates"
+            },
+            {
+              "line": 162,
+              "title": "low event model is independently selected and compact"
+            },
+            {
+              "line": 174,
+              "title": "event angular rates agree with centered numerical diagnostics"
+            },
+            {
+              "line": 185,
+              "title": "regenerated low estimators differentiate their frame and drift terms"
+            },
+            {
+              "line": 200,
+              "title": "J2000-era spring equinox and new moon converge from low estimators"
+            },
+            {
+              "line": 216,
+              "title": "2026 solar terms and new moons track raw DE441 C++ event fixtures"
+            },
+            {
+              "line": 282,
+              "title": "new-moon latitude budget is an explicit runtime switch"
+            },
+            {
+              "line": 293,
+              "title": "safeguarded event roots stay robust across -6000..10000"
+            },
+            {
+              "line": 309,
+              "title": "fast solar roots preserve full-model convergence across dates and wrapped targets"
+            },
+            {
+              "line": 337,
+              "title": "solar fast iteration falls back when tolerance is below JD resolution"
+            },
+            {
+              "line": 348,
+              "title": "fast lunar-phase roots track the safeguarded full model across the supported span"
+            }
+          ]
+        },
+        {
+          "path": "test/chinese-calendar.test.js",
+          "sha256": "a596c4283e3913f1df010cad4aa4226a547e18cbcd4929923524e1bd170042ab",
+          "testDeclarations": [
+            {
+              "line": 27,
+              "title": "per-query accuracy reaches calendar events and BaZi year/month boundaries"
+            },
+            {
+              "line": 54,
+              "title": "historical linear-plus-sparse-residual profiles preserve their C++ endpoints"
+            },
+            {
+              "line": 68,
+              "title": "modern conversion, month size and 2033 leap-eleven round trip"
+            },
+            {
+              "line": 89,
+              "title": "calendar queries accept JulianTime and return typed event instants"
+            },
+            {
+              "line": 109,
+              "title": "instant conversion uses the requested civil offset without changing the China calendar structure"
+            },
+            {
+              "line": 122,
+              "title": "China-standard and local-astronomical lunar calendars stay distinct at a new-moon boundary"
+            },
+            {
+              "line": 141,
+              "title": "local astronomical calendar makes clock and meridian day boundaries explicit"
+            },
+            {
+              "line": 176,
+              "title": "historical month reforms match the C++ regression fixtures"
+            },
+            {
+              "line": 197,
+              "title": "previous/next solar-term searches preserve filters and exact-boundary semantics"
+            },
+            {
+              "line": 211,
+              "title": "direct terms agree with the materialized 2044 cycle"
+            },
+            {
+              "line": 221,
+              "title": "calendar layout remains finite and ordered over the intended long interval"
+            },
+            {
+              "line": 236,
+              "title": "astronomical solar/lunar conversion round-trips across the long interval"
+            }
+          ]
+        },
+        {
+          "path": "test/chinese-era.test.js",
+          "sha256": "c8023a08b34cf1a2f97d1cc53b3a5f59a3d4c95d0423e527e84ae15553ef6daf",
+          "testDeclarations": [
+            {
+              "line": 34,
+              "title": "First Emperor title change preserves Ying Zheng regnal-year numbering"
+            },
+            {
+              "line": 43,
+              "title": "Three Kingdoms exposes Wei, Shu Han and Sun Wu concurrently"
+            },
+            {
+              "line": 53,
+              "title": "Warring States exposes the seven major states without duplicating Qin"
+            },
+            {
+              "line": 64,
+              "title": "DDBC day boundaries separate the three Liu Song era names in 465"
+            },
+            {
+              "line": 87,
+              "title": "mixed day- and year-precision records coexist across historical polities"
+            },
+            {
+              "line": 99,
+              "title": "manakai transition removes Northern Zhou exactly when Sui Kaihuang begins"
+            },
+            {
+              "line": 116,
+              "title": "manakai-only records add concurrent Liao and Western Xia chronology"
+            },
+            {
+              "line": 127,
+              "title": "Liao and Jin public labels use temple titles and common Chinese names"
+            },
+            {
+              "line": 137,
+              "title": "year-precision era ordinals always change on the historical China UTC+8 lunar boundary"
+            },
+            {
+              "line": 153,
+              "title": "East Dan Ganlu changes ruler labels without resetting its era year"
+            },
+            {
+              "line": 167,
+              "title": "Later Han Tianfu is year 12 for one year and cannot survive into 953"
+            },
+            {
+              "line": 179,
+              "title": "supplemental title-only and non-Han ruler tags receive complete public labels"
+            },
+            {
+              "line": 196,
+              "title": "year-precision manakai records preserve Western Xia through the Southern Song period"
+            },
+            {
+              "line": 205,
+              "title": "manakai-only records expose the concurrent Five Dynasties and Ten Kingdoms lines"
+            },
+            {
+              "line": 213,
+              "title": "Wu Zhou adjacent transitions never expose two successive era names"
+            },
+            {
+              "line": 244,
+              "title": "exact era starts do not overlap a different era of the same ruler line"
+            },
+            {
+              "line": 269,
+              "title": "the modern 1949 label starts on January 1 while the Republic label remains"
+            },
+            {
+              "line": 291,
+              "title": "the Republic label ends at the exact 1949-10-01 15:00 UTC+8 instant"
+            },
+            {
+              "line": 304,
+              "title": "the Republic calendar starts on the documented 1912-01-01 UTC+8 civil day"
+            },
+            {
+              "line": 317,
+              "title": "Hongxian runs alongside Republic year 5 through the attested March 23 civil day"
+            }
+          ]
+        },
+        {
+          "path": "test/eclipse-search.test.js",
+          "sha256": "1a84b770ddb264b1f51018b73748f50a925b1e7451837e4089f7074b42e2e8e6",
+          "testDeclarations": [
+            {
+              "line": 11,
+              "title": "modern solar search enumerates every eclipse in a half-open Date range"
+            },
+            {
+              "line": 22,
+              "title": "single solar details accept normal time objects and return null for a non-eclipse lunation"
+            },
+            {
+              "line": 31,
+              "title": "lunar search distinguishes penumbral, partial and total contacts"
+            },
+            {
+              "line": 46,
+              "title": "local solar details use degrees and metres and preserve horizon clipping"
+            },
+            {
+              "line": 64,
+              "title": "local lunar visibility covers moonrise, moonset and an entirely hidden eclipse"
+            },
+            {
+              "line": 90,
+              "title": "eclipse search validates intervals, locations and search size"
+            },
+            {
+              "line": 100,
+              "title": "solar interval enumeration does not lose lunations to floating point round trips"
+            }
+          ]
+        },
+        {
+          "path": "test/eclipses.test.js",
+          "sha256": "4e8af75fbb8ab71f0fd36e2753ab5f271197452f0084b5cf91edfaad906eda92",
+          "testDeclarations": [
+            {
+              "line": 10,
+              "title": "eclipse subpath exposes modern APIs without legacy calculators"
+            },
+            {
+              "line": 15,
+              "title": "grazing solar eclipses survive geometric classification"
+            },
+            {
+              "line": 23,
+              "title": "global circumstances remain physically consistent for total, annular and hybrid eclipses"
+            },
+            {
+              "line": 45,
+              "title": "noncentral eclipses have no inverted central contact interval"
+            },
+            {
+              "line": 55,
+              "title": "five-point solar interpolation preserves direct-geometry contact roots"
+            },
+            {
+              "line": 79,
+              "title": "lunar cubic contacts agree with direct 3-D shadow roots"
+            },
+            {
+              "line": 97,
+              "title": "local solar visibility handles sunset and hidden eclipses"
+            },
+            {
+              "line": 108,
+              "title": "search boundaries and independent results are preserved"
+            }
+          ]
+        },
+        {
+          "path": "test/ephemeris.test.js",
+          "sha256": "8f007528d8fce48821fa29658214f18e793a095e4c384dacd32c6e26fb01f393",
+          "testDeclarations": [
+            {
+              "line": 51,
+              "title": "public entry point imports and evaluates without Node globals"
+            },
+            {
+              "line": 68,
+              "title": "global Moon matches independent Python states and frozen DE441 samples"
+            },
+            {
+              "line": 81,
+              "title": "bare planetary series retain every folded term"
+            },
+            {
+              "line": 97,
+              "title": "ordinary planet tables use the classic VSOP Julian-millennium variable"
+            },
+            {
+              "line": 130,
+              "title": "Earth precision tiers are nested per-power prefixes of complete frequency envelopes"
+            },
+            {
+              "line": 152,
+              "title": "planet and Moon position tiers are offline-ordered nested prefixes"
+            },
+            {
+              "line": 175,
+              "title": "direct positions share fast, mid and accurate call-local accuracy"
+            },
+            {
+              "line": 206,
+              "title": "truncated planets stay close to the official VSOP87B J2000 position checks"
+            },
+            {
+              "line": 225,
+              "title": "shared native frame matches the official 2013 to ICRF to mean-J2000 convention"
+            },
+            {
+              "line": 240,
+              "title": "direct planetary states match independent Python and DE441 ICRF controls"
+            },
+            {
+              "line": 273,
+              "title": "single TOP tables preserve direction evaluation across the entire interval"
+            },
+            {
+              "line": 289,
+              "title": "direct ${body} states preserve the public frame and AU"
+            },
+            {
+              "line": 309,
+              "title": "planet velocities are analytic derivatives and geocentric states subtract Earth"
+            },
+            {
+              "line": 329,
+              "title": "Pluto remains computable outside its recommended interval and blends analytic velocities"
+            },
+            {
+              "line": 344,
+              "title": "planet analytic velocities remain continuous at former correction-layer bridges"
+            },
+            {
+              "line": 360,
+              "title": "TOP2013 single tables preserve analytic velocity at endpoints and former joins"
+            },
+            {
+              "line": 376,
+              "title": "direct Earth and Mercury tables preserve analytic velocity at former segment joins"
+            },
+            {
+              "line": 389,
+              "title": "event direction skips radius while matching the complete Moon state"
+            },
+            {
+              "line": 403,
+              "title": "Earth event direction skips radius while preserving angular state"
+            },
+            {
+              "line": 421,
+              "title": "raw ELP longitude remains separately accessible with analytic rate"
+            },
+            {
+              "line": 433,
+              "title": "EMB is Earth plus the lunar mass-weighted displacement"
+            },
+            {
+              "line": 443,
+              "title": "explicit center-named APIs preserve vector, velocity and unit relationships"
+            },
+            {
+              "line": 468,
+              "title": "IAU 2000B matches C++/SOFA regression oracles"
+            },
+            {
+              "line": 482,
+              "title": "Vondrak 2011 matches C++/SOFA long-term precession oracles"
+            },
+            {
+              "line": 494,
+              "title": "models remain finite over the intended wide interval"
+            }
+          ]
+        },
+        {
+          "path": "test/event-search.test.js",
+          "sha256": "069dcce7125c953ebf57891bca9859a85ae139547fdcbef05ad911d7fedbfe13",
+          "testDeclarations": [
+            {
+              "line": 9,
+              "title": "C++ independently enumerates longitude crossings, aspects, stations and ingresses"
+            },
+            {
+              "line": 41,
+              "title": "Pluto geometric longitude stations agree with independent DE441 roots in the recommended interval"
+            },
+            {
+              "line": 53,
+              "title": "scalar search is half-open, deduplicated, and rejects invalid scans"
+            },
+            {
+              "line": 74,
+              "title": "angular roots handle 359 -> 0 without mistaking the antipode for a root"
+            },
+            {
+              "line": 83,
+              "title": "Mercury April 2024 stations change direction on both sides of each returned root"
+            },
+            {
+              "line": 97,
+              "title": "longitude searches respect the chosen axes and end exclusion"
+            },
+            {
+              "line": 108,
+              "title": "new/full conjunction searches do not return the antipodal phase"
+            },
+            {
+              "line": 121,
+              "title": "ingresses retain reverse-direction re-entry and use zero-based sign indices"
+            }
+          ]
+        },
+        {
+          "path": "test/fixed-stars.test.js",
+          "sha256": "af57f3ca9ad7e67f99fa05d3031137c388ebfbf6aa885a138798948be5572ed3",
+          "testDeclarations": [
+            {
+              "line": 15,
+              "title": "TSC1 parser accepts a nonzero Uint8Array offset and preserves catalog metadata"
+            },
+            {
+              "line": 27,
+              "title": "TSC1 alias folding matches ASCII separators and preserves Chinese text"
+            },
+            {
+              "line": 33,
+              "title": "reference-epoch state reconstructs catalog direction, distance and proper motion"
+            },
+            {
+              "line": 46,
+              "title": "space motion from every catalog source matches the independent C++ TSC1 implementation"
+            },
+            {
+              "line": 71,
+              "title": "fixed-star apparent frames and complete rates remain finite"
+            },
+            {
+              "line": 91,
+              "title": "malformed and unsupported TSC1 files fail before evaluation"
+            }
+          ]
+        },
+        {
+          "path": "test/ganzhi.test.js",
+          "sha256": "f97c000d55f3ef439ec97013b77c6c9b8a622005c73475c8b297ff799c5766a1",
+          "testDeclarations": [
+            {
+              "line": 30,
+              "title": "Ganzhi encoding, cycle advance, Wu-Hu-Dun and Wu-Shu-Dun match C++ rules"
+            },
+            {
+              "line": 47,
+              "title": "all sexagenary indices and Nayin mappings are stable"
+            },
+            {
+              "line": 58,
+              "title": "day-pillar anchors match the C++ layer"
+            },
+            {
+              "line": 63,
+              "title": "modern four-pillar regression vectors match the C++ layer"
+            },
+            {
+              "line": 77,
+              "title": "the three late-Zi conventions remain independent"
+            },
+            {
+              "line": 98,
+              "title": "exact Shi-Chen boundaries enter the new branch after a JD round trip"
+            },
+            {
+              "line": 137,
+              "title": "mean and apparent solar clocks share the exact 11:00 chart boundary"
+            },
+            {
+              "line": 162,
+              "title": "Li-Chun and monthly Jie switch pillars at the solved instant"
+            }
+          ]
+        },
+        {
+          "path": "test/orbital-events.test.js",
+          "sha256": "8cece52f42571a3a50a2d03af2c16866101f6c319fe96b21577c66c6c0b4e1cc",
+          "testDeclarations": [
+            {
+              "line": 12,
+              "title": "orbital events agree with C++ DE441 fixtures at documented model tolerances"
+            },
+            {
+              "line": 37,
+              "title": "apsides are radial-velocity roots with the advertised physical center"
+            },
+            {
+              "line": 48,
+              "title": "lunar node planes remain distinct; true equinox only shifts the longitude"
+            },
+            {
+              "line": 62,
+              "title": "greatest elongations are 3D maxima, not conjunction minima"
+            },
+            {
+              "line": 69,
+              "title": "right ascension events are not accidentally ecliptic-longitude events"
+            },
+            {
+              "line": 80,
+              "title": "orbital APIs reject invalid requests and preserve empty half-open intervals"
+            }
+          ]
+        },
+        {
+          "path": "test/qi-shuo.test.js",
+          "sha256": "10bbac029ef72b98c1b970e4d9abc0523bebddf3b4f8f9cfbdb2043a0c6af067",
+          "testDeclarations": [
+            {
+              "line": 19,
+              "title": "lunar phase solver preserves new moon behavior and solves quarters"
+            },
+            {
+              "line": 30,
+              "title": "annual qishuo table contains one civil year of terms and new moons"
+            },
+            {
+              "line": 45,
+              "title": "annual qishuo table can combine four phases and 72 pentads without duplicate term roots"
+            },
+            {
+              "line": 59,
+              "title": "a civil year retains both occurrences of a pentad spanning consecutive solar cycles"
+            },
+            {
+              "line": 80,
+              "title": "winter third-pentad roots are assigned to the correct civil year at different offsets"
+            },
+            {
+              "line": 102,
+              "title": "annual qishuo validates range, phase angles, and local meridian"
+            },
+            {
+              "line": 117,
+              "title": "annual qishuo distinguishes display timezone from its calendar day boundary"
+            }
+          ]
+        },
+        {
+          "path": "test/sky-observation.test.js",
+          "sha256": "62d77e8eada5c64b603547ec473908cb8e6c5edd80ce503b90f369571843b1d8",
+          "testDeclarations": [
+            {
+              "line": 15,
+              "title": "physical illumination, elongation, diameter and parallax match native DE441 geometry"
+            },
+            {
+              "line": 32,
+              "title": "topocentric coordinates match native DE441 at northern, southern and polar sites"
+            },
+            {
+              "line": 45,
+              "title": "independent native interval searches match every rise, set and transit, including limb refraction"
+            },
+            {
+              "line": 57,
+              "title": "illumination, true angular elongation and phase angle have physical ranges"
+            },
+            {
+              "line": 69,
+              "title": "new/full moon geometry agrees with the independent calendar phase solver"
+            },
+            {
+              "line": 85,
+              "title": "horizontal positions use topocentric geometry, refraction and explicit axes"
+            },
+            {
+              "line": 97,
+              "title": "rise/set and meridian transits lie inside the requested UT1 day"
+            },
+            {
+              "line": 119,
+              "title": "polar summer/winter report continuous visibility rather than inventing crossings"
+            },
+            {
+              "line": 128,
+              "title": "rise/set rejects refraction cutoff jumps without relying on public residual fields"
+            }
+          ]
+        },
+        {
+          "path": "test/solar-time.test.js",
+          "sha256": "a215a43b254f3c8c5eb4d4fd2d0da9ab0546ccfde53d6630e6b25096e9bfcded",
+          "testDeclarations": [
+            {
+              "line": 24,
+              "title": "equation of time follows the C++/Swiss modern regression oracles"
+            },
+            {
+              "line": 38,
+              "title": "mean and true solar clocks follow the C++ convention and round trip"
+            },
+            {
+              "line": 58,
+              "title": "solar clocks naturally cross into the previous or next calendar date"
+            },
+            {
+              "line": 73,
+              "title": "four pillars keep the physical instant while using the true-solar virtual day and hour"
+            }
+          ]
+        },
+        {
+          "path": "test/solar-visibility.test.js",
+          "sha256": "55855d8ea92c57b114d5d1461ec0cec20cd4ea0a514d691f8622b7634cd57184",
+          "testDeclarations": [
+            {
+              "line": 20,
+              "title": "hybrid refraction matches the C++ oracle and cutoff behavior"
+            },
+            {
+              "line": 29,
+              "title": "Denver fast sunrise/set tracks the C++ fast regression oracles"
+            },
+            {
+              "line": 58,
+              "title": "high-latitude fast window classifies crossings, polar day and polar night"
+            },
+            {
+              "line": 82,
+              "title": "typed center and standalone altitude APIs remain finite"
+            },
+            {
+              "line": 106,
+              "title": "fast rise/set remains finite across the lite long interval"
+            }
+          ]
+        },
+        {
+          "path": "test/time.test.js",
+          "sha256": "ee6f27333c51fe9e0eba2c4cf45d3f9d0ed12bea6c00fa7172be85eb820619be",
+          "testDeclarations": [
+            {
+              "line": 22,
+              "title": "Delta T decimal-year model matches the historical and future regression vectors"
+            },
+            {
+              "line": 43,
+              "title": "the repaired -720 join is continuous in value and first derivative"
+            },
+            {
+              "line": 54,
+              "title": "the IERS-to-future Delta T join is continuous in value and first derivative"
+            },
+            {
+              "line": 64,
+              "title": "JD conversion and TT/UT1 estimates match the C++ regression vectors"
+            },
+            {
+              "line": 78,
+              "title": "TT and UT1 helpers round trip"
+            },
+            {
+              "line": 85,
+              "title": "JulianTime preserves TT event roots and restores JSON without a timezone"
+            },
+            {
+              "line": 105,
+              "title": "JulianTime converts JavaScript Date through its Unix timestamp"
+            },
+            {
+              "line": 118,
+              "title": "ZonedTime requires an offset and preserves the represented instant"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "repository": "sxwnl_spa_dart",
+      "commit": "6e98e089a13b04881fa93d7e92098754da0a8f19",
+      "files": [
+        {
+          "path": "test/astro_date_time_precision_test.dart",
+          "sha256": "461ca10189b516858104181b8094d031832d779069a2cfdb664744c177cca02c",
+          "testDeclarations": [
+            {
+              "line": 6,
+              "title": "preserves fractional seconds through Julian Day conversion"
+            },
+            {
+              "line": 26,
+              "title": "keeps raw and standard-timezone factories distinct"
+            },
+            {
+              "line": 50,
+              "title": "fromBJJ2000 does not apply a second Beijing timezone shift"
+            },
+            {
+              "line": 70,
+              "title": "preserves microseconds when converting to and from DateTime"
+            },
+            {
+              "line": 88,
+              "title": "converts timezone while preserving the represented instant"
+            },
+            {
+              "line": 102,
+              "title": "orders and subtracts timezone-aware values by represented instant"
+            },
+            {
+              "line": 115,
+              "title": "compares equality and hash codes by represented instant"
+            },
+            {
+              "line": 128,
+              "title": "attaches a proleptic arithmetic Hijri date to BCE DayInfo"
+            },
+            {
+              "line": 138,
+              "title": "does not snap representable sub-second JD values to whole seconds"
+            },
+            {
+              "line": 148,
+              "title": "add, subtract, and difference retain sub-second durations"
+            },
+            {
+              "line": 167,
+              "title": "keeps the old integer-second display by default"
+            }
+          ]
+        },
+        {
+          "path": "test/compare_jq.dart",
+          "sha256": "99ffdb4a149ee7017a08e20a2c1d49aea4afe85017fc6698bb18cf7d51196a6a",
+          "testDeclarations": []
+        },
+        {
+          "path": "test/compare_moon.dart",
+          "sha256": "d5dec26ffe52982c9ba30252affe719c436c2957a70e0128e7ff42b0727b0303",
+          "testDeclarations": []
+        },
+        {
+          "path": "test/compare_solar_noon.dart",
+          "sha256": "44495e68c8009295d435ef093374230921d23d3f4f35d90ff309c83d1562c31e",
+          "testDeclarations": []
+        },
+        {
+          "path": "test/compare_ssq.dart",
+          "sha256": "796b4f432edf92da6a270ae457f1cd9b7f28dda2973cc15a1f310a399cbf50a7",
+          "testDeclarations": []
+        },
+        {
+          "path": "test/compare_sunrise.dart",
+          "sha256": "2b0870f2cb6785a0fea84696a3e661ff0f129e4c835d433cabeaf62df792c911",
+          "testDeclarations": []
+        },
+        {
+          "path": "test/compare_sunset.dart",
+          "sha256": "0ca5d3388c9821ee97d5a2240b15d4bb8b6074cd1b68e09c6fe09d61a43031e0",
+          "testDeclarations": []
+        },
+        {
+          "path": "test/compare_szj.dart",
+          "sha256": "49cb83c44e98123846f8bc5002a0be052b638a3c6c77961a10f3f3c39c129ce0",
+          "testDeclarations": []
+        },
+        {
+          "path": "test/debug_1645_jq.dart",
+          "sha256": "60b6fae0817a89ad7f78b8f165c323d415ae382a7919f6ec3c4499bdcccef224",
+          "testDeclarations": []
+        },
+        {
+          "path": "test/eclipse_test.dart",
+          "sha256": "e81eb8bed6a575b7c5fbfa4ac9e308e1a1d310468a440859b48df66e527ce79e",
+          "testDeclarations": [
+            {
+              "line": 7,
+              "title": "ysPL.lecMax keeps the original J2000 TT lunar-eclipse result"
+            },
+            {
+              "line": 20,
+              "title": "ecFast preserves the original eclipse classification"
+            },
+            {
+              "line": 29,
+              "title": "ecFast keeps the original annular eclipse classification"
+            },
+            {
+              "line": 39,
+              "title": "msc keeps the original solar and lunar horizontal coordinates"
+            },
+            {
+              "line": 60,
+              "title": "rsGS.feature keeps sxwnl global eclipse characteristics"
+            },
+            {
+              "line": 74,
+              "title": "rsGS.jieX generates the original centerline and limits"
+            },
+            {
+              "line": 93,
+              "title": "rsGS.jieX2 generates closed global eclipse curves"
+            },
+            {
+              "line": 107,
+              "title": "rsGS.jieX3 exposes the original minute boundary table"
+            },
+            {
+              "line": 116,
+              "title": "rsGS unwraps sidereal time across 2π before interpolation"
+            },
+            {
+              "line": 133,
+              "title": "rsGS retains the original [100, 100] no-intersection sentinel"
+            },
+            {
+              "line": 144,
+              "title": "rsPL.secMax keeps original local total-eclipse contacts"
+            },
+            {
+              "line": 168,
+              "title": "rsPL.nbj returns local eclipse center and north/south limits"
+            },
+            {
+              "line": 188,
+              "title": "rsPL uses the original NASA lunar-radius ratio"
+            },
+            {
+              "line": 205,
+              "title": "rsPL retains contacts during polar day"
+            },
+            {
+              "line": 215,
+              "title": "rsPL does not overwrite a caller-managed rsGS interpolation table"
+            },
+            {
+              "line": 229,
+              "title": "matches the rounded 2025 PMO total-lunar-eclipse TD table"
+            },
+            {
+              "line": 254,
+              "title": "matches the rounded 2026 PMO global-solar-eclipse summary"
+            },
+            {
+              "line": 294,
+              "title": "daJu keeps the original Mercury and Venus elongations"
+            },
+            {
+              "line": 310,
+              "title": "stationary, lunar-conjunction, and opposition events keep sxwnl values"
+            },
+            {
+              "line": 336,
+              "title": "h2g keeps original longitude normalization and rejects Earth xingHY"
+            },
+            {
+              "line": 346,
+              "title": "pCoord ports the original Pluto XL0Pluto/P03 position"
+            },
+            {
+              "line": 370,
+              "title": "2003 Mars opposition agrees with the SEDS external oracle"
+            }
+          ]
+        },
+        {
+          "path": "test/moon_phase_search_test.dart",
+          "sha256": "bbf3a977a2d2e7d3758d2f71dab6494ab2bd72c6068bb767e43848dd10303b43",
+          "testDeclarations": [
+            {
+              "line": 6,
+              "title": "returns all four principal phases for a year in chronological order"
+            },
+            {
+              "line": 30,
+              "title": "supports a half-open date range and eight-phase mode"
+            },
+            {
+              "line": 49,
+              "title": "daily lookup remains compatible with the range search"
+            }
+          ]
+        },
+        {
+          "path": "test/pmo_2026_year_oracle_test.dart",
+          "sha256": "169efe064a2f4cccd3fed3a8668a67c34e4cc2b8435a9f0a5369fa747c088e7a",
+          "testDeclarations": [
+            {
+              "line": 11,
+              "title": "24 solar terms agree with the printed Beijing-time minutes"
+            },
+            {
+              "line": 65,
+              "title": "lunar month names and sizes match the official calendar"
+            },
+            {
+              "line": 119,
+              "title": "lunar new-year and month boundaries match the printed pages"
+            },
+            {
+              "line": 135,
+              "title": "朔、上弦、望、下弦 match the PMO 2026 phase table"
+            },
+            {
+              "line": 217,
+              "title": "梅雨 and 三伏 dates match the official calendar"
+            },
+            {
+              "line": 246,
+              "title": "数九 start dates match the official calendar"
+            }
+          ]
+        },
+        {
+          "path": "test/public_api_test.dart",
+          "sha256": "a865c0d9f5db3ee4219abf3a3596d8c940c0554f3dd08c649451732b197eb84a",
+          "testDeclarations": [
+            {
+              "line": 7,
+              "title": "low-level sxwnl helpers are reachable from the package entrypoint"
+            }
+          ]
+        },
+        {
+          "path": "test/stars_test.dart",
+          "sha256": "915a32ea7ee5b06230a66a3a8f6b63128c53887a41dfe77be1bb578cc1a4fef8",
+          "testDeclarations": [
+            {
+              "line": 5,
+              "title": "ephB star tables are mechanically extracted and parse like sxwnl"
+            },
+            {
+              "line": 21,
+              "title": "ephB apparent star position matches original hxCalc chain"
+            },
+            {
+              "line": 29,
+              "title": "ephB topocentric and mean modes expose the original coordinate stages"
+            },
+            {
+              "line": 54,
+              "title": "remaining XL planetary events match the original eph0 helpers"
+            },
+            {
+              "line": 75,
+              "title": "SZJ.calcRTS applies positive timezone offsets as local clock time"
+            },
+            {
+              "line": 95,
+              "title": "xingX structured positions match the original eph.js chain"
+            },
+            {
+              "line": 120,
+              "title": "ephB constellation lookup preserves centers and full English names"
+            },
+            {
+              "line": 140,
+              "title": "hxCalc formats right ascension with hour units"
+            }
+          ]
+        },
+        {
+          "path": "test/testB2000.dart",
+          "sha256": "3bb45a32aa3eb21ae126643a9953d4f587e54bfa4fafb2669ebafb30c7809383",
+          "testDeclarations": []
+        },
+        {
+          "path": "test/test_astronomical_yearing.dart",
+          "sha256": "c837e58d8b09ec7058723b1b98897742d8640131bb3ba38695b648aadae0325f",
+          "testDeclarations": [
+            {
+              "line": 31,
+              "title": "BCE solar -> lunar -> solar round trip keeps the same day"
+            },
+            {
+              "line": 42,
+              "title": "pre-Han BCE solar keeps astronomical lunar year under historical month naming"
+            },
+            {
+              "line": 51,
+              "title": "BCE lunar string uses historical display year"
+            },
+            {
+              "line": 59,
+              "title": "DayInfo string uses AstroDateTime BCE display"
+            },
+            {
+              "line": 70,
+              "title": "fromString resolves BCE month 正 within the requested lunar year"
+            },
+            {
+              "line": 83,
+              "title": "fromString resolves BCE month 十 within the requested lunar year"
+            },
+            {
+              "line": 96,
+              "title": "fromString resolves ancient historical BCE month 五 within the requested lunar year"
+            },
+            {
+              "line": 109,
+              "title": "fromString resolves month 十一 within the requested lunar year"
+            },
+            {
+              "line": 122,
+              "title": "fromString resolves month 十二 within the requested lunar year 2025"
+            },
+            {
+              "line": 135,
+              "title": "getLunarMonthDays keeps all days inside lunar year 2025 month 十一"
+            },
+            {
+              "line": 147,
+              "title": "getLunarMonthDays keeps all days inside lunar year 2025 month 十二"
+            },
+            {
+              "line": 161,
+              "title": "Xin dynasty historical month naming keeps solar/lunar round trip stable"
+            },
+            {
+              "line": 165,
+              "title": "Jingchu reform period keeps solar/lunar round trip stable"
+            },
+            {
+              "line": 169,
+              "title": "Wu Zetian reform period keeps solar/lunar round trip stable"
+            }
+          ]
+        },
+        {
+          "path": "test/test_calendar.dart",
+          "sha256": "9db09163959aa0c65b00f4ce47817e7ae388e823f1469991f4ea303f381fc2c9",
+          "testDeclarations": [
+            {
+              "line": 6,
+              "title": "2000-01-01 is 戊午"
+            },
+            {
+              "line": 13,
+              "title": "2000-01-02 is 己未"
+            },
+            {
+              "line": 18,
+              "title": "2026-02-17 is 壬戌"
+            },
+            {
+              "line": 24,
+              "title": "successive days increment correctly"
+            },
+            {
+              "line": 35,
+              "title": "before 23:00 same as dayGanZhi"
+            },
+            {
+              "line": 41,
+              "title": "splitRatHour=false: 23:00+ shifts to next day"
+            },
+            {
+              "line": 49,
+              "title": "splitRatHour=true: 23:00-00:00 stays on current day"
+            },
+            {
+              "line": 58,
+              "title": "splitRatHour does not affect times before 23:00"
+            },
+            {
+              "line": 69,
+              "title": "single day range"
+            },
+            {
+              "line": 78,
+              "title": "three day range"
+            },
+            {
+              "line": 89,
+              "title": "empty range when start > end"
+            },
+            {
+              "line": 97,
+              "title": "correct solar dates in output"
+            },
+            {
+              "line": 110,
+              "title": "February 2026 has 28 days"
+            },
+            {
+              "line": 117,
+              "title": "February 2024 (leap year) has 29 days"
+            },
+            {
+              "line": 122,
+              "title": "January has 31 days"
+            },
+            {
+              "line": 127,
+              "title": "GanZhi are consecutive"
+            },
+            {
+              "line": 140,
+              "title": "2025 正月"
+            },
+            {
+              "line": 149,
+              "title": "GanZhi are consecutive in lunar month"
+            },
+            {
+              "line": 156,
+              "title": "month has 29 or 30 days"
+            },
+            {
+              "line": 163,
+              "title": "returns non-empty list"
+            },
+            {
+              "line": 168,
+              "title": "period is roughly 29-32 days"
+            },
+            {
+              "line": 174,
+              "title": "GanZhi are consecutive"
+            },
+            {
+              "line": 183,
+              "title": "甲日子时 → 甲子"
+            },
+            {
+              "line": 187,
+              "title": "乙日子时 → 丙子"
+            },
+            {
+              "line": 191,
+              "title": "丙日子时 → 戊子"
+            },
+            {
+              "line": 195,
+              "title": "丁日子时 → 庚子"
+            },
+            {
+              "line": 199,
+              "title": "戊日子时 → 壬子"
+            },
+            {
+              "line": 203,
+              "title": "己日子时 → 甲子 (same group as 甲)"
+            },
+            {
+              "line": 207,
+              "title": "甲日巳时(index=5) → 己巳"
+            },
+            {
+              "line": 211,
+              "title": "12 hours cycle through all dizhi"
+            },
+            {
+              "line": 220,
+              "title": "甲年正月(寅月) → 丙寅"
+            },
+            {
+              "line": 224,
+              "title": "乙年正月 → 戊寅"
+            },
+            {
+              "line": 228,
+              "title": "丙年正月 → 庚寅"
+            },
+            {
+              "line": 232,
+              "title": "丁年正月 → 壬寅"
+            },
+            {
+              "line": 236,
+              "title": "戊年正月 → 甲寅"
+            },
+            {
+              "line": 240,
+              "title": "己年正月 → 丙寅 (same group as 甲)"
+            },
+            {
+              "line": 244,
+              "title": "甲年二月(卯月) → 丁卯"
+            },
+            {
+              "line": 248,
+              "title": "12 months cycle through all dizhi starting from 寅"
+            },
+            {
+              "line": 257,
+              "title": "1984 is JiaZi"
+            },
+            {
+              "line": 262,
+              "title": "2024 is JiaChen"
+            },
+            {
+              "line": 267,
+              "title": "2025 is YiSi"
+            },
+            {
+              "line": 272,
+              "title": "184 is JiaZi (1984 - 1800)"
+            },
+            {
+              "line": 276,
+              "title": "Negative year"
+            },
+            {
+              "line": 282,
+              "title": "1984(甲子) should return BingYin, DingMao... DingChou"
+            },
+            {
+              "line": 291,
+              "title": "2025(乙巳) should return WuYin, JiMao... DingChou"
+            },
+            {
+              "line": 301,
+              "title": "JiaZi day should return JiaZi, YiChou... YiHai"
+            },
+            {
+              "line": 310,
+              "title": "YiChou day should return BingZi, DingChou... DingHai"
+            },
+            {
+              "line": 320,
+              "title": "1984-1985"
+            },
+            {
+              "line": 329,
+              "title": "Single year"
+            },
+            {
+              "line": 335,
+              "title": "Invalid range"
+            }
+          ]
+        },
+        {
+          "path": "test/test_historical_solar_terms.dart",
+          "sha256": "de38b224b83f3d22c9a46b4c706dee2a0c2c7be3b37a1a073e6686efacad6f20",
+          "testDeclarations": [
+            {
+              "line": 6,
+              "title": "Historical Solar terms toggle test"
+            }
+          ]
+        },
+        {
+          "path": "test/test_historical_solar_terms_run.dart",
+          "sha256": "5c7fba495151307c075d5da4d1560b9d26bb950449721a0694b6a5ed7c42d88a",
+          "testDeclarations": []
+        },
+        {
+          "path": "test/test_historical_toggle.dart",
+          "sha256": "7a832312110d526f80faa48f405e69d2448598abae7a0f6884b3fca7e04033d6",
+          "testDeclarations": []
+        },
+        {
+          "path": "test/test_hui_li_date.dart",
+          "sha256": "37acdaf36f2d52740bf20fec4cb689eb2f03f6969712e79960cb0604a6c64e38",
+          "testDeclarations": [
+            {
+              "line": 6,
+              "title": "matches the sxwnl epoch calibration"
+            },
+            {
+              "line": 16,
+              "title": "assigns a Beijing civil day from an intra-day value"
+            },
+            {
+              "line": 24,
+              "title": "matches sxwnl across cycle and leap-year boundaries"
+            },
+            {
+              "line": 44,
+              "title": "repeats the same month/day after one 30-year cycle"
+            },
+            {
+              "line": 54,
+              "title": "is distinct from the Chinese lunar date"
+            }
+          ]
+        },
+        {
+          "path": "test/test_jie_qi_2025.dart",
+          "sha256": "457408241bc89d3da920003da6079ea6ee5ae1b1ed6c27e1e63e9f76705f7756",
+          "testDeclarations": []
+        },
+        {
+          "path": "test/test_jie_qi_direct.dart",
+          "sha256": "17b3a76805b18acb48d8956934a76718e53f61adc660bb249199920cf4c33496",
+          "testDeclarations": []
+        },
+        {
+          "path": "test/test_models.dart",
+          "sha256": "f96684ccf50f06a3adf9e1bc54cca9aa1f0c65cb56479a85b733367ba87e1527",
+          "testDeclarations": [
+            {
+              "line": 6,
+              "title": "label returns correct Chinese character"
+            },
+            {
+              "line": 11,
+              "title": "fromName supports pinyin and Chinese"
+            },
+            {
+              "line": 18,
+              "title": "isYang/isYin"
+            },
+            {
+              "line": 26,
+              "title": "label returns correct Chinese character"
+            },
+            {
+              "line": 31,
+              "title": "fromName supports pinyin and Chinese"
+            },
+            {
+              "line": 40,
+              "title": "toString returns correct format"
+            },
+            {
+              "line": 45,
+              "title": "offset forward"
+            },
+            {
+              "line": 51,
+              "title": "offset backward"
+            },
+            {
+              "line": 57,
+              "title": "operator + and -"
+            },
+            {
+              "line": 63,
+              "title": "getKongWang - jia zi xun"
+            },
+            {
+              "line": 68,
+              "title": "getKongWang - jia xu xun"
+            },
+            {
+              "line": 73,
+              "title": "getKongWang - jia shen xun"
+            },
+            {
+              "line": 78,
+              "title": "getKongWang - yi chou (yin stem)"
+            },
+            {
+              "line": 85,
+              "title": "toString returns four pillars"
+            },
+            {
+              "line": 97,
+              "title": "calcBaZi returns same result as calcGanZhi"
+            },
+            {
+              "line": 112,
+              "title": "calcBaZi returns correct typed objects"
+            },
+            {
+              "line": 126,
+              "title": "calcBaZiAstroDate enters Wei hour exactly at 13:00:00"
+            },
+            {
+              "line": 136,
+              "title": "2026-04-08 13:00 JD版漂移到午时, AstroDate版正确进未时"
+            },
+            {
+              "line": 151,
+              "title": "calcBaZiAstroDate switches day exactly at 23:00:00"
+            },
+            {
+              "line": 167,
+              "title": "fromSolar converts correctly"
+            },
+            {
+              "line": 177,
+              "title": "toSolar converts back correctly"
+            },
+            {
+              "line": 185,
+              "title": "round trip solar -> lunar -> solar"
+            },
+            {
+              "line": 194,
+              "title": "toString format"
+            },
+            {
+              "line": 201,
+              "title": "historical year helpers for BCE date"
+            },
+            {
+              "line": 211,
+              "title": "createBySolarTime basic"
+            },
+            {
+              "line": 225,
+              "title": "createBySolarTime with true solar time"
+            },
+            {
+              "line": 236,
+              "title": "createBySolarTime without true solar time"
+            },
+            {
+              "line": 247,
+              "title": "bjClt returns UTC+8 time"
+            },
+            {
+              "line": 261,
+              "title": "defaultLoc is 120E 30N"
+            }
+          ]
+        },
+        {
+          "path": "test/test_szj.dart",
+          "sha256": "e2752622450e4aa4c749f5301d45ade0bf7dab21bbb9db627e3ac5c68bf71157",
+          "testDeclarations": [
+            {
+              "line": 9,
+              "title": "Sun and Moon Rise events calculation"
+            }
+          ]
+        },
+        {
+          "path": "test/test_v15_edge_cases.dart",
+          "sha256": "81f066a3815369b9dba31bfb5dc4bff59e13d8789d3774efc4b3b415cd769595",
+          "testDeclarations": [
+            {
+              "line": 7,
+              "title": "1. 压线测试 (Exact Boundary)：目标时间正好是交节时刻"
+            },
+            {
+              "line": 23,
+              "title": "2. 历元零点测试 (J2000 Epoch)：2000年1月1日前后"
+            },
+            {
+              "line": 33,
+              "title": "3. 远古/负数年份测试 (BC Years)：环形映射验证"
+            },
+            {
+              "line": 48,
+              "title": "4. 逻辑闭环测试 (Logical Closure)"
+            },
+            {
+              "line": 71,
+              "title": "5. 节/气 过滤测试"
+            },
+            {
+              "line": 88,
+              "title": "6. 近日点/远日点 轨道极速测试"
+            }
+          ]
+        },
+        {
+          "path": "test/true_solar_time_test.dart",
+          "sha256": "cfa005f8073525334cc8ae4d7c661d74632b253e5013d3b21c4923db5601ddd5",
+          "testDeclarations": [
+            {
+              "line": 5,
+              "title": "calcTrueSolarTime2 reads and preserves the AstroDateTime timezone"
+            },
+            {
+              "line": 43,
+              "title": "calcTrueSolarTime2 rejects an unmarked timezone"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "repository": "taiyin-dart",
+      "commit": "59983f6aeb2c0e42b287fa68df55250e8f83e1bf",
+      "files": [
+        {
+          "path": "packages/ephemeris/test/astrology_api_test.dart",
+          "sha256": "bdab789550609ed5f109136e05013641df1f44a19add3717f71a6cf6121da240",
+          "testDeclarations": [
+            {
+              "line": 135,
+              "title": "evaluates built-in ayanamshas and exposes their availability"
+            },
+            {
+              "line": 159,
+              "title": "registers and closes custom astrology model callbacks"
+            },
+            {
+              "line": 230,
+              "title": "rejects mutable custom callback captures"
+            },
+            {
+              "line": 248,
+              "title": "keeps a custom fallback callback alive until dependents close"
+            },
+            {
+              "line": 272,
+              "title": "returns a native failure when a custom evaluator throws"
+            },
+            {
+              "line": 290,
+              "title": "rejects invalid custom model identifiers"
+            },
+            {
+              "line": 295,
+              "title": "clears custom models and applies a custom house fallback"
+            },
+            {
+              "line": 329,
+              "title": "stale custom model handles close after a direct native clear"
+            },
+            {
+              "line": 350,
+              "title": "runtime reset releases custom callback handles"
+            },
+            {
+              "line": 366,
+              "title": "calculates sidereal ecliptic positions with a diagnostic"
+            },
+            {
+              "line": 413,
+              "title": "supports generic sidereal ecliptic, equatorial, and XYZ modes"
+            },
+            {
+              "line": 596,
+              "title": "supports typed sidereal reference planes and epochs"
+            },
+            {
+              "line": 820,
+              "title": "calculates lunar nodes and explicit apogee conventions"
+            },
+            {
+              "line": 1002,
+              "title": "validates lunar-point flag contracts before native calls"
+            },
+            {
+              "line": 1029,
+              "title": "calculates and locates houses from a configured observer"
+            },
+            {
+              "line": 1125,
+              "title": "maps house fallbacks and suppresses discontinuous whole-sign rates"
+            },
+            {
+              "line": 1164,
+              "title": "calculates houses directly from ARMC"
+            },
+            {
+              "line": 1183,
+              "title": "rejects unsupported sidereal coordinate modes and use after close"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/call_result_test.dart",
+          "sha256": "ba0cf790b99039468882657ea728aa31bc180cbbea4ccbad4a1ee562c551b857",
+          "testDeclarations": [
+            {
+              "line": 7,
+              "title": "decodes successful execution facts"
+            },
+            {
+              "line": 18,
+              "title": "decodes a failed call without losing its execution facts"
+            },
+            {
+              "line": 27,
+              "title": "retains legacy int32 statuses used by setup APIs"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/chinese_calendar_api_test.dart",
+          "sha256": "29858bb26afbdf5b455cb91524bcfaa6377f093865df1131f6e02e170fcd0a52",
+          "testDeclarations": [
+            {
+              "line": 22,
+              "title": "computes a winter-solstice Chinese calendar year"
+            },
+            {
+              "line": 42,
+              "title": "converts a solar date to the Chinese lunar calendar"
+            },
+            {
+              "line": 54,
+              "title": "rejects date fields before native integer narrowing"
+            },
+            {
+              "line": 134,
+              "title": "computes the four pillars for a birth moment"
+            },
+            {
+              "line": 151,
+              "title": "resolves a local clock without manual timezone arithmetic"
+            },
+            {
+              "line": 185,
+              "title": "keeps the civil clock separate from a meridian day boundary"
+            },
+            {
+              "line": 206,
+              "title": "rejects local leap seconds that UTC Julian dates cannot retain"
+            },
+            {
+              "line": 222,
+              "title": "meridian calendars do not need EOP to convert civil clocks"
+            },
+            {
+              "line": 249,
+              "title": "searches previous and next solar terms"
+            },
+            {
+              "line": 260,
+              "title": "supports custom calendar configurations"
+            },
+            {
+              "line": 278,
+              "title": "rejects calendar UTC offsets outside the native int32 range"
+            },
+            {
+              "line": 289,
+              "title": "rejects invalid legal-clock offsets in meridian mode"
+            },
+            {
+              "line": 301,
+              "title": "rejects use after closing the owning context"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/context_api_test.dart",
+          "sha256": "07a537246b05796528ba86501db08315728b1213b6f101f3179bbd0d9d3e5a12",
+          "testDeclarations": [
+            {
+              "line": 33,
+              "title": "configures observer and atmosphere values"
+            },
+            {
+              "line": 54,
+              "title": "configures astronomy and apparent models"
+            },
+            {
+              "line": 79,
+              "title": "configures observer modes and route selection"
+            },
+            {
+              "line": 91,
+              "title": "configures deflection, light time, and Shapiro delay"
+            },
+            {
+              "line": 104,
+              "title": "clone keeps configured owned state after original reset"
+            },
+            {
+              "line": 147,
+              "title": "original and clone lifetimes are independent"
+            },
+            {
+              "line": 166,
+              "title": "closing a clone does not affect the original"
+            },
+            {
+              "line": 181,
+              "title": "rejects invalid Dart values before native calls"
+            },
+            {
+              "line": 247,
+              "title": "exposes stable native model identifiers"
+            },
+            {
+              "line": 292,
+              "title": "rejects context configuration after close"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/context_lifecycle_test.dart",
+          "sha256": "8fd5b764b5140a9f356b0ffde493508026706eca275fbabe8280d833b847dac0",
+          "testDeclarations": [
+            {
+              "line": 24,
+              "title": "closing the owning context closes its cached child contexts"
+            },
+            {
+              "line": 39,
+              "title": "closing the owner invalidates caller-created calendar contexts"
+            },
+            {
+              "line": 61,
+              "title": "clone creates independent cached child contexts"
+            },
+            {
+              "line": 76,
+              "title": "a worker isolate attaches its own child contexts"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/date_time_extension_test.dart",
+          "sha256": "465e293191e2d9ea9f2e35b29a99e7c09532dd01280084505e5dbd6f01a1cc99",
+          "testDeclarations": [
+            {
+              "line": 5,
+              "title": "DateTime adapter is available through the public prefixed import"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/ephemeris_test.dart",
+          "sha256": "ae9ca7818567433ee392c840fb07e465473647570205702fb900f8233e9812c5",
+          "testDeclarations": [
+            {
+              "line": 259,
+              "title": "validates metadata and initializes the catalog"
+            },
+            {
+              "line": 279,
+              "title": "maps native status metadata"
+            },
+            {
+              "line": 293,
+              "title": "calculates a finite Moon state vector"
+            },
+            {
+              "line": 308,
+              "title": "registers and calculates a custom target"
+            },
+            {
+              "line": 338,
+              "title": "uses an exact custom state evaluator"
+            },
+            {
+              "line": 358,
+              "title": "custom evaluator rejects nested dependency evaluation safely"
+            },
+            {
+              "line": 386,
+              "title": "custom target callbacks work from a worker isolate"
+            },
+            {
+              "line": 404,
+              "title": "rejects mutable callback captures and duplicate IDs"
+            },
+            {
+              "line": 446,
+              "title": "maps invalid and deliberate custom evaluator failures"
+            },
+            {
+              "line": 488,
+              "title": "rejects custom evaluator statuses outside negative int32"
+            },
+            {
+              "line": 499,
+              "title": "unregisters, closes, and permits re-registration"
+            },
+            {
+              "line": 538,
+              "title": "a stale custom target handle closes after direct native clear"
+            },
+            {
+              "line": 558,
+              "title": "runtime reset closes existing custom registrations"
+            },
+            {
+              "line": 576,
+              "title": "failed runtime reset also closes existing registrations"
+            },
+            {
+              "line": 606,
+              "title": "clears all custom registrations explicitly"
+            },
+            {
+              "line": 628,
+              "title": "rejects dependency access after a request escapes its callback"
+            },
+            {
+              "line": 656,
+              "title": "derives custom state with the native finite-difference fallback"
+            },
+            {
+              "line": 687,
+              "title": "routes custom targets through UT1, UTC, and mixed batches"
+            },
+            {
+              "line": 719,
+              "title": "matches native fractional calendar conversion"
+            },
+            {
+              "line": 754,
+              "title": "clones a context without reinitializing the runtime"
+            },
+            {
+              "line": 766,
+              "title": "worker isolates create independent contexts"
+            },
+            {
+              "line": 783,
+              "title": "independent isolate contexts survive concurrent position pressure"
+            },
+            {
+              "line": 802,
+              "title": "worker isolate setup failures complete with an error"
+            },
+            {
+              "line": 818,
+              "title": "rejects recursive and missing custom dependencies portably"
+            },
+            {
+              "line": 853,
+              "title": "attaches through a preloaded dynamic library"
+            },
+            {
+              "line": 874,
+              "title": "rejects calls after close"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/events_api_test.dart",
+          "sha256": "b55df2ade2654531c3adfc65de5634b8901460fa73f289d9c12aeb4015aa3cea",
+          "testDeclarations": [
+            {
+              "line": 50,
+              "title": "searches scalar solar and lunar longitude routes"
+            },
+            {
+              "line": 109,
+              "title": "searches bounded longitude, station, aspect, and phase routes"
+            },
+            {
+              "line": 231,
+              "title": "reports insufficient bounded-search result capacity"
+            },
+            {
+              "line": 246,
+              "title": "searches extrema and global and local solar transits"
+            },
+            {
+              "line": 364,
+              "title": "rejects invalid Dart inputs and use after close"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/ganzhi_api_test.dart",
+          "sha256": "92641da06bc94018a9f0e54d50513f4e1236da979e3ffcb4b3273428f62feb7c",
+          "testDeclarations": [
+            {
+              "line": 22,
+              "title": "builds a Ganzhi from stem and branch ids"
+            },
+            {
+              "line": 32,
+              "title": "advances along the sexagenary cycle"
+            },
+            {
+              "line": 42,
+              "title": "computes the day pillar for a civil date"
+            },
+            {
+              "line": 49,
+              "title": "derives month and hour pillar stems"
+            },
+            {
+              "line": 61,
+              "title": "resolves NaYin element and id"
+            },
+            {
+              "line": 68,
+              "title": "rejects invalid stem-branch combinations"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/heliacal_api_test.dart",
+          "sha256": "a8d79672ba16ff3546a6e0e7f450a577da58f190b678bf289ddb8aee7c41c7b4",
+          "testDeclarations": [
+            {
+              "line": 57,
+              "title": "evaluates body and catalogue-star heliacal visibility"
+            },
+            {
+              "line": 84,
+              "title": "honors strict meteorology and explicit atmosphere data"
+            },
+            {
+              "line": 117,
+              "title": "matches native Venus heliacal-search oracles"
+            },
+            {
+              "line": 151,
+              "title": "searches a catalogued-star heliacal event"
+            },
+            {
+              "line": 177,
+              "title": "rejects unsupported inputs and use after close"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/lunar_eclipse_api_test.dart",
+          "sha256": "519bcbc118de7de1afbdbaeb19dcf5600eb12807b1e18a35fb27fce403ec672b",
+          "testDeclarations": [
+            {
+              "line": 40,
+              "title": "solves and searches TT and UT1 total-lunar eclipse results"
+            },
+            {
+              "line": 144,
+              "title": "derives local visibility and searches a local eclipse in TT and UT1"
+            },
+            {
+              "line": 211,
+              "title": "maps a no-eclipse lunation and rejects invalid Dart inputs"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/module_concurrency_test.dart",
+          "sha256": "94d1be660519f9d811a332e93dbd99c0bfffb5cb36cf2b891ee5542812a90309",
+          "testDeclarations": [
+            {
+              "line": 81,
+              "title": "worker isolates run astronomy, events, eclipses, and calendar concurrently"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/native_compatibility_test.dart",
+          "sha256": "6ac0fe4c2a1f56e76c7b905d7a982d89aacda6d9e57baec47cc251d3c3983d67",
+          "testDeclarations": [
+            {
+              "line": 54,
+              "title": "accepts ABI 10 with split-time and Chinese-calendar support"
+            },
+            {
+              "line": 65,
+              "title": "rejects an ABI-10 library without the Chinese-calendar capability"
+            },
+            {
+              "line": 84,
+              "title": "rejects an ABI-10 library without split-time support"
+            },
+            {
+              "line": 100,
+              "title": "rejects the retired ABI-5 major first"
+            },
+            {
+              "line": 117,
+              "title": "accepts a library that exposes every required ABI-10 symbol"
+            },
+            {
+              "line": 126,
+              "title": "required ABI-10 set covers every directly invoked core symbol"
+            },
+            {
+              "line": 141,
+              "title": "accepts a library without BaZi symbols when the set is not required"
+            },
+            {
+              "line": 155,
+              "title": "reports incomplete BaZi symbols when the extension is advertised"
+            },
+            {
+              "line": 176,
+              "title": "reports missing Chinese-calendar symbols before use"
+            },
+            {
+              "line": 192,
+              "title": "reports missing Ganzhi rule primitives before use"
+            },
+            {
+              "line": 207,
+              "title": "reports missing four-pillars Ganzhi symbol from the required set"
+            },
+            {
+              "line": 228,
+              "title": "reports missing ABI-10 symbols before lazy lookup"
+            },
+            {
+              "line": 246,
+              "title": "reports missing runtime catalog symbols before lazy lookup"
+            },
+            {
+              "line": 271,
+              "title": "reports missing diagnostic-format and astrology-target symbols"
+            },
+            {
+              "line": 291,
+              "title": "reports missing solar-time and phenomena symbols before use"
+            },
+            {
+              "line": 306,
+              "title": "reports missing orbital symbols before use"
+            },
+            {
+              "line": 322,
+              "title": "reports missing custom-target lifecycle symbols before use"
+            },
+            {
+              "line": 338,
+              "title": "reports missing custom astrology lifecycle symbols before use"
+            },
+            {
+              "line": 354,
+              "title": "reports missing astrology symbols before use"
+            },
+            {
+              "line": 369,
+              "title": "reports missing lunar-point symbols before use"
+            },
+            {
+              "line": 385,
+              "title": "reports missing visibility symbols before use"
+            },
+            {
+              "line": 401,
+              "title": "reports missing heliacal symbols before use"
+            },
+            {
+              "line": 417,
+              "title": "reports missing events symbols before use"
+            },
+            {
+              "line": 433,
+              "title": "reports missing occultation symbols before use"
+            },
+            {
+              "line": 449,
+              "title": "reports missing lunar-eclipse symbols before use"
+            },
+            {
+              "line": 465,
+              "title": "reports missing solar-eclipse symbols before use"
+            },
+            {
+              "line": 481,
+              "title": "reports missing solar Besselian symbols before use"
+            },
+            {
+              "line": 497,
+              "title": "reports missing solar route symbols before use"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/observed_api_test.dart",
+          "sha256": "c0be2a1add0b491125bd9dae50d9036cf83e1b31671e2d7da856762df5d8a1ab",
+          "testDeclarations": [
+            {
+              "line": 21,
+              "title": "maps complete UT1 apparent state and diagnostic"
+            },
+            {
+              "line": 67,
+              "title": "single and batch UT1 routes preserve order and values"
+            },
+            {
+              "line": 96,
+              "title": "throws with the failed target when any batch body fails"
+            },
+            {
+              "line": 122,
+              "title": "covers UTC single and batch routes with precise time data"
+            },
+            {
+              "line": 141,
+              "title": "calculates topocentric horizontal coordinates and rates"
+            },
+            {
+              "line": 174,
+              "title": "supports atmosphere fallback and strict meteorology"
+            },
+            {
+              "line": 230,
+              "title": "solar deflector skips self-deflection for the Sun"
+            },
+            {
+              "line": 240,
+              "title": "rejects invalid bodies, batches, and flag dependencies"
+            },
+            {
+              "line": 264,
+              "title": "empty batches are immutable and use after close is rejected"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/occultation_api_test.dart",
+          "sha256": "c4c593ad55ca8ab746070acdd8d563bae87e10664ae47bf39056176fbf7df148",
+          "testDeclarations": [
+            {
+              "line": 65,
+              "title": "searches star occultations and derives visibility and where data"
+            },
+            {
+              "line": 164,
+              "title": "searches body occultations with standard and custom radii"
+            },
+            {
+              "line": 239,
+              "title": "rejects invalid Dart inputs and use after close"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/optional_module_lookup_test.dart",
+          "sha256": "8e3a2bbb733273dd60263725e7205f8844baade5b7a3a8bf54fe5f14ac1ada93",
+          "testDeclarations": [
+            {
+              "line": 14,
+              "title": "constructing bindings and reading load-time metadata does not touch "
+            },
+            {
+              "line": 63,
+              "title": "the package loads and creates a context on a baseline library"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/orbital_api_test.dart",
+          "sha256": "8a6aa67f3b173d2efeb2d53b7315ab658528f7a7d65d76e21501bf3070148964",
+          "testDeclarations": [
+            {
+              "line": 42,
+              "title": "ports the Moon osculating-orbit physical checks"
+            },
+            {
+              "line": 60,
+              "title": "ports the osculating reference-point geometry checks"
+            },
+            {
+              "line": 97,
+              "title": "TT and UT1 orbit and reference-point routes agree"
+            },
+            {
+              "line": 121,
+              "title": "supports every native orbital reference frame"
+            },
+            {
+              "line": 133,
+              "title": "ports lunar apsis and node Swiss Ephemeris oracles"
+            },
+            {
+              "line": 191,
+              "title": "TT and UT1 event searches preserve their time-scale types"
+            },
+            {
+              "line": 218,
+              "title": "supports planet barycenters and explicit approximation policy"
+            },
+            {
+              "line": 233,
+              "title": "rejects unsupported inputs and use after close"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/phenomena_api_test.dart",
+          "sha256": "df5e1f182827fd5bdac13b588d50b7d06bc719ca82e69b4724409d6a26b01653",
+          "testDeclarations": [
+            {
+              "line": 37,
+              "title": "matches the first-quarter Moon oracle on the semi-analytical route"
+            },
+            {
+              "line": 86,
+              "title": "covers the TT route and nullable non-lunar parallax"
+            },
+            {
+              "line": 106,
+              "title": "makes topocentric origin explicit while parallax stays geocentric"
+            },
+            {
+              "line": 140,
+              "title": "rejects unsupported bodies and use after close"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/ported/time_angle_interpolation_test.dart",
+          "sha256": "fe41bd09afdb361a12b0bd3cd091277cfe0c17314e6cb28403a5b460fb3c60d2",
+          "testDeclarations": [
+            {
+              "line": 21,
+              "title": "calendar and Julian-date oracles"
+            },
+            {
+              "line": 63,
+              "title": "built-in leap-second table oracles"
+            },
+            {
+              "line": 77,
+              "title": "UTC, TAI, TT, and UT1 conversion oracles"
+            },
+            {
+              "line": 108,
+              "title": "explicit precise-scale aggregate oracle"
+            },
+            {
+              "line": 133,
+              "title": "TT and TDB model oracles"
+            },
+            {
+              "line": 157,
+              "title": "Delta-T decimal-year oracles"
+            },
+            {
+              "line": 197,
+              "title": "Delta-T Julian-date oracles"
+            },
+            {
+              "line": 228,
+              "title": "estimated-scale aggregate oracles"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/position_api_test.dart",
+          "sha256": "c12b95cc733c71395f42775b479aa530a4054277c582609c67b99d9fb49e48e2",
+          "testDeclarations": [
+            {
+              "line": 23,
+              "title": "returns a position with its native diagnostic"
+            },
+            {
+              "line": 40,
+              "title": "covers TDB, UT1, explicit Delta-T, and UTC routes"
+            },
+            {
+              "line": 56,
+              "title": "batch calculations preserve target order and match singles"
+            },
+            {
+              "line": 69,
+              "title": "covers batch TDB, UT1, explicit Delta-T, and UTC routes"
+            },
+            {
+              "line": 91,
+              "title": "throws atomically and retains every batch diagnostic"
+            },
+            {
+              "line": 123,
+              "title": "attaches native diagnostics to single-target failures"
+            },
+            {
+              "line": 153,
+              "title": "returns finite Cartesian position, velocity, and acceleration"
+            },
+            {
+              "line": 172,
+              "title": "covers Cartesian-state time routes"
+            },
+            {
+              "line": 192,
+              "title": "rejects non-finite Delta-T and use after close"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/runtime_api_test.dart",
+          "sha256": "245f7d78884350d0264bfeea7863cdcf57fdfea56376a1f059645995fbf3385c",
+          "testDeclarations": [
+            {
+              "line": 31,
+              "title": "reports Singularity release metadata"
+            },
+            {
+              "line": 37,
+              "title": "opens the bundled native library without an explicit path"
+            },
+            {
+              "line": 44,
+              "title": "can disable the bundled lite fixed-star catalog"
+            },
+            {
+              "line": 55,
+              "title": "formats structured native diagnostics for logs"
+            },
+            {
+              "line": 100,
+              "title": "rejects status codes before native int32 narrowing"
+            },
+            {
+              "line": 108,
+              "title": "registers built-in astrology targets for position calculations"
+            },
+            {
+              "line": 132,
+              "title": "exposes catalog size and discovers a source path"
+            },
+            {
+              "line": 141,
+              "title": "lists registered data sources and manages priorities"
+            },
+            {
+              "line": 169,
+              "title": "manages the built-in EOP table lifecycle"
+            },
+            {
+              "line": 179,
+              "title": "loads and clears a lunar-limb model"
+            },
+            {
+              "line": 190,
+              "title": "counts and clears ephemeris cache entries"
+            },
+            {
+              "line": 209,
+              "title": "preserves native file errors"
+            },
+            {
+              "line": 246,
+              "title": "rejects empty paths before native calls"
+            },
+            {
+              "line": 278,
+              "title": "runtime lifetime is independent from user contexts"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/solar_eclipse_api_test.dart",
+          "sha256": "3977ce3fcccfd79a36c30195ac46846e0f31652de2eca9d4c1851b23e864aad5",
+          "testDeclarations": [
+            {
+              "line": 47,
+              "title": "solves and searches TT and UT1 global solar eclipses"
+            },
+            {
+              "line": 153,
+              "title": "derives local solar eclipses and instantaneous geometry in TT and UT1"
+            },
+            {
+              "line": 275,
+              "title": "supports refracted and strict-meteorology local solar visibility"
+            },
+            {
+              "line": 320,
+              "title": "uses a loaded lunar-limb model for solar contact calculations"
+            },
+            {
+              "line": 364,
+              "title": "computes and evaluates solar Besselian elements and polynomials"
+            },
+            {
+              "line": 493,
+              "title": "computes lightweight instantaneous global geometry with where"
+            },
+            {
+              "line": 509,
+              "title": "computes global solar-eclipse route rows and inclusive route samples"
+            },
+            {
+              "line": 640,
+              "title": "maps no eclipse and rejects invalid solar inputs"
+            },
+            {
+              "line": 766,
+              "title": "computes solar route curves, polygon products, and local boundaries"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/solar_time_api_test.dart",
+          "sha256": "8988edb2f8e6a7f50a26d801d7be78f2cd85a5ad71d7dd65637e5284da942ddc",
+          "testDeclarations": [
+            {
+              "line": 22,
+              "title": "calculates equation of time from UT1 and TT"
+            },
+            {
+              "line": 48,
+              "title": "round-trips local mean and apparent solar time"
+            },
+            {
+              "line": 73,
+              "title": "rejects invalid longitude and use after close"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/star_api_test.dart",
+          "sha256": "217690ceceeb6d8364c172f6e35542b59bad3c20f90fe4cba33e9003c0c16852",
+          "testDeclarations": [
+            {
+              "line": 47,
+              "title": "loads TSC1 catalogs and resolves magnitude aliases"
+            },
+            {
+              "line": 60,
+              "title": "copies caller-owned TSC1 bytes before returning"
+            },
+            {
+              "line": 72,
+              "title": "loads editable TSF1 catalogs"
+            },
+            {
+              "line": 101,
+              "title": "covers TDB, TT, UT1, and explicit Delta-T positions"
+            },
+            {
+              "line": 129,
+              "title": "batch time routes preserve keys and match single results"
+            },
+            {
+              "line": 168,
+              "title": "position batches throw atomically and retain every diagnostic"
+            },
+            {
+              "line": 199,
+              "title": "calculates single and batch observed star positions"
+            },
+            {
+              "line": 232,
+              "title": "maps topocentric horizontal observed star output"
+            },
+            {
+              "line": 261,
+              "title": "reports failed observed stars and rejects invalid Dart inputs"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/time_api_test.dart",
+          "sha256": "ec69ac9d601e40ac66972c2ab6cddc96f61dc7e88ae14d12424f67d89360e8ef",
+          "testDeclarations": [
+            {
+              "line": 23,
+              "title": "converts UTC, TAI, TT, and UT1 with typed results"
+            },
+            {
+              "line": 43,
+              "title": "round-trips nanoseconds through the native split calendar ABI"
+            },
+            {
+              "line": 50,
+              "title": "preserves nanosecond separation across scale conversions"
+            },
+            {
+              "line": 88,
+              "title": "rejects non-finite linear conversion offsets"
+            },
+            {
+              "line": 108,
+              "title": "builds explicit precise time scales"
+            },
+            {
+              "line": 132,
+              "title": "uses precise EOP and leap-second runtime data"
+            },
+            {
+              "line": 149,
+              "title": "converts every physical scale back to UTC and UT1"
+            },
+            {
+              "line": 200,
+              "title": "uses the configured TDB model for automatic reverse routes"
+            },
+            {
+              "line": 237,
+              "title": "keeps the TDB model synchronized through configuration APIs"
+            },
+            {
+              "line": 298,
+              "title": "seeds inverse iteration inside the EOP coverage edge"
+            },
+            {
+              "line": 320,
+              "title": "rejects an unrepresentable inserted UTC leap second"
+            },
+            {
+              "line": 357,
+              "title": "strict UTC conversion reports missing EOP data explicitly"
+            },
+            {
+              "line": 396,
+              "title": "strict UTC conversion reports EOP coverage gaps explicitly"
+            },
+            {
+              "line": 403,
+              "title": "reports unavailable leap-second data explicitly"
+            },
+            {
+              "line": 430,
+              "title": "falls back to the estimated Delta-T route when allowed"
+            },
+            {
+              "line": 521,
+              "title": "builds estimated scales with supplied or modeled Delta-T"
+            },
+            {
+              "line": 537,
+              "title": "round-trips TT and TDB models"
+            },
+            {
+              "line": 546,
+              "title": "provides Delta-T and epoch helpers"
+            },
+            {
+              "line": 568,
+              "title": "rejects use after its owning context closes"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/time_test.dart",
+          "sha256": "1e156d9f94fae593fb06fe77fafb9bbd3f6dcf070c17061193c65ea39a71781b",
+          "testDeclarations": [
+            {
+              "line": 6,
+              "title": "maps the Unix epoch to the standard UTC Julian date"
+            },
+            {
+              "line": 12,
+              "title": "converts positive and negative Unix microsecond timestamps"
+            },
+            {
+              "line": 23,
+              "title": "uses the represented instant instead of displayed timezone fields"
+            },
+            {
+              "line": 45,
+              "title": "preserves DateTime microseconds"
+            },
+            {
+              "line": 53,
+              "title": "round-trips nanoseconds through a split Julian date"
+            },
+            {
+              "line": 61,
+              "title": "preserves subsecond Duration arithmetic"
+            },
+            {
+              "line": 68,
+              "title": "crosses the historical Gregorian cutover"
+            },
+            {
+              "line": 76,
+              "title": "supports astronomical BCE year numbering"
+            },
+            {
+              "line": 87,
+              "title": "represents a leap second without pretending DateTime can"
+            },
+            {
+              "line": 98,
+              "title": "matches J2000 and ISO weekday conventions"
+            },
+            {
+              "line": 108,
+              "title": "converts a civil time to a standard Julian day with a zone offset"
+            },
+            {
+              "line": 125,
+              "title": "fromJulianDay materializes a civil value in the chosen zone"
+            },
+            {
+              "line": 139,
+              "title": "treats an omitted offset as a UTC reading"
+            },
+            {
+              "line": 152,
+              "title": "round-trips a zone offset through a standard Julian day"
+            },
+            {
+              "line": 163,
+              "title": "toJulianDate applies the zone offset in split precision"
+            },
+            {
+              "line": 173,
+              "title": "UTC Julian-date convenience matches the generic interpretation"
+            },
+            {
+              "line": 182,
+              "title": "seven Julian-date aliases expose constructors"
+            },
+            {
+              "line": 198,
+              "title": "toJulianDate offset agrees with the scalar toJulianDay"
+            },
+            {
+              "line": 209,
+              "title": "fromJulianDate materializes a civil value in the chosen zone"
+            },
+            {
+              "line": 218,
+              "title": "converts with negative and fractional zone offsets"
+            },
+            {
+              "line": 231,
+              "title": "crosses date boundaries when shifting zones"
+            },
+            {
+              "line": 247,
+              "title": "absorbs a leap second before applying a zone offset"
+            },
+            {
+              "line": 269,
+              "title": "round-trips a zone offset through toJ2000 and fromJ2000"
+            },
+            {
+              "line": 280,
+              "title": "rejects a non-finite utcOffsetHours"
+            },
+            {
+              "line": 309,
+              "title": "rejects invalid components"
+            },
+            {
+              "line": 320,
+              "title": "normalizes positive and negative fractions"
+            },
+            {
+              "line": 330,
+              "title": "carries a fraction rounded to one at the negative boundary"
+            },
+            {
+              "line": 338,
+              "title": "preserves nanosecond differences before the ABI merge"
+            },
+            {
+              "line": 347,
+              "title": "uses complete Duration microseconds"
+            }
+          ]
+        },
+        {
+          "path": "packages/ephemeris/test/visibility_api_test.dart",
+          "sha256": "2c6e96352e57235fbb13df2d2114aeead8c3a31fe56ef71e0a4c67760a80b6bd",
+          "testDeclarations": [
+            {
+              "line": 65,
+              "title": "searches lunar rise, set, custom horizons, and transits"
+            },
+            {
+              "line": 122,
+              "title": "searches planetary rise, custom horizons, and transits"
+            },
+            {
+              "line": 193,
+              "title": "searches solar events and evaluates fast solar approximations"
+            },
+            {
+              "line": 259,
+              "title": "searches catalogued-star rise, custom horizons, and transits"
+            },
+            {
+              "line": 308,
+              "title": "honors strict meteorology only for refracted visibility searches"
+            },
+            {
+              "line": 391,
+              "title": "honors limb, refraction, and disc-size options for fast rise/set"
+            },
+            {
+              "line": 457,
+              "title": "maps no-event states and rejects invalid Dart inputs"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "frozenFixtures": {
+    "test/fixtures/upstream/coordinates-stars.json": {
+      "sha256": "ef1df0d2fecfb4b901d64fbbc65e3cf058d1908c2642feb239f1c26ee78847f4",
+      "source": "Frozen independent C++/SOFA and TSC1 controls from JS ephemeris.test.js and fixed-stars.test.js"
+    },
+    "test/fixtures/upstream/direct-eclipses.json": {
+      "sha256": "cbf857a42db8e4371b2246e52c4b1c80b0a8114fff0055dca0474ea255645402",
+      "source": "js-ephemeris-lite direct 3-D geometry (test/eclipses.test.js), not independent ephemeris data"
+    },
+    "test/fixtures/upstream/earth-model.json": {
+      "sha256": "7687cdc884bc6d86fc9efc3d0ddafa9279fc90d3f79c2fc2493042c64bff6ad9",
+      "source": "Independent Python evaluation of the installed classic Earth table."
+    },
+    "test/fixtures/upstream/events-2026.json": {
+      "sha256": "c1bb96e10ba0521b4e5f1e5998009965eb326c01c7a9bc3368541ae23c664bae",
+      "source": "Frozen C++ DE441 TT roots and PMO minute table from JS test/calendar-events.test.js"
+    },
+    "test/fixtures/upstream/mercury-model.json": {
+      "sha256": "0e790231457796cabfb0f05dd37937972eebded25a8f7186dbfaf9df80fd1a65",
+      "source": "Independent Python evaluation of the installed classic Mercury table."
+    },
+    "test/fixtures/upstream/moon-model.json": {
+      "sha256": "f82544b0605a1381987ea188c44594bad8f6d6d5e2026b5031c147fa0c3c6895",
+      "source": "Independent Python evaluation of frozen folded ELP phases; DE441 (3,301)-(3,399), mean J2000 ecliptic, km and km/day. Same numerical JD."
+    },
+    "test/fixtures/upstream/observation-de441.json": {
+      "sha256": "4a0b820421708c1a4090eec1ecddd2a40c925c5bac7fda17c04bd979882af5a9",
+      "source": "taiyin-ephemeris C++ / JPL DE441"
+    },
+    "test/fixtures/upstream/orbital-de441.json": {
+      "sha256": "4fe18e095271d4c28be1ab91ffc72a5a0f26fe03f998941725ca9d99dc983cc1",
+      "source": "taiyin-ephemeris C++ / JPL DE441; TT; matched geometric/apparent conventions"
+    },
+    "test/fixtures/upstream/pluto-model.json": {
+      "sha256": "2679204e2481b53b756ec29373d64dcd491c0123efd3b4e8c30e0486842cd4cf",
+      "source": "Independent NumPy DE441 9-minus-10 ICRF km and m/s; padded near Chebyshev plus broad fallback with analytic quintic blend."
+    },
+    "test/fixtures/upstream/sky-de441.json": {
+      "sha256": "c7f205ee98da1af67f22fdc6207ae6a2dfcd5b8956cb5f9cc2a5f8267fd619cb",
+      "source": "Local taiyin-ephemeris C++ native calc_position_tt + NASA DE441; observer=399, inertial ephemeris origin=SSB (0); planets use system barycentres 1,2,4..8. No published accuracy guarantee."
+    },
+    "test/fixtures/upstream/top-model.json": {
+      "sha256": "1438c196e362fd917e39fc39471396037ddd323e5a6bff8adff74e3ce25480b6",
+      "source": "Independent Python evaluation of installed classic planetary tables; ICRF km and m/s, with unchanged SPK DE441 control states."
+    },
+    "test/fixtures/hijri-calendar.json": {
+      "sha256": "2272a77e95660c4c1eb90091bcd777c6fafc307454e2793bb48e50f15528eeb1",
+      "source": "Original oba.getHuiLi rules and sxwnl_spa_dart test_hui_li_date.dart; frozen old-formula outputs, not new implementation outputs."
+    }
+  }
+}

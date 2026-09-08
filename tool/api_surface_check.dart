@@ -3,6 +3,11 @@ import 'package:ephemeris_lite/ephemeris_lite.dart';
 
 void main() {
   final exports = <Object>[
+    solarToHijri,
+    hijriToSolar,
+    instantToHijri,
+    hijriMonthDays,
+    isHijriLeapYear,
     accuracy,
     apparentModelInfo,
     arcsecToRad,

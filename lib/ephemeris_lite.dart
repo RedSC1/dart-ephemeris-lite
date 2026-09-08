@@ -37,3 +37,5 @@ export 'src/lunar_eclipses.dart';
 export 'src/fixed_stars.dart';
 export 'src/solar_eclipses.dart';
 export 'src/api_metadata.dart';
+
+export 'src/hijri_calendar.dart';

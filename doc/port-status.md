@@ -1,12 +1,13 @@
 # 移植状态
 
-已完成 JS 1.0.0-rc.1 主包公共功能移植。根入口 195 个导出均有 Dart 对应，编译清单为 `tool/api_surface_check.dart`；Dart 调用形式见 [API 对照表](api-map.md)。
+已完成 JS 1.0.0-rc.1 主包公共功能移植，并同步增加了尚未发版的算术回历接口。根入口 200 个导出均有 Dart 对应，编译清单为 `tool/api_surface_check.dart`；Dart 调用形式见 [API 对照表](api-map.md)。
 
 ## 已有可运行实现
 
 | JS 模块 | Dart 状态 |
 | --- | --- |
 | accuracy.js | `Accuracy` 枚举，默认 accurate，无全局可变默认值 |
+| hijri-calendar.js | 算术回历正反转换、显式时区归日、月长与闰年规则 |
 | time.js | 时间/历法转换、ΔT、JulianTime、ZonedTime；Dart 命名参数和 DateTime 接口 |
 | direct-planet-model.js / planet-models.js / planet-frame.js | 八颗行星的 monomial 求值、三档前缀与固定旋转；未暴露内部任意项数接口 |
 | moon-model.js | 全量与两档前缀、地心状态/方向、原生黄经；未暴露内部任意项数接口 |
@@ -44,3 +45,9 @@
 - JS/Dart 对拍与独立天文精度验证分开表述。
 - 精度容差有单位；不得靠无解释放宽容差消除回归。
 - `publish_to: none` 在完整审计前保留，不自动发 pub.dev。
+
+## 测试审计
+
+测试来源、共同场景与未适用的旧接口见 [测试迁移说明](test-migration.md)。
+包括独立 DE441/C++/SOFA 控制与旧 Dart PMO 数据，不再仅依赖 JS 输出对拍。
+2026 日食带宽存在一项 JS/Dart 共有、尚待核实的独立资料差异，不能计作已通过。

@@ -1,0 +1,107 @@
+{
+  "source": "js-ephemeris-lite direct 3-D geometry (test/eclipses.test.js), not independent ephemeris data",
+  "solar": [
+    {
+      "k": -804,
+      "kind": "partial",
+      "maximum": -23737.266833076905,
+      "contacts": {
+        "partialBegin": -23737.269993693,
+        "partialEnd": -23737.263539172593,
+        "centralBegin": null,
+        "centralEnd": null
+      }
+    },
+    {
+      "k": 300,
+      "kind": "total",
+      "maximum": 8864.262842802793,
+      "contacts": {
+        "partialBegin": 8864.155139496524,
+        "partialEnd": 8864.370486503363,
+        "centralBegin": 8864.19524800133,
+        "centralEnd": 8864.330305585618
+      }
+    }
+  ],
+  "lunar": [
+    {
+      "k": 270,
+      "kind": "partial",
+      "maximum": 7992.877840471799,
+      "contacts": {
+        "penumbralBegin": 7992.7510893482495,
+        "penumbralEnd": 7993.004620315299,
+        "partialBegin": 7992.805239236705,
+        "partialEnd": 7992.950432772074,
+        "totalBegin": null,
+        "totalEnd": null
+      }
+    },
+    {
+      "k": 276,
+      "kind": "total",
+      "maximum": 8170.675483291981,
+      "contacts": {
+        "penumbralBegin": 8170.56379575304,
+        "penumbralEnd": 8170.78712807012,
+        "partialBegin": 8170.603281710513,
+        "partialEnd": 8170.747700300284,
+        "totalBegin": 8170.645744382155,
+        "totalEnd": 8170.705230875623
+      }
+    },
+    {
+      "k": 282,
+      "kind": "total",
+      "maximum": 8346.958584278114,
+      "contacts": {
+        "penumbralBegin": 8346.834611129269,
+        "penumbralEnd": 8347.082638711456,
+        "partialBegin": 8346.882004870355,
+        "partialEnd": 8347.035138762809,
+        "totalBegin": 8346.928815712008,
+        "totalEnd": 8346.988338561981
+      }
+    },
+    {
+      "k": 288,
+      "kind": "penumbral",
+      "maximum": 8525.225115515328,
+      "contacts": {
+        "penumbralBegin": 8525.13424484642,
+        "penumbralEnd": 8525.315917372944,
+        "partialBegin": null,
+        "partialEnd": null,
+        "totalBegin": null,
+        "totalEnd": null
+      }
+    },
+    {
+      "k": 294,
+      "kind": "partial",
+      "maximum": 8701.343899804879,
+      "contacts": {
+        "penumbralBegin": 8701.250773029153,
+        "penumbralEnd": 8701.437086912554,
+        "partialBegin": 8701.316391499464,
+        "partialEnd": 8701.371379279282,
+        "totalBegin": null,
+        "totalEnd": null
+      }
+    },
+    {
+      "k": 299,
+      "kind": "penumbral",
+      "maximum": 8849.80140990924,
+      "contacts": {
+        "penumbralBegin": 8849.702892538393,
+        "penumbralEnd": 8849.899902566103,
+        "partialBegin": null,
+        "partialEnd": null,
+        "totalBegin": null,
+        "totalEnd": null
+      }
+    }
+  ]
+}

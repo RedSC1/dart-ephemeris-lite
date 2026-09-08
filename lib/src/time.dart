@@ -235,11 +235,14 @@ class JulianTime {
     if (!ms.isFinite) throw ArgumentError.value(ms, 'milliseconds');
     return JulianTime.fromUT1(unixEpochJd + ms / 86400000);
   }
-  factory JulianTime.fromDateTime(DateTime date) =>
-      JulianTime.fromUnixMilliseconds(date.millisecondsSinceEpoch.toDouble());
+  factory JulianTime.fromDateTime(DateTime date) => JulianTime.fromUT1(
+    unixEpochJd + date.microsecondsSinceEpoch / 86400000000,
+  );
   double toUnixMilliseconds() => (jdUT1 - unixEpochJd) * 86400000;
-  DateTime toDateTime() => DateTime.fromMillisecondsSinceEpoch(
-    toUnixMilliseconds().truncate(),
+
+  /// Converts with microsecond rounding, limited by the resolution of double JD.
+  DateTime toDateTime() => DateTime.fromMicrosecondsSinceEpoch(
+    ((jdUT1 - unixEpochJd) * 86400000000).round(),
     isUtc: true,
   );
   ZonedTime toZonedTime(int offsetMinutes) =>

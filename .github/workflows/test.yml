@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
-      - run: dart format --output=none --set-exit-if-changed lib/src/*.dart lib/ephemeris_lite.dart test example tool/portability_check.dart tool/lunar_check.dart tool/calendar_portability_check.dart tool/visibility_portability_check.dart tool/sky_event_portability_check.dart tool/orbital_portability_check.dart tool/lunar_eclipse_portability_check.dart tool/remaining_portability_check.dart tool/api_surface_check.dart
+      - run: dart format --output=none --set-exit-if-changed lib/src/*.dart lib/ephemeris_lite.dart test example tool/portability_check.dart tool/lunar_check.dart tool/calendar_portability_check.dart tool/visibility_portability_check.dart tool/sky_event_portability_check.dart tool/orbital_portability_check.dart tool/lunar_eclipse_portability_check.dart tool/remaining_portability_check.dart tool/api_surface_check.dart tool/test_regression_portability_check.dart tool/hijri_portability_check.dart
       - run: dart analyze
       - run: dart test
       - run: dart compile js example/main.dart -o /tmp/ephemeris-demo.js
@@ -35,3 +35,8 @@ jobs:
       - run: node /tmp/remaining-portability.js
       - run: dart run example/eclipses.dart
       - run: dart run example/fixed_stars.dart test/fixtures/stars.tsc1
+      - run: dart compile js tool/test_regression_portability_check.dart -o /tmp/migrated-regressions.js
+      - run: node /tmp/migrated-regressions.js
+      - run: dart compile js tool/hijri_portability_check.dart -o /tmp/hijri-check.js
+      - run: node /tmp/hijri-check.js
+      - run: dart run example/hijri_calendar.dart

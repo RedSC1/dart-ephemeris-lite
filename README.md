@@ -33,7 +33,7 @@
 - 全球与地方日食、中心线接触地点、最大食地点、带宽与中心食持续时间（不含地图渲染）。
 - TSC1 恒星表解析与别名查找、自行／视差／径向速度、三种参考系视位置和完整链路速度。
 
-完整清单见 [移植状态](doc/port-status.md)，195 个 JS 公共导出的对应关系见 [API 对照表](doc/api-map.md)。
+完整清单见 [移植状态](doc/port-status.md)，200 个 JS 公共导出的对应关系见 [API 对照表](doc/api-map.md)。
 
 ## 开发阶段使用
 
@@ -250,3 +250,5 @@ print(star.toJson());
 
 恒星目录外置，底层无网络或文件系统依赖，不把测试用星表加入发布产物。Gaia ID 使用 BigInt，JSON 中转十进制字符串；缺测数值转 null。
 详见 [日食说明](doc/solar-eclipses.md) 与 [恒星说明](doc/fixed-stars.md)。
+
+算术回历正反转换、月长与闰年接口见 [算术回历说明](doc/hijri-calendar.md)。示例：`dart run example/hijri_calendar.dart`。

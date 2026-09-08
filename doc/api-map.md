@@ -1,6 +1,6 @@
 # JS → Dart 公共 API 对照
 
-以 JS 根入口的 195 个导出为范围。Dart 使用命名参数、枚举、JulianTime 和不可变结果；名称对应不表示可直接复制 JS 调用语法。源码内部求值器不属于公共移植范围。
+以 JS 根入口的 200 个导出为范围。Dart 使用命名参数、枚举、JulianTime 和不可变结果；名称对应不表示可直接复制 JS 调用语法。源码内部求值器不属于公共移植范围。
 
 | JS | Dart | 形式 |
 | --- | --- | --- |
@@ -199,3 +199,15 @@
 | `venusHeliocentricState` | `venusHeliocentricState` | Dart 函数／类型 |
 | `vondrak2011PrecessionMatrix` | `vondrak2011PrecessionMatrix` | Dart 函数／类型 |
 | `vondrak2011PrecessionMatrixState` | `vondrak2011PrecessionMatrixState` | Dart 函数／类型 |
+
+## Arithmetic Hijri additions
+
+| JS | Dart |
+| --- | --- |
+| `solarToHijri(date)` | `solarToHijri(CalendarDate)` → `HijriDate` |
+| `hijriToSolar(date)` | `hijriToSolar(HijriDate)` → `CalendarDate` |
+| `instantToHijri(time, offsetMinutes)` | `instantToHijri(JulianTime, offsetMinutes: ...)` |
+| `hijriMonthDays(year, month)` | `hijriMonthDays(year, month)` |
+| `isHijriLeapYear(year)` | `isHijriLeapYear(year)` |
+
+These five APIs were added jointly after the original 195-export port. See [rules and limits](hijri-calendar.md).
