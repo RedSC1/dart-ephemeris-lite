@@ -16,3 +16,5 @@ jobs:
       - run: node /tmp/ephemeris-demo.js
       - run: dart compile js tool/portability_check.dart -o /tmp/ephemeris-check.js
       - run: node /tmp/ephemeris-check.js
+      - run: dart compile js tool/historical_check.dart -o /tmp/historical-check.js
+      - run: node /tmp/historical-check.js

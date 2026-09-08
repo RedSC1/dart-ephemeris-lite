@@ -21,3 +21,5 @@ export 'src/event_mid.dart'
         lowElongationState;
 export 'src/calendar_events.dart';
 export 'src/solar_time.dart';
+export 'src/historical_calendar.dart';
+export 'src/qi_shuo.dart';

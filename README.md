@@ -18,8 +18,10 @@
 - 三种参考系的视位置、光行时、相对论光行差与太阳引力偏折，以及完整链路差分速度。
 - `solveSolarLongitude` / `solveLunarPhase` / `solveNewMoon` 的 fast、mid、accurate 三档；快速与精确档的展开角入口。
 - 平太阳时、真太阳时、均时差、恒星时及太阳钟反算。
+- 历史气朔归日表；固定时区或经线归日选项。
+- 按民用年列出的节气、候与月相，分别保留天文时刻、本地日期和历法指定日期。
 
-**尚未实现**：按年组织的气朔表、节气/朔的历史归日、农历、纪年、干支、可见性、其他天象事件、日月食和恒星接口。完整清单见 [移植进度](docs/port-status.md)。
+**尚未实现**：农历月序及转换、纪年、干支、可见性、其他天象事件、日月食和恒星接口。完整清单见 [移植进度](docs/port-status.md)。
 
 ## 开发阶段使用
 
@@ -55,7 +57,7 @@ void main() {
 - 行星与日心状态使用 AU、AU/day；地心月球使用 km、km/day。
 - **位置默认 accurate，气朔默认 mid**，不共享全局可变默认状态。
 - 位置三档主要控制级数前缀；气朔三档还改变模型及求解流程。`fast` 为固定阶段求解，`mid` 为专用事件模型，`accurate` 为完整视位置迭代。
-- 气朔结果为天文时刻；尚未移植的历史历法归日不能用这个结果直接冒充。
+- 气朔求解结果始终为天文时刻；年表中的 `assignedCivilDayNumber` 单独记录历法归日，历史模式不会修改求解结果。
 - 气朔 `toleranceSeconds` 是数值收敛阈值，不是绝对天文精度；fast 不接受此参数。
 - 均衡档目前保留 JS 默认十项月球黄纬预算；通用求解器尚未开放自定义黄纬预算。
 - 年份使用天文学编号（0 年为公元前 1 年）；民用日期在 1582-10-15 切换历法。
@@ -108,3 +110,21 @@ node /tmp/ephemeris-demo.js
 本项目采用 MPL-2.0，移植自 RedSC1 的 `js-ephemeris-lite`。
 上游数值模型和数据来源说明保留在 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 与 [中文版](THIRD_PARTY_NOTICES.zh-CN.md)。
 这两份文件保留 JS 上游完整声明，部分对应模块尚待移植；不表示本仓库已经实现其中全部功能。
+
+### 气朔年表
+
+```dart
+final table = getQiShuoYear(2026,
+  options: CalendarOptions(mode: CalendarMode.historical),
+  lunarPhaseAnglesDeg: [0, 90, 180, 270],
+);
+for (final event in table.events) {
+  print('${event.name}: ${event.localTime.toJson()}');
+  print(event.assignedDate.toJson());
+}
+```
+
+年表按固定时区的民用年筛选实际事件；历史指定日期可能和本地日期不同。
+历史资料只用于节气和朔的归日，不用于其他月相或节气之间的候。
+`includePentads: true` 可加入候；同时显示节气时不重复输出初候。
+年表不等于农历月序，尚不能用于农历日期转换或直接替换排盘底层。

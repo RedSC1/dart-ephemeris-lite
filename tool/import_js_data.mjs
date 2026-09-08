@@ -7,7 +7,7 @@ import { execFileSync } from 'node:child_process';
 const source = resolve(process.argv[2] ?? '../taiyin-lite');
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const load = name => import(pathToFileURL(resolve(source, 'src', name)));
-const files = ['planet-series.js', 'planet-prefix-counts.js', 'earth-prefix-counts.js', 'moon-series.js', 'moon-prefix-counts.js', 'time.js', 'coordinates.js', 'nutation-series.js', 'event-series.js', 'event-fast-values.js', 'event-rates.js', 'pluto-model.js', 'apparent.js', 'solar-core.js', 'solar-time.js', 'calendar-events.js', 'sky-math.js'];
+const files = ['planet-series.js', 'planet-prefix-counts.js', 'earth-prefix-counts.js', 'moon-series.js', 'moon-prefix-counts.js', 'time.js', 'coordinates.js', 'nutation-series.js', 'event-series.js', 'event-fast-values.js', 'event-rates.js', 'pluto-model.js', 'apparent.js', 'solar-core.js', 'solar-time.js', 'calendar-events.js', 'sky-math.js', 'chinese-calendar.js', 'qi-shuo.js', 'generated/historical-calendar-data.js'];
 const [p, prefixes, earth, moon, moonPrefixes] = await Promise.all(files.slice(0,5).map(load));
 const literal = value => {
   if (Array.isArray(value)) return `[${value.map(literal).join(',')}]`;
@@ -100,6 +100,23 @@ const n4=nutation.IAU2000B_TERMS.slice(0,4).map(r=>{
 });
 eventData += `const rateNutation = <List<double>>${literal(n4)};\n`;
 await writeFile(resolve(root,'lib/src/generated/event_data.dart'),eventData);
+
+const {HISTORICAL_CALENDAR_DATA: history} = await load('generated/historical-calendar-data.js');
+let historyData = `// GENERATED from historical-calendar-data.js; see upstream.json and notices.
+class HistoricalProfile {
+ final int firstPhaseIndex, eventCount;
+ final List<List<int>> exactSegments;
+ final List<int> tail, phaseTicks, residualMask, residualSigns, residualRank;
+ const HistoricalProfile(this.firstPhaseIndex, this.eventCount, this.exactSegments,
+   this.tail, this.phaseTicks, this.residualMask, this.residualSigns, this.residualRank);
+}
+`;
+for(const [key,name] of [['civilDayScale','historicalCivilDayScale'],['profileEndJd','historicalProfileEndJd'],['rankBlockEvents','historicalRankBlockEvents']]) historyData += `const ${name} = ${history[key]};\n`;
+for(const [key,name] of [['solarTerm','historicalSolarTerm'],['newMoon','historicalNewMoon']]) {
+ const p=history[key];
+ historyData += `const ${name} = HistoricalProfile(${p.firstPhaseIndex},${p.eventCount},${literal(p.exactSegments)},${literal(p.tail)},${literal(p.phaseTicks??[])},${literal(Array.from(p.residualMask))},${literal(Array.from(p.residualSigns))},${literal(Array.from(p.residualRank))});\n`;
+}
+await writeFile(resolve(root,'lib/src/generated/historical_calendar_data.dart'),historyData);
 
 const hashes = {};
 for (const file of files) hashes[file]=createHash('sha256').update(await readFile(resolve(source,'src',file))).digest('hex');

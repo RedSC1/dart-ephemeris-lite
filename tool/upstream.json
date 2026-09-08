@@ -18,6 +18,9 @@
     "solar-core.js": "02490c62e69cb8d13ea4b53f1af9e489a43e76a1f81aa83d757bd1c20091eefb",
     "solar-time.js": "1d8c46833b113d239756b99a6bd7f6f64bb13e404572462e0dce672a2a57a80c",
     "calendar-events.js": "a59e8ef041c95bb6430dc5a7fa55410b4313be997e943f9266eda49cd6003cfd",
-    "sky-math.js": "e01ea7dffb35bf40a559792e9a3a85cf6d3432cefec7e27e32136d3aa5809c79"
+    "sky-math.js": "e01ea7dffb35bf40a559792e9a3a85cf6d3432cefec7e27e32136d3aa5809c79",
+    "chinese-calendar.js": "16c836c59ea700912796f8516974fefbbb2ed9780133804fab8084fc07041659",
+    "qi-shuo.js": "f034c311b76aa43971276f88994a9a36ab72312986569e0aa2985c56aed622df",
+    "generated/historical-calendar-data.js": "58b0bc3524210b2c3f9c58a002f18b8ae4c45316a0b142f94f7b927323e5c7de"
   }
 }

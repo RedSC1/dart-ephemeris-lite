@@ -11,6 +11,8 @@ node tool/generate_fast_event_oracles.mjs ../taiyin-lite
 node tool/generate_apparent_oracles.mjs ../taiyin-lite
 node tool/generate_calendar_event_oracles.mjs ../taiyin-lite
 node tool/generate_solar_time_oracles.mjs ../taiyin-lite
+node tool/generate_historical_oracles.mjs ../taiyin-lite
+node tool/generate_qi_shuo_oracles.mjs ../taiyin-lite
 node tool/generate_portability_check.mjs
 dart format tool/portability_check.dart
 dart pub get
@@ -46,3 +48,10 @@ CI 运行静态分析、回归测试，并编译/执行纯 Dart 示例的 JavaSc
 - `tool/portability_check.dart` 不依赖 dart:io，可在 VM 和编译 JS 后运行 45 组根对拍。
 
 在第一轮 Dart 优化之前不作运行速度对齐承诺。尤其 mid 的部分 value-only 阶段暂时计算了额外导数；它没有替换成另一档模型。
+
+## 历史归日与年表
+
+- `tool/historical_check.dart` 对拍两个历史表全部 85,485 个事件序号的日期查询，Dart VM 和编译后的 JS 均要求整数日期完全相同。它是生成的测试数据，不进入库运行时。
+- 位图排名采用显式 32 位操作，避免 Dart VM 和 JavaScript 整数乘法/截断差异；历史日期表由导入器生成，不手写修正。
+- 年表对拍 10 组年份/选项、598 个事件，覆盖三档精度、历史改革年份、候、任意月相、负时区和经线归日。日期和分类必须精确一致，天文时刻的跨语言容差为 2 毫秒。
+- 上述验证证明与 JS 上游一致，不代表对历史历法史料或天文观测的独立验证。
