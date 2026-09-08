@@ -1,5 +1,6 @@
 ## 0.1.0-dev.1 (unpublished)
 
+- 移植轨道事件：月地近远点、月球交点、水金大距、相对赤经和赤经留，补 JS 对拍与跨运行时验证。
 - Start the pure Dart port from js-ephemeris-lite 1.0.0-rc.1.
 - Port astronomical time, Delta-T, fixed-offset civil time, and geometric
   Mercury-through-Neptune/Moon states with three position-accuracy tiers.

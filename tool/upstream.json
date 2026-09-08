@@ -28,6 +28,7 @@
     "event-search.js": "0dd90ed9d7e52703b0ec3295c1e009b159a6a3f53a4fbd91064d572478ffbbae",
     "body-visibility.js": "ed07b7fa97f2abd6464611037c6d9617fd8d5cce32275cd2213ecd06cdee1af6",
     "solar-visibility.js": "7e7dfaca7aacabf48559f1666fbaa5a641b7184d83bdab190db32d1adc1c8c95",
-    "phenomena.js": "79d97fd280391bf39f189690bc9fef2c0a3ada1144cff69997e88302ad0e059f"
+    "phenomena.js": "79d97fd280391bf39f189690bc9fef2c0a3ada1144cff69997e88302ad0e059f",
+    "orbital-events.js": "1fd3c349f8d6f39b3ed1f65898f16107719e667a25d186426b03fb8e9c69706f"
   }
 }

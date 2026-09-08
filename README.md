@@ -26,7 +26,9 @@
 - 天体相位角、月球照明与盈亏、视圆面；黄经穿越、相对黄经、留和顺逆行入宫查询。
 - 按民用年列出的节气、候与月相，分别保留天文时刻、本地日期和历法指定日期。
 
-**尚未实现**：大距、近远点、月球交点与赤经事件、日月食和恒星接口。完整清单见 [移植进度](docs/port-status.md)。
+- 月地近远点、月球交点、水金大距、相对赤经与赤经留。
+
+**尚未实现**：日月食和恒星接口。完整清单见 [移植进度](docs/port-status.md)。
 
 ## 开发阶段使用
 
@@ -194,3 +196,20 @@ final stations = searchStations(SkyBody.mercury, start.jdTT, end.jdTT);
 
 事件区间使用 TT，合冲按黄经差定义；数值容差与实际模型精度不同。
 参考系、逆行及圆面模型限制见 [天象事件说明](docs/sky-events.md)。
+
+### 近远点、大距与赤经事件
+
+```dart
+final startTT = JulianTime.fromUT1(julianDay(year: 2026, month: 1, day: 1)).jdTT;
+final endTT = JulianTime.fromUT1(julianDay(year: 2027, month: 1, day: 1)).jdTT;
+final apsides = searchLunarApsides(startTT, endTT);
+final elongations = searchGreatestElongations(
+  SkyBody.mercury, startTT, endTT,
+  apparent: const ApparentOptions(accuracy: Accuracy.mid),
+);
+final conjunctions = searchRelativeRightAscension(
+  SkyBody.moon, SkyBody.sun, 0, startTT, endTT,
+);
+```
+
+近远点使用全量几何状态；视赤经与大距接口使用视位置选项。月球交点可选择参考黄道，详见 [天象事件说明](docs/sky-events.md)。
