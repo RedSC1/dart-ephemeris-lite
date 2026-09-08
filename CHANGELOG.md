@@ -12,3 +12,5 @@
 - Chinese calendar, annual event tables and the remaining sky APIs are not yet ported.
 
 - 移植历史气朔归日及民用年气朔表；全量历史日期对拍和年表回归加入测试。农历月序与干支仍待移植。
+
+- 移植农历窗口、月序与特殊月名、农历正反转换和节气查询；记录并回归验证上游历史反查边界限制。

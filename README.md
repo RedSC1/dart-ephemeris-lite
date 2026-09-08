@@ -19,9 +19,10 @@
 - `solveSolarLongitude` / `solveLunarPhase` / `solveNewMoon` 的 fast、mid、accurate 三档；快速与精确档的展开角入口。
 - 平太阳时、真太阳时、均时差、恒星时及太阳钟反算。
 - 历史气朔归日表；固定时区或经线归日选项。
+- 农历月序、特殊历史月名、正反转换、前后节气与指定节气查询。
 - 按民用年列出的节气、候与月相，分别保留天文时刻、本地日期和历法指定日期。
 
-**尚未实现**：农历月序及转换、纪年、干支、可见性、其他天象事件、日月食和恒星接口。完整清单见 [移植进度](docs/port-status.md)。
+**尚未实现**：纪年、干支、可见性、其他天象事件、日月食和恒星接口。完整清单见 [移植进度](docs/port-status.md)。
 
 ## 开发阶段使用
 
@@ -127,4 +128,17 @@ for (final event in table.events) {
 年表按固定时区的民用年筛选实际事件；历史指定日期可能和本地日期不同。
 历史资料只用于节气和朔的归日，不用于其他月相或节气之间的候。
 `includePentads: true` 可加入候；同时显示节气时不重复输出初候。
-年表不等于农历月序，尚不能用于农历日期转换或直接替换排盘底层。
+年表不等于农历月序；农历日期转换使用 `solarToLunar` / `lunarToSolar`。
+
+### 农历转换
+
+```dart
+final lunar = solarToLunar(const CalendarDate(year: 2033, month: 12, day: 22));
+print(lunar.toJson()); // 2033 年闰十一月初一
+final solar = lunarToSolar(lunar);
+print(solar.toJson());
+```
+
+**历史边界限制**：秦汉和 762 年改历的重复年份/月标，沿用上游首个匹配反查时存在歧义。
+移植一致性不等于所有历史日期都能正确往返，详见 [历史历法说明](docs/calendar-history.md)。
+旧排盘包暂不切换底层。

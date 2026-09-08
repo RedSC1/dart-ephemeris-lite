@@ -13,6 +13,8 @@ node tool/generate_calendar_event_oracles.mjs ../taiyin-lite
 node tool/generate_solar_time_oracles.mjs ../taiyin-lite
 node tool/generate_historical_oracles.mjs ../taiyin-lite
 node tool/generate_qi_shuo_oracles.mjs ../taiyin-lite
+node tool/generate_lunar_oracles.mjs ../taiyin-lite
+dart format tool/lunar_check.dart
 node tool/generate_portability_check.mjs
 dart format tool/portability_check.dart
 dart pub get
@@ -55,3 +57,10 @@ CI 运行静态分析、回归测试，并编译/执行纯 Dart 示例的 JavaSc
 - 位图排名采用显式 32 位操作，避免 Dart VM 和 JavaScript 整数乘法/截断差异；历史日期表由导入器生成，不手写修正。
 - 年表对拍 10 组年份/选项、598 个事件，覆盖三档精度、历史改革年份、候、任意月相、负时区和经线归日。日期和分类必须精确一致，天文时刻的跨语言容差为 2 毫秒。
 - 上述验证证明与 JS 上游一致，不代表对历史历法史料或天文观测的独立验证。
+
+## 农历与节气查询
+
+- 38 个窗口覆盖 −6000～9999 年、历史改革、三档精度及经线归日，逐项核对节气、朔、月序、闰标、月长、名称和两种年标。
+- 846 组日期对拍包括月初和月末；33 组瞬时转换检查本地日界；72 个指定节气、24 个前后节气查询检查档位与精确边界语义。
+- `tool/lunar_check.dart` 抽取 102 组普通月和特殊历史月，编译成 JS 后仍执行正反转换对拍。
+- 已知历史反查歧义单独计数并保留预期行为，详见 calendar-history.md；没有放宽整数日期、月名或闰标断言。
