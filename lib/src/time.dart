@@ -330,3 +330,16 @@ void _validateOffset(int minutes) {
     );
   }
 }
+
+/// Normalize an explicit UT1 Julian day or JulianTime to JD(UT1).
+double asUt1JulianDay(Object value) {
+  final jd = value is JulianTime
+      ? value.jdUT1
+      : value is num
+      ? value.toDouble()
+      : double.nan;
+  if (!jd.isFinite) {
+    throw ArgumentError('Expected finite UT1 Julian day or JulianTime');
+  }
+  return jd;
+}

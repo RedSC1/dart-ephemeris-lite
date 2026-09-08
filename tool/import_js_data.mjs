@@ -7,7 +7,7 @@ import { execFileSync } from 'node:child_process';
 const source = resolve(process.argv[2] ?? '../taiyin-lite');
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const load = name => import(pathToFileURL(resolve(source, 'src', name)));
-const files = ['planet-series.js', 'planet-prefix-counts.js', 'earth-prefix-counts.js', 'moon-series.js', 'moon-prefix-counts.js', 'time.js', 'coordinates.js', 'nutation-series.js', 'event-series.js', 'event-fast-values.js', 'event-rates.js', 'pluto-model.js', 'apparent.js', 'solar-core.js', 'solar-time.js', 'calendar-events.js', 'sky-math.js', 'chinese-calendar.js', 'qi-shuo.js', 'generated/historical-calendar-data.js', 'ganzhi.js', 'chinese-era.js', 'generated/chinese-era-data.js', 'event-search.js', 'body-visibility.js', 'solar-visibility.js', 'phenomena.js', 'orbital-events.js', 'eclipse-lunar.js', 'eclipse-geometry.js', 'eclipse-search.js'];
+const files = ['planet-series.js', 'planet-prefix-counts.js', 'earth-prefix-counts.js', 'moon-series.js', 'moon-prefix-counts.js', 'time.js', 'coordinates.js', 'nutation-series.js', 'event-series.js', 'event-fast-values.js', 'event-rates.js', 'pluto-model.js', 'apparent.js', 'solar-core.js', 'solar-time.js', 'calendar-events.js', 'sky-math.js', 'chinese-calendar.js', 'qi-shuo.js', 'generated/historical-calendar-data.js', 'ganzhi.js', 'chinese-era.js', 'generated/chinese-era-data.js', 'event-search.js', 'body-visibility.js', 'solar-visibility.js', 'phenomena.js', 'orbital-events.js', 'eclipse-lunar.js', 'eclipse-geometry.js', 'eclipse-search.js', 'eclipse-solar.js', 'eclipse-cone.js', 'fixed-stars.js', 'index.js', 'accuracy.js'];
 const [p, prefixes, earth, moon, moonPrefixes] = await Promise.all(files.slice(0,5).map(load));
 const literal = value => {
   if (Array.isArray(value)) return `[${value.map(literal).join(',')}]`;
@@ -146,3 +146,5 @@ await writeFile(resolve(root,'tool/upstream.json'),JSON.stringify({
  files:hashes,
 },null,2)+'\n');
 console.log('Imported eight planetary series, Moon series, prefix counts, and Delta-T tables.');
+
+await writeFile(resolve(root,'doc/upstream.json'),await readFile(resolve(root,'tool/upstream.json')));

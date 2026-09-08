@@ -437,7 +437,7 @@ Iterable<LunarMonth> _lunarYearMonths(int year, CalendarOptions o) sync* {
 }
 
 /// Mirrors the upstream first-match lookup. Reform-era repeated year/month
-/// labels can be ambiguous; see docs/calendar-history.md before historical use.
+/// labels can be ambiguous; see doc/calendar-history.md before historical use.
 CalendarDate lunarToSolar(LunarDate date, {CalendarOptions? options}) {
   if (date.month < 1 || date.month > 13 || date.day < 1 || date.day > 30) {
     throw RangeError('invalid lunar date');

@@ -3,8 +3,8 @@
 `js-ephemeris-lite` 的纯 Dart 移植，运行时不依赖 `sxwnl_spa_dart`、JavaScript 引擎或 FFI。
 算法、系数和数值语义以 [JS 原库](https://github.com/RedSC1/js-ephemeris-lite) 为基准；API 使用 Dart 的命名参数、枚举和不可变结果。
 
-**开发中，尚未完整移植，也未发布到 pub.dev。不能直接替换旧排盘底层。**
-当前版本 `0.1.0-dev.1`，上游基准 `1.0.0-rc.1`；具体源码提交和数据哈希见 [tool/upstream.json](tool/upstream.json)。
+**JS 1.0.0-rc.1 主包的公共功能已完成 Dart 移植。仍为私有开发版，未发布到 pub.dev；旧排盘包接入需另做迁移验证。**
+当前版本 `0.1.0-dev.1`，上游基准 `1.0.0-rc.1`；具体源码提交和数据哈希见 [doc/upstream.json](doc/upstream.json)。
 
 ## 已实现
 
@@ -30,7 +30,10 @@
 
 - 全球月食搜索、接触时刻和地方可见性（含月出／月落截断）。
 
-**尚未实现**：日食和恒星接口。完整清单见 [移植进度](docs/port-status.md)。
+- 全球与地方日食、中心线接触地点、最大食地点、带宽与中心食持续时间（不含地图渲染）。
+- TSC1 恒星表解析与别名查找、自行／视差／径向速度、三种参考系视位置和完整链路速度。
+
+完整清单见 [移植状态](doc/port-status.md)，195 个 JS 公共导出的对应关系见 [API 对照表](doc/api-map.md)。
 
 ## 开发阶段使用
 
@@ -68,7 +71,7 @@ void main() {
 - 位置三档主要控制级数前缀；气朔三档还改变模型及求解流程。`fast` 为固定阶段求解，`mid` 为专用事件模型，`accurate` 为完整视位置迭代。
 - 气朔求解结果始终为天文时刻；年表中的 `assignedCivilDayNumber` 单独记录历法归日，历史模式不会修改求解结果。
 - 气朔 `toleranceSeconds` 是数值收敛阈值，不是绝对天文精度；fast 不接受此参数。
-- 均衡档目前保留 JS 默认十项月球黄纬预算；通用求解器尚未开放自定义黄纬预算。
+- 均衡档默认十项月球黄纬预算，可设 `moonLatitudeTerms: 0..277` 或 `'full'`；快速档固定十项，精确档固定全量。
 - 年份使用天文学编号（0 年为公元前 1 年）；民用日期在 1582-10-15 切换历法。
 - `DateTime` 按时间戳作为瞬间导入，不按其年月日重新解释成历史历法。
 - 与 JS lite 相同，UTC 标签近似视为 UT1；这不是完整的 UTC/TAI 闰秒模型。
@@ -107,7 +110,7 @@ node /tmp/ephemeris-demo.js
 另有 45 组气朔根在 Dart 编译到 JS 后实际计算验证。
 这些测试证明**移植与 JS 的一致性**，不是新的独立 DE441 精度评估。
 
-系数和对拍数据的重建说明见 [开发文档](docs/development.md)。
+系数和对拍数据的重建说明见 [开发文档](doc/development.md)。
 
 ## 后续排盘包
 
@@ -118,7 +121,7 @@ node /tmp/ephemeris-demo.js
 
 本项目采用 MPL-2.0，移植自 RedSC1 的 `js-ephemeris-lite`。
 上游数值模型和数据来源说明保留在 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 与 [中文版](THIRD_PARTY_NOTICES.zh-CN.md)。
-这两份文件保留 JS 上游完整声明，部分对应模块尚待移植；不表示本仓库已经实现其中全部功能。
+这两份文件保留 JS 上游来源说明，并注明 Dart 移植范围。黄历兄弟包不在此包中；恒星表测试夹具单独保留数据来源声明。
 
 ### 气朔年表
 
@@ -148,7 +151,7 @@ print(solar.toJson());
 ```
 
 **历史边界限制**：秦汉和 762 年改历的重复年份/月标，沿用上游首个匹配反查时存在歧义。
-移植一致性不等于所有历史日期都能正确往返，详见 [历史历法说明](docs/calendar-history.md)。
+移植一致性不等于所有历史日期都能正确往返，详见 [历史历法说明](doc/calendar-history.md)。
 旧排盘包暂不切换底层。
 
 ### 干支与纪年
@@ -185,7 +188,7 @@ print(moon.upperTransits);
 ```
 
 通用接口的起点是 UT1 儒略日，返回该起点后一天内的全部事件；极昼／极夜不会填入虚构的升落时刻。
-模型差异、时间窗口和地形等限制见 [可见性说明](docs/visibility.md)。
+模型差异、时间窗口和地形等限制见 [可见性说明](doc/visibility.md)。
 
 ### 月球照明与行星留
 
@@ -197,7 +200,7 @@ final stations = searchStations(SkyBody.mercury, start.jdTT, end.jdTT);
 ```
 
 事件区间使用 TT，合冲按黄经差定义；数值容差与实际模型精度不同。
-参考系、逆行及圆面模型限制见 [天象事件说明](docs/sky-events.md)。
+参考系、逆行及圆面模型限制见 [天象事件说明](doc/sky-events.md)。
 
 ### 近远点、大距与赤经事件
 
@@ -214,7 +217,7 @@ final conjunctions = searchRelativeRightAscension(
 );
 ```
 
-近远点使用全量几何状态；视赤经与大距接口使用视位置选项。月球交点可选择参考黄道，详见 [天象事件说明](docs/sky-events.md)。
+近远点使用全量几何状态；视赤经与大距接口使用视位置选项。月球交点可选择参考黄道，详见 [天象事件说明](doc/sky-events.md)。
 
 ### 月食
 
@@ -227,4 +230,23 @@ final local = getLocalLunarEclipse(eclipses.first.maximum,
 print(local?.toJson());
 ```
 
-日月食入口使用 `JulianTime`，避免裸数字的 TT/UT1 歧义；没有额外精度档位。范围、标准大气与圆面限制见 [月食说明](docs/lunar-eclipses.md)。
+日月食入口使用 `JulianTime`，避免裸数字的 TT/UT1 歧义；没有额外精度档位。范围、标准大气与圆面限制见 [月食说明](doc/lunar-eclipses.md)。
+
+### 日食与恒星
+
+```dart
+final day = ZonedTime(year: 2024, month: 4, day: 8, offsetMinutes: 0).toJulianTime();
+final eclipse = getSolarEclipseDetails(day);
+final local = getLocalSolarEclipse(day,
+  const Observer(longitudeDeg: -96.8, latitudeDeg: 32.8));
+print(eclipse?.toJson());
+print(local?.toJson());
+
+// catalogBytes 为读取 TSC1 文件得到的 Uint8List，支持完整表和 lite 表。
+final catalog = parseTsc1Catalog(catalogBytes);
+final star = fixedStarState(catalog, '角宿一', day.jdTT);
+print(star.toJson());
+```
+
+恒星目录外置，底层无网络或文件系统依赖，不把测试用星表加入发布产物。Gaia ID 使用 BigInt，JSON 中转十进制字符串；缺测数值转 null。
+详见 [日食说明](doc/solar-eclipses.md) 与 [恒星说明](doc/fixed-stars.md)。

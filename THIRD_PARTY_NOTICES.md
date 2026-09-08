@@ -1,5 +1,10 @@
 # Third-party notices and scientific references
 
+## Dart port scope
+
+This repository is `ephemeris_lite`, a pure Dart port of `js-ephemeris-lite` under MPL-2.0. The source references below retain upstream paths and terminology; runtime evaluators here are Dart. The sibling huangli/cnlunar discussion is retained as upstream context, not a claim that this package implements those rules. External TSC1 catalog test data retains its own notice in `test/fixtures/STARS_THIRD_PARTY_NOTICES.md` and is excluded from the runtime package.
+
+
 `js-ephemeris-lite` is distributed under the Mozilla Public License 2.0.
 That license applies to the original source-code implementation in this
 repository. It does not replace or supersede rights that may exist in the

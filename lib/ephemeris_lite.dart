@@ -1,5 +1,5 @@
 /// Pure Dart numerical port of js-ephemeris-lite.
-/// See docs/port-status.md for the implemented subset.
+/// See doc/api-map.md for Dart equivalents of the JS public API.
 library;
 
 export 'src/accuracy.dart';
@@ -34,3 +34,6 @@ export 'src/phenomena.dart';
 export 'src/disc_radii.dart';
 export 'src/orbital_events.dart';
 export 'src/lunar_eclipses.dart';
+export 'src/fixed_stars.dart';
+export 'src/solar_eclipses.dart';
+export 'src/api_metadata.dart';

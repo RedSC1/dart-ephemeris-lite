@@ -25,14 +25,16 @@ JulianTime solveSolarLongitude(
   toleranceSeconds,
 );
 
-/// Nearest astronomical elongation event. Mid currently uses ten ranked
-/// lunar latitude terms; accurate uses the complete apparent-position chain.
+/// Nearest astronomical elongation event. Mid defaults to ten latitude terms.
+/// moonLatitudeTerms accepts an integer (mid only) or 'full'; null uses the
+/// tier default. Accurate fixes full and fast fixes ten terms.
 JulianTime solveLunarPhase(
   double targetElongation,
   double nearJdTT, {
   Accuracy accuracy = Accuracy.mid,
   EventSolver solver = EventSolver.auto,
   double? toleranceSeconds,
+  Object? moonLatitudeTerms,
 }) => _solve(
   targetElongation,
   nearJdTT,
@@ -40,18 +42,21 @@ JulianTime solveLunarPhase(
   accuracy,
   solver,
   toleranceSeconds,
+  moonLatitudeTerms,
 );
 JulianTime solveNewMoon(
   double nearJdTT, {
   Accuracy accuracy = Accuracy.mid,
   EventSolver solver = EventSolver.auto,
   double? toleranceSeconds,
+  Object? moonLatitudeTerms,
 }) => solveLunarPhase(
   0,
   nearJdTT,
   accuracy: accuracy,
   solver: solver,
   toleranceSeconds: toleranceSeconds,
+  moonLatitudeTerms: moonLatitudeTerms,
 );
 JulianTime _solve(
   double targetAngle,
@@ -59,10 +64,26 @@ JulianTime _solve(
   bool lunar,
   Accuracy accuracy,
   EventSolver solver,
-  double? tolerance,
-) {
+  double? tolerance, [
+  Object? moonLatitudeTerms,
+]) {
   if (!targetAngle.isFinite || !near.isFinite) {
     throw ArgumentError('Event angle and date must be finite');
+  }
+  final budget = moonLatitudeTerms == null
+      ? (accuracy == Accuracy.accurate ? null : 10)
+      : moonLatitudeTerms == 'full'
+      ? null
+      : moonLatitudeTerms is int &&
+            moonLatitudeTerms >= 0 &&
+            moonLatitudeTerms <= 277
+      ? moonLatitudeTerms
+      : throw RangeError("moonLatitudeTerms must be 0..277 or 'full'");
+  if (lunar &&
+      accuracy != Accuracy.mid &&
+      moonLatitudeTerms != null &&
+      (accuracy == Accuracy.fast ? budget != 10 : budget != null)) {
+    throw RangeError('Custom latitude budgets require mid accuracy');
   }
   if (accuracy == Accuracy.mid) {
     return solveMidEvent(
@@ -71,6 +92,7 @@ JulianTime _solve(
       lunar,
       toleranceSeconds: tolerance ?? 0.01,
       safeguarded: solver == EventSolver.safeguarded,
+      moonLatitudeTerms: budget,
     );
   }
   if ((near - j2000).abs() > 2922000) {

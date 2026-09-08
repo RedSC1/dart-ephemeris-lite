@@ -1,5 +1,10 @@
 # 第三方来源与许可声明
 
+## Dart 移植范围
+
+本仓库为 `ephemeris_lite`，按 MPL-2.0 移植 `js-ephemeris-lite`。下文保留上游文件路径与术语；本仓库的运行时求值器为 Dart。黄历／cnlunar 段落仅保留上游背景，不表示本包包含黄历规则。外置 TSC1 测试表的独立声明位于 `test/fixtures/STARS_THIRD_PARTY_NOTICES.md`，测试数据不进入运行库发布产物。
+
+
 `js-ephemeris-lite` 的项目原创源代码采用 Mozilla Public License 2.0
 （MPL-2.0）发布。该许可证不取代下列科学模型、系数表、参考星历和历史资料
 各自可能适用的权利与许可条件。

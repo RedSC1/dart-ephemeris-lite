@@ -1,7 +1,8 @@
 name: ephemeris_lite
-description: Pure Dart port of js-ephemeris-lite. Experimental astronomical time, positions, solar/lunar event roots and solar-time implementation.
+description: Pure Dart ephemeris and Chinese calendar with positions, sky events, solar/lunar eclipses, TSC1 stars, Ganzhi and solar time.
 version: 0.1.0-dev.1
 publish_to: none
+repository: https://github.com/RedSC1/ephemeris_lite
 environment:
   sdk: ^3.10.0
 dev_dependencies:

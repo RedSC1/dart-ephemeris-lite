@@ -29,4 +29,4 @@
 - `searchRelativeRightAscension`：指定赤经差（0 为赤经合，180 为赤经冲），不同于黄经合冲或最小角距。
 - `searchRightAscensionStations`：视赤经速度为零，方向取事件后的运动方向；也支持视位置选项。
 
-这些接口均接受 `[startTT, endTT)` 半开 TT 区间，返回不可变事件序列，包含 `JulianTime` 与 `toJson()`。搜索步长必须足以分辨事件；标量求根器不保证发现步长内的所有多重根或相切根。月食见 [月食说明](lunar-eclipses.md)，日食尚未移植。
+这些接口均接受 `[startTT, endTT)` 半开 TT 区间，返回不可变事件序列，包含 `JulianTime` 与 `toJson()`。搜索步长必须足以分辨事件；标量求根器不保证发现步长内的所有多重根或相切根。月食见 [月食说明](lunar-eclipses.md)，日食见 [日食说明](solar-eclipses.md)。

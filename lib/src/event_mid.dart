@@ -227,7 +227,13 @@ double _safeguarded(
 
 // Same stages and acceptance conditions as JS. Initially reuse analytic state
 // evaluators for values; removing unused derivative work is a later optimization.
-double? _simple(double target, double near, double tolerance, bool lunar) {
+double? _simple(
+  double target,
+  double near,
+  double tolerance,
+  bool lunar,
+  int? latitudeTerms,
+) {
   bool inRange(double jd) => jd.isFinite && (jd - j2000).abs() <= 2922000;
   if (!inRange(near) ||
       tolerance < 2 * 2.220446049250313e-16 * near.abs() * 86400) {
@@ -249,7 +255,7 @@ double? _simple(double target, double near, double tolerance, bool lunar) {
     if (!inRange(jd)) return null;
     final middle = _phaseState(
       jd,
-      latitudeTerms: 10,
+      latitudeTerms: latitudeTerms,
       longitudeTerms: 60,
       earthL: 60,
       earthB: 0,
@@ -262,7 +268,7 @@ double? _simple(double target, double near, double tolerance, bool lunar) {
   for (var i = 0; i < 5; i++) {
     if (!inRange(jd) || (jd - estimate).abs() > width) return null;
     final value = lunar
-        ? _phaseState(jd, latitudeTerms: 10, earthR: 30).value
+        ? _phaseState(jd, latitudeTerms: latitudeTerms, earthR: 30).value
         : solarLongitudeState(jd).value;
     final velocity = phaseVelocity ?? rate(jd),
         step = _wrap(value - target) / velocity;
@@ -281,6 +287,7 @@ JulianTime solveMidEvent(
   bool lunar, {
   double toleranceSeconds = 0.01,
   bool safeguarded = false,
+  int? moonLatitudeTerms = 10,
 }) {
   if (!targetAngle.isFinite || !near.isFinite) {
     throw ArgumentError('Event angle and date must be finite');
@@ -292,7 +299,9 @@ JulianTime solveMidEvent(
       tolerance = !lunar && !safeguarded
           ? math.min(toleranceSeconds, 0.001)
           : toleranceSeconds;
-  final simple = safeguarded ? null : _simple(target, near, tolerance, lunar);
+  final simple = safeguarded
+      ? null
+      : _simple(target, near, tolerance, lunar, moonLatitudeTerms);
   if (simple != null) return JulianTime.fromTT(simple);
   final estimate = _estimate(
     lunar ? lowElongationState : lowSolarLongitudeState,
@@ -301,10 +310,10 @@ JulianTime solveMidEvent(
     lunar ? 3 : 2,
   );
   ScalarState evaluate(double jd) => lunar
-      ? elongationState(jd, moonLatitudeTerms: 10)
+      ? elongationState(jd, moonLatitudeTerms: moonLatitudeTerms)
       : solarLongitudeState(jd);
   ScalarState fast(double jd) => lunar
-      ? _phaseState(jd, latitudeTerms: 10, earthR: 30)
+      ? _phaseState(jd, latitudeTerms: moonLatitudeTerms, earthR: 30)
       : solarLongitudeState(jd);
   final root = safeguarded
       ? null

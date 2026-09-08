@@ -268,12 +268,17 @@ CartesianState _moon(
   Accuracy accuracy, {
   bool direction = false,
   int? latitudeTerms,
+  bool fullLatitude = false,
   int? longitudeTerms,
 }) {
   _finite(jd);
   final evaluation = _MoonEvaluation(jd);
   final l = evaluation.coordinate(0, accuracy, terms: longitudeTerms),
-      b = evaluation.coordinate(1, accuracy, terms: latitudeTerms);
+      b = evaluation.coordinate(
+        1,
+        fullLatitude ? Accuracy.accurate : accuracy,
+        terms: latitudeTerms,
+      );
   final r = direction
       ? (value: 1.0, rate: 0.0)
       : evaluation.coordinate(2, accuracy);
@@ -324,7 +329,22 @@ CartesianState moonState(
 CartesianState moonDirectionState(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
-}) => _moon(jdTT, accuracy, direction: true);
+  Object? latitudeTerms,
+}) {
+  if (latitudeTerms != null &&
+      latitudeTerms != 'full' &&
+      (latitudeTerms is! int || latitudeTerms < 0 || latitudeTerms > 277)) {
+    throw RangeError("latitudeTerms must be 0..277 or 'full'");
+  }
+  return _moon(
+    jdTT,
+    accuracy,
+    direction: true,
+    latitudeTerms: latitudeTerms is int ? latitudeTerms : null,
+    fullLatitude: latitudeTerms == 'full',
+  );
+}
+
 List<double> moonPosition(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
@@ -471,3 +491,110 @@ CartesianState moonDirectionWithTerms(
   _finite(jd);
   return _MoonEvaluation(jd).coordinate(0, Accuracy.accurate, terms: terms);
 }
+
+// Explicit geometric aliases preserve the upstream units and accuracy option.
+CartesianState earthHeliocentricState(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => earthState(jdTT, accuracy: accuracy);
+CartesianState moonGeocentricState(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => moonState(jdTT, accuracy: accuracy);
+CartesianState embHeliocentricState(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => embState(jdTT, accuracy: accuracy);
+List<double> embPosition(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => embState(jdTT, accuracy: accuracy).position;
+List<double> earthHeliocentricPosition(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => earthState(jdTT, accuracy: accuracy).position;
+List<double> moonGeocentricPosition(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => moonState(jdTT, accuracy: accuracy).position;
+List<double> moonHeliocentricPosition(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => moonHeliocentricState(jdTT, accuracy: accuracy).position;
+List<double> embHeliocentricPosition(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => embState(jdTT, accuracy: accuracy).position;
+List<double> sunGeocentricPosition(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => sunGeocentricState(jdTT, accuracy: accuracy).position;
+CartesianState mercuryHeliocentricState(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => planetHeliocentricState(Planet.mercury, jdTT, accuracy: accuracy);
+List<double> mercuryHeliocentricPosition(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => mercuryHeliocentricState(jdTT, accuracy: accuracy).position;
+CartesianState venusHeliocentricState(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => planetHeliocentricState(Planet.venus, jdTT, accuracy: accuracy);
+List<double> venusHeliocentricPosition(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => venusHeliocentricState(jdTT, accuracy: accuracy).position;
+CartesianState marsHeliocentricState(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => planetHeliocentricState(Planet.mars, jdTT, accuracy: accuracy);
+List<double> marsHeliocentricPosition(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => marsHeliocentricState(jdTT, accuracy: accuracy).position;
+CartesianState jupiterHeliocentricState(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => planetHeliocentricState(Planet.jupiter, jdTT, accuracy: accuracy);
+List<double> jupiterHeliocentricPosition(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => jupiterHeliocentricState(jdTT, accuracy: accuracy).position;
+CartesianState saturnHeliocentricState(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => planetHeliocentricState(Planet.saturn, jdTT, accuracy: accuracy);
+List<double> saturnHeliocentricPosition(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => saturnHeliocentricState(jdTT, accuracy: accuracy).position;
+CartesianState uranusHeliocentricState(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => planetHeliocentricState(Planet.uranus, jdTT, accuracy: accuracy);
+List<double> uranusHeliocentricPosition(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => uranusHeliocentricState(jdTT, accuracy: accuracy).position;
+CartesianState neptuneHeliocentricState(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => planetHeliocentricState(Planet.neptune, jdTT, accuracy: accuracy);
+List<double> neptuneHeliocentricPosition(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => neptuneHeliocentricState(jdTT, accuracy: accuracy).position;
+CartesianState plutoHeliocentricState(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => planetHeliocentricState(Planet.pluto, jdTT, accuracy: accuracy);
+List<double> plutoHeliocentricPosition(
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => plutoHeliocentricState(jdTT, accuracy: accuracy).position;
+List<double> planetGeocentricPosition(
+  Planet planet,
+  double jdTT, {
+  Accuracy accuracy = Accuracy.accurate,
+}) => planetGeocentricState(planet, jdTT, accuracy: accuracy).position;
