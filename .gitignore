@@ -5,3 +5,17 @@ coverage/
 pubspec.lock
 *.tgz
 .DS_Store
+
+# Local plans, scratch work and design experiments (not package documentation).
+plan/
+plans/
+.plans/
+design/
+PLAN.md
+plan.md
+*-plan.md
+*_plan.md
+*.plan.md
+/scratch/
+/experiments/
+/tmp/
