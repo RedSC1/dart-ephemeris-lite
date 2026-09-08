@@ -140,8 +140,31 @@ List<double> _deflect(
   return scale(unit(add(p, scale(cross(p, cross(e, q)), weight))), distance);
 }
 
+/// Intermediate geometric and apparent vectors, in AU. Astrometric is the
+/// geocentric light-time vector before aberration and deflection.
+class ApparentGeometry {
+  final List<double> earth, target, astrometric, ecliptic, equatorial;
+  final double lightTimeDays;
+  final NutationState nutation;
+  final SkyFrame frame;
+  ApparentGeometry({
+    required List<double> earth,
+    required List<double> target,
+    required List<double> astrometric,
+    required List<double> ecliptic,
+    required List<double> equatorial,
+    required this.lightTimeDays,
+    required this.nutation,
+    required this.frame,
+  }) : earth = List.unmodifiable(earth),
+       target = List.unmodifiable(target),
+       astrometric = List.unmodifiable(astrometric),
+       ecliptic = List.unmodifiable(ecliptic),
+       equatorial = List.unmodifiable(equatorial);
+}
+
 /// Geocentric apparent position. Input TT JD, angles degrees, distances AU.
-ApparentPosition apparentBodyPosition(
+ApparentGeometry apparentGeometry(
   SkyBody body,
   double jdTT, {
   ApparentOptions options = const ApparentOptions(),
@@ -172,6 +195,7 @@ ApparentPosition apparentBodyPosition(
     }
     if (!converged) throw StateError('Light-time iteration did not converge');
   }
+  final astrometric = position;
   if (body != SkyBody.sun && options.solarDeflection) {
     position = _deflect(position, earth.position, target.position);
   }
@@ -188,21 +212,37 @@ ApparentPosition apparentBodyPosition(
       obliquity = nutation.trueObliquity;
     }
   }
-  final eq = rotateX(ecliptic, obliquity),
-      es = spherical(ecliptic),
-      qs = spherical(eq);
+  return ApparentGeometry(
+    earth: earth.position,
+    target: target.position,
+    astrometric: astrometric,
+    ecliptic: ecliptic,
+    equatorial: rotateX(ecliptic, obliquity),
+    lightTimeDays: lightTime,
+    nutation: nutation,
+    frame: options.frame,
+  );
+}
+
+ApparentPosition apparentBodyPosition(
+  SkyBody body,
+  double jdTT, {
+  ApparentOptions options = const ApparentOptions(),
+}) {
+  final g = apparentGeometry(body, jdTT, options: options);
+  final es = spherical(g.ecliptic), qs = spherical(g.equatorial);
   return ApparentPosition(
     body: body,
     jdTT: jdTT,
-    frame: options.frame,
+    frame: g.frame,
     longitudeDeg: es.longitudeDeg,
     latitudeDeg: es.latitudeDeg,
     distanceAu: es.distanceAu,
     rightAscensionDeg: qs.longitudeDeg,
     declinationDeg: qs.latitudeDeg,
-    lightTimeDays: lightTime,
-    eclipticPositionAu: ecliptic,
-    equatorialPositionAu: eq,
+    lightTimeDays: g.lightTimeDays,
+    eclipticPositionAu: g.ecliptic,
+    equatorialPositionAu: g.equatorial,
   );
 }
 

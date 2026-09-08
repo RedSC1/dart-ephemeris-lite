@@ -23,9 +23,10 @@
 - 干支编码、纳音五行、四柱基础计算、三种子时规则和历史节气边界开关。
 - 中文纪年候选查询，保留来源、有效区间及日／年级精度。
 - 太阳快速升落、通用天体地平坐标与全天升落／上下中天，支持极区状态及折射选项。
+- 天体相位角、月球照明与盈亏、视圆面；黄经穿越、相对黄经、留和顺逆行入宫查询。
 - 按民用年列出的节气、候与月相，分别保留天文时刻、本地日期和历法指定日期。
 
-**尚未实现**：光照相位／物理现象、其他天象事件、日月食和恒星接口。完整清单见 [移植进度](docs/port-status.md)。
+**尚未实现**：大距、近远点、月球交点与赤经事件、日月食和恒星接口。完整清单见 [移植进度](docs/port-status.md)。
 
 ## 开发阶段使用
 
@@ -181,3 +182,15 @@ print(moon.upperTransits);
 
 通用接口的起点是 UT1 儒略日，返回该起点后一天内的全部事件；极昼／极夜不会填入虚构的升落时刻。
 模型差异、时间窗口和地形等限制见 [可见性说明](docs/visibility.md)。
+
+### 月球照明与行星留
+
+```dart
+final start = JulianTime.fromUT1(julianDay(year: 2026, month: 1, day: 1));
+final end = JulianTime.fromUT1(julianDay(year: 2027, month: 1, day: 1));
+print(moonIllumination(start.jdTT).toJson());
+final stations = searchStations(SkyBody.mercury, start.jdTT, end.jdTT);
+```
+
+事件区间使用 TT，合冲按黄经差定义；数值容差与实际模型精度不同。
+参考系、逆行及圆面模型限制见 [天象事件说明](docs/sky-events.md)。

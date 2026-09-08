@@ -2,25 +2,13 @@
 import 'dart:math' as math;
 import 'apparent.dart';
 import 'ephemeris.dart';
+import 'disc_radii.dart';
 import 'event_search.dart';
 import 'observer.dart';
 import 'sky_math.dart';
 import 'solar_time.dart';
 import 'solar_visibility.dart';
 import 'time.dart';
-
-const _radii = {
-  SkyBody.sun: 696000.0,
-  SkyBody.moon: 1737.5,
-  SkyBody.mercury: 2439.4,
-  SkyBody.venus: 6051.8,
-  SkyBody.mars: 3389.5,
-  SkyBody.jupiter: 69911.0,
-  SkyBody.saturn: 58232.0,
-  SkyBody.uranus: 25362.0,
-  SkyBody.neptune: 24622.0,
-  SkyBody.pluto: 1188.3,
-};
 
 class BodyVisibilityOptions {
   final DiscLimb limb;
@@ -195,7 +183,10 @@ BodyRiseSetResult bodyRiseSetForDay(
   double altitude(double t) {
     final p = at(t),
         radius =
-            math.asin((_radii[body]! / auKm / p.distanceAu).clamp(-1, 1)) * rad;
+            math.asin(
+              (bodyDiscRadiusKm[body]! / auKm / p.distanceAu).clamp(-1, 1),
+            ) *
+            rad;
     final geometric = p.geometricAltitudeDeg + sign * radius;
     final refraction = options.refraction
         ? hybridAtmosphericRefraction(

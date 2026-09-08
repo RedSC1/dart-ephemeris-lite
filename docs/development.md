@@ -18,6 +18,9 @@ node tool/generate_ganzhi_oracles.mjs ../taiyin-lite
 node tool/generate_era_oracles.mjs ../taiyin-lite
 node tool/generate_visibility_oracles.mjs ../taiyin-lite
 node tool/generate_visibility_portability.mjs
+node tool/generate_phenomena_event_oracles.mjs ../taiyin-lite
+node tool/generate_sky_event_portability.mjs
+dart format tool/sky_event_portability_check.dart
 dart format tool/visibility_portability_check.dart
 node tool/generate_calendar_portability.mjs
 dart format tool/calendar_portability_check.dart
@@ -88,3 +91,11 @@ CI 运行静态分析、回归测试，并编译/执行纯 Dart 示例的 JavaSc
 - 另测半开区间、连续零采样拒绝、周期反向点过滤、折射截断伪根，以及同一十分钟步长内的擦边双根。
 - 编译成 JS 后对拍 10 个通用全天窗口与 9 个太阳窗口，其中包含极区、擦边和长年代样本。
 - 太阳内部公共求值被复用但不从包入口导出，太阳钟回归仍随全套测试运行。两条太阳链按上游保持差异，不宣称与 C++ 独立精度相同。
+
+## 光照相位与行星黄经事件
+
+- 474 个天体物理量与 45 个月球盈亏结果对拍，覆盖全部天体、三种参考系、三档精度，以及光行时／光行差／偏折组合。
+- 20 个事件搜索区间，共 106 个结果；包含水星三档留与入宫、2025 年真实逆行跨宫、金星／火星／木星留、月日相对黄经和空区间。
+- 事件时间跨语言阈值为 0.1 秒，方向、分界和事件数要求一致；留后方向另由后一时刻的速度核验。照明比例容差 1e-12，圆面／相位角量容差 1e-7（输出单位）。
+- 编译 JS 后再测 7 个搜索区间和 9 个月相样本。所有视位置、气朔、可见性旧回归继续运行，避免共享几何重构改变其他接口。
+- 此处仍是对 JS 的移植验证，不是新增的 DE441 精度评价或观测对照。

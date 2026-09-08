@@ -30,3 +30,5 @@ export 'src/event_search.dart';
 export 'src/observer.dart' hide validateVisibilityObserver;
 export 'src/solar_visibility.dart';
 export 'src/body_visibility.dart';
+export 'src/phenomena.dart';
+export 'src/disc_radii.dart';
