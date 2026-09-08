@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
-      - run: dart format --output=none --set-exit-if-changed lib/src/*.dart lib/ephemeris_lite.dart test example tool/portability_check.dart tool/lunar_check.dart tool/calendar_portability_check.dart tool/visibility_portability_check.dart tool/sky_event_portability_check.dart tool/orbital_portability_check.dart
+      - run: dart format --output=none --set-exit-if-changed lib/src/*.dart lib/ephemeris_lite.dart test example tool/portability_check.dart tool/lunar_check.dart tool/calendar_portability_check.dart tool/visibility_portability_check.dart tool/sky_event_portability_check.dart tool/orbital_portability_check.dart tool/lunar_eclipse_portability_check.dart
       - run: dart analyze
       - run: dart test
       - run: dart compile js example/main.dart -o /tmp/ephemeris-demo.js
@@ -28,3 +28,5 @@ jobs:
       - run: node /tmp/sky-event-portability.js
       - run: dart compile js tool/orbital_portability_check.dart -o /tmp/orbital-portability.js
       - run: node /tmp/orbital-portability.js
+      - run: dart compile js tool/lunar_eclipse_portability_check.dart -o /tmp/lunar-eclipse-portability.js
+      - run: node /tmp/lunar-eclipse-portability.js

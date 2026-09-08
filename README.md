@@ -28,7 +28,9 @@
 
 - 月地近远点、月球交点、水金大距、相对赤经与赤经留。
 
-**尚未实现**：日月食和恒星接口。完整清单见 [移植进度](docs/port-status.md)。
+- 全球月食搜索、接触时刻和地方可见性（含月出／月落截断）。
+
+**尚未实现**：日食和恒星接口。完整清单见 [移植进度](docs/port-status.md)。
 
 ## 开发阶段使用
 
@@ -213,3 +215,16 @@ final conjunctions = searchRelativeRightAscension(
 ```
 
 近远点使用全量几何状态；视赤经与大距接口使用视位置选项。月球交点可选择参考黄道，详见 [天象事件说明](docs/sky-events.md)。
+
+### 月食
+
+```dart
+final start = ZonedTime(year: 2025, month: 1, day: 1, offsetMinutes: 480).toJulianTime();
+final end = ZonedTime(year: 2026, month: 1, day: 1, offsetMinutes: 480).toJulianTime();
+final eclipses = searchLunarEclipses(start, end);
+final local = getLocalLunarEclipse(eclipses.first.maximum,
+  const Observer(longitudeDeg: 116.4074, latitudeDeg: 39.9042));
+print(local?.toJson());
+```
+
+日月食入口使用 `JulianTime`，避免裸数字的 TT/UT1 歧义；没有额外精度档位。范围、标准大气与圆面限制见 [月食说明](docs/lunar-eclipses.md)。
