@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/RedSC1/js-ephemeris-lite",
+  "commit": "ad51da27c3ad1e8d5d17bf98a4add1f2ca96e3f7",
+  "files": {
+    "planet-series.js": "6d69471c8eb81cb2e1bba029ccaf0e668fbf03434a80679c95b3a10c05b42868",
+    "planet-prefix-counts.js": "4c2f4f308d4c8213ab7c4c05316e496cd28cd6d24ec0f8bd5918dd429f59faee",
+    "earth-prefix-counts.js": "560d2c42f5e7cfde04f41f5c484ea6519b87de15d97459159392953be0d98fd8",
+    "moon-series.js": "ff996d95f49921123f325ba6309f5338f9bd4d6e35e3c7752112c98c47bcdf0c",
+    "moon-prefix-counts.js": "8941c0314b233c74935c727dc15d87393978137f3a4c35a71bd895aa9cd6ba49",
+    "time.js": "19dd01f80add18e30e91cb0d9eb4797b3ab67edf966ab1ddf77624207db6885c"
+  }
+}

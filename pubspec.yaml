@@ -1,0 +1,9 @@
+name: ephemeris_lite
+description: Pure Dart port of js-ephemeris-lite. Experimental astronomical time and geometric ephemeris implementation.
+version: 0.1.0-dev.1
+publish_to: none
+environment:
+  sdk: ^3.10.0
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.6

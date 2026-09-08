@@ -1,0 +1,16 @@
+name: Dart port tests
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - run: dart pub get
+      - run: dart format --output=none --set-exit-if-changed lib/src/accuracy.dart lib/src/time.dart lib/src/ephemeris.dart lib/ephemeris_lite.dart test example
+      - run: dart analyze
+      - run: dart test
+      - run: dart compile js example/main.dart -o /tmp/ephemeris-demo.js
+      - run: node /tmp/ephemeris-demo.js
