@@ -20,9 +20,13 @@ export 'src/event_mid.dart'
         lowSolarLongitudeState,
         lowElongationState;
 export 'src/calendar_events.dart';
-export 'src/solar_time.dart';
+export 'src/solar_time.dart' hide solarCoreEquatorial;
 export 'src/historical_calendar.dart';
 export 'src/qi_shuo.dart';
 export 'src/chinese_calendar.dart';
 export 'src/ganzhi.dart';
 export 'src/chinese_era.dart';
+export 'src/event_search.dart';
+export 'src/observer.dart' hide validateVisibilityObserver;
+export 'src/solar_visibility.dart';
+export 'src/body_visibility.dart';

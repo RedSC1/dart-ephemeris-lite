@@ -22,9 +22,10 @@
 - 农历月序、特殊历史月名、正反转换、前后节气与指定节气查询。
 - 干支编码、纳音五行、四柱基础计算、三种子时规则和历史节气边界开关。
 - 中文纪年候选查询，保留来源、有效区间及日／年级精度。
+- 太阳快速升落、通用天体地平坐标与全天升落／上下中天，支持极区状态及折射选项。
 - 按民用年列出的节气、候与月相，分别保留天文时刻、本地日期和历法指定日期。
 
-**尚未实现**：可见性、其他天象事件、日月食和恒星接口。完整清单见 [移植进度](docs/port-status.md)。
+**尚未实现**：光照相位／物理现象、其他天象事件、日月食和恒星接口。完整清单见 [移植进度](docs/port-status.md)。
 
 ## 开发阶段使用
 
@@ -166,3 +167,17 @@ final eras = getChineseEraNames(clock.toJulianTime().jdUT1);
 
 `getChineseEraNames` 独立使用中国历史历法，不跟随 UI 时区。并存政权可返回多个候选，只有年份的资料保留 `EraPrecision.year`，不暗示精确改元日。
 纪年查询依赖农历反查，继承前述历史边界限制；它不是史料真伪或争议裁决接口。
+
+### 升落与中天
+
+```dart
+const observer = Observer(longitudeDeg: 116.4074, latitudeDeg: 39.9042);
+final date = ZonedTime(year: 2026, month: 6, day: 21, offsetMinutes: 480);
+final sun = solarRiseSetForDate(date, observer);
+final moon = bodyRiseSetForDay(SkyBody.moon, date.toJulianTime().jdUT1, observer);
+print(sun.rise?.toZonedTime(480).toJson());
+print(moon.upperTransits);
+```
+
+通用接口的起点是 UT1 儒略日，返回该起点后一天内的全部事件；极昼／极夜不会填入虚构的升落时刻。
+模型差异、时间窗口和地形等限制见 [可见性说明](docs/visibility.md)。

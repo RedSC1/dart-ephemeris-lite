@@ -62,7 +62,9 @@ double greenwichApparentSiderealTimeRadians(
 double greenwichSiderealTime(double jdUT1, {double? jdTT}) => normDeg(
   greenwichApparentSiderealTimeRadians(jdUT1, jdTT ?? ut1ToTt(jdUT1)) * rad,
 );
-({List<double> position, NutationState nutation}) _sun(double jd) {
+({List<double> position, NutationState nutation}) solarCoreEquatorial(
+  double jd,
+) {
   final earth = earthState(jd),
       mean = transform(
         meanEclipticOfDateMatrixState(jd).matrix,
@@ -106,7 +108,7 @@ class EquationOfTime {
 EquationOfTime equationOfTime(Object time) {
   final instant = _resolve(time).instant,
       jd = instant.jdUT1,
-      sun = _sun(instant.jdTT);
+      sun = solarCoreEquatorial(instant.jdTT);
   final ra = _normalize(math.atan2(sun.position[1], sun.position[0]));
   final gast = greenwichApparentSiderealTimeRadians(
     jd,

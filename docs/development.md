@@ -16,6 +16,9 @@ node tool/generate_qi_shuo_oracles.mjs ../taiyin-lite
 node tool/generate_lunar_oracles.mjs ../taiyin-lite
 node tool/generate_ganzhi_oracles.mjs ../taiyin-lite
 node tool/generate_era_oracles.mjs ../taiyin-lite
+node tool/generate_visibility_oracles.mjs ../taiyin-lite
+node tool/generate_visibility_portability.mjs
+dart format tool/visibility_portability_check.dart
 node tool/generate_calendar_portability.mjs
 dart format tool/calendar_portability_check.dart
 dart format tool/lunar_check.dart
@@ -77,3 +80,11 @@ CI 运行静态分析、回归测试，并编译/执行纯 Dart 示例的 JavaSc
 - `tool/calendar_portability_check.dart` 在编译 JS 后核对 33 个四柱、76 个钟面和 14 个纪年查询。
 - 纪年源数据包含 529 条主记录与 223 条补充记录，由导入器生成强类型 Dart 表；数值和文字来源、许可证沿用第三方说明，数据哈希记录于 upstream.json。
 - 纪年年初日期只做单次查询内的缓存，不引入全局精度状态或无界年份缓存。当前优先验证语义，未承诺与 JS 一样的查询速度。
+
+## 地平坐标和升落
+
+- JS 对拍包括 540 组地平坐标（10 个天体、三档位置精度、6 个站点及3个季节）、75 组快速太阳样本／升落、61 组全天升落中天，以及 33 个折射值。
+- 日出日落的跨语言时间差阈值为 0.02 秒；状态与事件数必须完全一致。地平角度容差为 1e-8 度，太阳专用高度角容差为 1e-10 弧度；不代表地形／气象条件下的实际观测误差。
+- 另测半开区间、连续零采样拒绝、周期反向点过滤、折射截断伪根，以及同一十分钟步长内的擦边双根。
+- 编译成 JS 后对拍 10 个通用全天窗口与 9 个太阳窗口，其中包含极区、擦边和长年代样本。
+- 太阳内部公共求值被复用但不从包入口导出，太阳钟回归仍随全套测试运行。两条太阳链按上游保持差异，不宣称与 C++ 独立精度相同。

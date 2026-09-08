@@ -24,6 +24,10 @@
     "generated/historical-calendar-data.js": "58b0bc3524210b2c3f9c58a002f18b8ae4c45316a0b142f94f7b927323e5c7de",
     "ganzhi.js": "a5b510fb612191354536bca971efbbb2b73a92f44d9863386b844c74e523e236",
     "chinese-era.js": "55c7f2ac9a68f4b0c98b2b4c4fc6cd8e99d3c61e31b97ab62f41983c56b17f6e",
-    "generated/chinese-era-data.js": "d6e665ff2d05afac999b3c046dea2fbcceae6fcf02d1f7e084c854d61707e363"
+    "generated/chinese-era-data.js": "d6e665ff2d05afac999b3c046dea2fbcceae6fcf02d1f7e084c854d61707e363",
+    "event-search.js": "0dd90ed9d7e52703b0ec3295c1e009b159a6a3f53a4fbd91064d572478ffbbae",
+    "body-visibility.js": "ed07b7fa97f2abd6464611037c6d9617fd8d5cce32275cd2213ecd06cdee1af6",
+    "solar-visibility.js": "7e7dfaca7aacabf48559f1666fbaa5a641b7184d83bdab190db32d1adc1c8c95",
+    "phenomena.js": "79d97fd280391bf39f189690bc9fef2c0a3ada1144cff69997e88302ad0e059f"
   }
 }
