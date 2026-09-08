@@ -1,5 +1,5 @@
 name: ephemeris_lite
-description: Pure Dart port of js-ephemeris-lite. Experimental astronomical time and geometric ephemeris implementation.
+description: Pure Dart port of js-ephemeris-lite. Experimental astronomical time, positions, solar/lunar event roots and solar-time implementation.
 version: 0.1.0-dev.1
 publish_to: none
 environment:

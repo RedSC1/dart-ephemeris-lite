@@ -7,6 +7,17 @@
     "earth-prefix-counts.js": "560d2c42f5e7cfde04f41f5c484ea6519b87de15d97459159392953be0d98fd8",
     "moon-series.js": "ff996d95f49921123f325ba6309f5338f9bd4d6e35e3c7752112c98c47bcdf0c",
     "moon-prefix-counts.js": "8941c0314b233c74935c727dc15d87393978137f3a4c35a71bd895aa9cd6ba49",
-    "time.js": "19dd01f80add18e30e91cb0d9eb4797b3ab67edf966ab1ddf77624207db6885c"
+    "time.js": "19dd01f80add18e30e91cb0d9eb4797b3ab67edf966ab1ddf77624207db6885c",
+    "coordinates.js": "7ee2297d098333cb22db290791410272a347b9fdc738d048b4156ea7507f1c58",
+    "nutation-series.js": "e6d0ad7fd402ab65a7aa9a9cbded5a4ad1b0b3734e42367fadf9dc3629e9b4a8",
+    "event-series.js": "672bdffa04de096745debe5d897e352354eb7789ef06c2cc8eb2fb76947b8403",
+    "event-fast-values.js": "d4ceae29a2dab32a9679273d46d7571cf0456fb58f7035e929b01e8317aedcd7",
+    "event-rates.js": "ae87b672becc60fce7230a08b90e08890cadd3fa489ea15237fe59a35b1593c9",
+    "pluto-model.js": "64079471ba3b03724ff4a4ac63db31578aa89a04e7749dc030e6bc9814b04965",
+    "apparent.js": "8c99fe4caab414a16a1eed5efccc938b4e9e794d3924d1de2bad0572bf6868e5",
+    "solar-core.js": "02490c62e69cb8d13ea4b53f1af9e489a43e76a1f81aa83d757bd1c20091eefb",
+    "solar-time.js": "1d8c46833b113d239756b99a6bd7f6f64bb13e404572462e0dce672a2a57a80c",
+    "calendar-events.js": "a59e8ef041c95bb6430dc5a7fa55410b4313be997e943f9266eda49cd6003cfd",
+    "sky-math.js": "e01ea7dffb35bf40a559792e9a3a85cf6d3432cefec7e27e32136d3aa5809c79"
   }
 }

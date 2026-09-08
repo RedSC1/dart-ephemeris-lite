@@ -6,6 +6,13 @@
 ```sh
 node tool/import_js_data.mjs ../taiyin-lite
 node tool/generate_oracles.mjs ../taiyin-lite
+node tool/generate_coordinate_oracles.mjs ../taiyin-lite
+node tool/generate_fast_event_oracles.mjs ../taiyin-lite
+node tool/generate_apparent_oracles.mjs ../taiyin-lite
+node tool/generate_calendar_event_oracles.mjs ../taiyin-lite
+node tool/generate_solar_time_oracles.mjs ../taiyin-lite
+node tool/generate_portability_check.mjs
+dart format tool/portability_check.dart
 dart pub get
 dart test
 dart analyze
@@ -28,3 +35,14 @@ CI 运行静态分析、回归测试，并编译/执行纯 Dart 示例的 JavaSc
 - 不嵌入 JS 引擎或依赖旧 Dart 底层。
 - 不在移植时偷偷更换天文模型或历法策略。
 - 不在新底层尚不可用时修改旧排盘包。
+
+## 新增模块的验证
+
+- 65 个坐标历元覆盖 −6000～10000 年；矩阵与解析导数对拍，并测正交性及中心差分。
+- 冥王星包含 1590/1600/2200/2210 年附近和过渡中点；保留近区推荐范围限制。
+- 视位置对拍覆盖所有天体、三个参考系、三档位置精度及各修正开关。
+- 气朔既测展开角入口，也测三档最近根和 safeguarded 路径；快速根没有容差参数。
+- 太阳钟覆盖东西经端点、历史日期、UTC+8 和正反转换。
+- `tool/portability_check.dart` 不依赖 dart:io，可在 VM 和编译 JS 后运行 45 组根对拍。
+
+在第一轮 Dart 优化之前不作运行速度对齐承诺。尤其 mid 的部分 value-only 阶段暂时计算了额外导数；它没有替换成另一档模型。

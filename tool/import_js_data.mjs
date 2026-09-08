@@ -7,7 +7,7 @@ import { execFileSync } from 'node:child_process';
 const source = resolve(process.argv[2] ?? '../taiyin-lite');
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const load = name => import(pathToFileURL(resolve(source, 'src', name)));
-const files = ['planet-series.js', 'planet-prefix-counts.js', 'earth-prefix-counts.js', 'moon-series.js', 'moon-prefix-counts.js', 'time.js'];
+const files = ['planet-series.js', 'planet-prefix-counts.js', 'earth-prefix-counts.js', 'moon-series.js', 'moon-prefix-counts.js', 'time.js', 'coordinates.js', 'nutation-series.js', 'event-series.js', 'event-fast-values.js', 'event-rates.js', 'pluto-model.js', 'apparent.js', 'solar-core.js', 'solar-time.js', 'calendar-events.js', 'sky-math.js'];
 const [p, prefixes, earth, moon, moonPrefixes] = await Promise.all(files.slice(0,5).map(load));
 const literal = value => {
   if (Array.isArray(value)) return `[${value.map(literal).join(',')}]`;
@@ -35,6 +35,15 @@ for (const [key, dartName, type] of [
 ]) data += `const ${type} ${dartName} = ${literal(moon[key])};\n`;
 data += `const double moonScaleDays = ${moon.MOON_SCALE_DAYS};\n`;
 data += `const moonPrefixes = <Map<String,List<int>>>${literal(moonPrefixes.MOON_PREFIX_COUNTS)};\n`;
+for (const kind of ['FALLBACK', 'NEAR']) {
+ const values = ['L','B','R'].map(axis => p[`PLUTO_${kind}_${axis}`]);
+ data += `const ${kind === 'NEAR' ? 'plutoNear' : 'plutoFallback'} = <${kind === 'NEAR' ? 'List<double>' : 'List<List<double>>'}>${literal(values)};\n`;
+}
+for (const [key,name] of [['PLUTO_NEAR_EPOCH_JD','plutoNearEpoch'],['PLUTO_NEAR_SCALE_DAYS','plutoNearScaleDays'],['PLUTO_NEAR_MOTION','plutoNearMotion'],['PLUTO_NEAR_PHASE','plutoNearPhase']]) {
+ data += `const double ${name} = ${p[key]};\n`;
+}
+const moonRankingIndices = [moon.MOON_L,moon.MOON_B,moon.MOON_R].map(blocks=>blocks.flatMap((a,n)=>Array.from({length:a.length/3},(_,i)=>({n,i:i*3,score:Math.hypot(a[i*3],a[i*3+1])}))).sort((a,b)=>b.score-a.score).map(({n,i})=>[n,i]));
+data += `const moonRankedIndices = <List<List<int>>>${literal(moonRankingIndices)};\n`;
 await writeFile(resolve(root,'lib/src/generated/series.dart'),data);
 const time = await readFile(resolve(source,'src/time.js'),'utf8');
 const table = name => JSON.parse(time.match(new RegExp(`const ${name} = (\\[[\\s\\S]*?\\n\\]);`))[1].replace(/,\s*]/g,']'));
@@ -42,6 +51,56 @@ await writeFile(resolve(root,'lib/src/generated/delta_t_data.dart'),
  '// GENERATED from JS time.js. See THIRD_PARTY_NOTICES.md.\n'+
  `const s15Spline = <List<double>>${literal(table('S15_SPLINE'))};\n`+
  `const annualDeltaT = <double>${literal(table('ANNUAL_DELTA_T'))};\n`);
+const coordinates = await readFile(resolve(source, 'src/coordinates.js'), 'utf8');
+const extractArray = name => {
+ const match = coordinates.match(new RegExp(`const ${name} = (\\[[\\s\\S]*?\\]);`));
+ if (!match) throw Error(`Missing coordinate table ${name}`);
+ return JSON.parse(match[1].replace(/,\s*]/g, ']'));
+};
+const nutation = await load('nutation-series.js');
+let coordinateData = '// GENERATED coordinate constants; see upstream.json and notices.\n';
+for (const [name, dartName, type] of [
+ ['ECLIPTIC_PERIODIC', 'eclipticPeriodic', 'List<List<double>>'],
+ ['EQUATOR_PERIODIC', 'equatorPeriodic', 'List<List<double>>'],
+ ['PA', 'pa', 'List<double>'], ['QA', 'qa', 'List<double>'],
+ ['XA', 'xa', 'List<double>'], ['YA', 'ya', 'List<double>'],
+]) coordinateData += `const ${type} ${dartName} = ${literal(extractArray(name))};\n`;
+coordinateData += `const nutationTerms = <List<double>>${literal(nutation.IAU2000B_TERMS)};\n`;
+await writeFile(resolve(root, 'lib/src/generated/coordinate_data.dart'), coordinateData);
+const events = await load('event-series.js');
+let eventData = '// GENERATED event data and stable selections; do not edit. MPL-2.0.\n';
+for (const [key,name] of [
+ ['LOW_SOLAR_RATE_SECULAR','lowSolarRateSecular'],['LOW_PRECESSION_RATE','lowPrecessionRate'],
+ ['LOW_SOLAR_DRIFT','lowSolarDrift'],['LOW_ELONGATION_DRIFT','lowElongationDrift'],
+ ['REFINE_EARTH_RATE_SECULAR','refineEarthRateSecular'],
+]) eventData += `const ${name} = <double>${literal(events[key])};\n`;
+eventData += `const fastEventFrames = <List<double>>${literal(events.FAST_EVENT_FRAME_PROJECTION)};\n`;
+for (const [key,name] of [['LOW_SOLAR_RATE_HARMONICS','lowSolarRateHarmonics'],['REFINE_EARTH_RATE_HARMONICS','refineEarthRateHarmonics']]) {
+ eventData += `const ${name} = <(double,List<double>,List<double>)>[${events[key].map(([f,c,s])=>`(${f},${literal(c)},${literal(s)})`).join(',')}];\n`;
+}
+eventData += `const earthEventPrefixes = <Map<String,List<int>>>${literal([earth.EARTH_L_PREFIX_COUNTS,earth.EARTH_B_PREFIX_COUNTS,earth.EARTH_R_PREFIX_COUNTS])};\n`;
+const moonBlocks=[moon.MOON_L,moon.MOON_B];
+const rankings=moonBlocks.map(blocks=>blocks.flatMap((rows,power)=>Array.from({length:rows.length/3},(_,i)=>({power,index:i*3,score:Math.hypot(rows[i*3],rows[i*3+1])}))).sort((a,b)=>b.score-a.score));
+const packed=moonBlocks.map((blocks,c)=>Object.fromEntries((c===0?[8,33,'full']:[0,10]).map(limit=>{
+ const selected=new Set(rankings[c].slice(0,limit==='full'?Infinity:limit).map(r=>`${r.power}:${r.index}`));
+ return [limit,blocks.map((rows,power)=>{
+  const result=[];
+  for(let i=0;i<rows.length;i+=3)if(selected.has(`${power}:${i}`))result.push(Math.hypot(rows[i],rows[i+1]),-Math.atan2(rows[i],rows[i+1]),rows[i+2]);
+  return result;
+ })];
+})));
+eventData += `const fastMoonTerms = <Map<String,List<List<double>>>>${literal(packed)};\n`;
+const rateMoon=rankings[0].slice(0,40).map(({power,index})=>[power,...moon.MOON_L[power].slice(index,index+3)]);
+eventData += `const lunarRateTerms = <List<double>>${literal(rateMoon)};\n`;
+const defs=[[485868.249036,1717915923.2178],[1287104.79305,129596581.0481],[335779.526232,1739527262.8478],[1072260.70369,1602961601.2090],[450160.398036,-6962890.5431]];
+const arc=Math.PI/648000;
+const n4=nutation.IAU2000B_TERMS.slice(0,4).map(r=>{
+ let p=0,s=0;for(let i=0;i<5;i++){p+=r[i]*defs[i][0];s+=r[i]*defs[i][1];}
+ return[p*arc,s*arc,r[5]*1e-7*arc,r[6]*1e-7*arc,r[7]*1e-7*arc];
+});
+eventData += `const rateNutation = <List<double>>${literal(n4)};\n`;
+await writeFile(resolve(root,'lib/src/generated/event_data.dart'),eventData);
+
 const hashes = {};
 for (const file of files) hashes[file]=createHash('sha256').update(await readFile(resolve(source,'src',file))).digest('hex');
 await writeFile(resolve(root,'tool/upstream.json'),JSON.stringify({

@@ -7,8 +7,18 @@ const j2000 = 2451545.0;
 const auKm = 149597870.7;
 const earthMoonMassRatio = 81.30056822149722;
 
-/// Pluto's special near/fallback model is not ported yet.
-enum Planet { mercury, venus, earth, mars, jupiter, saturn, uranus, neptune }
+/// Geometric targets; Pluto denotes its system barycenter.
+enum Planet {
+  mercury,
+  venus,
+  earth,
+  mars,
+  jupiter,
+  saturn,
+  uranus,
+  neptune,
+  pluto,
+}
 
 /// Geometric mean J2000 ecliptic position and analytic velocity.
 /// Planet states: AU and AU/day. Geocentric Moon: km and km/day.
@@ -48,12 +58,15 @@ CartesianState _planet(
   double jd,
   Accuracy accuracy, {
   bool direction = false,
+  List<List<int>?>? prefixOverride,
 }) {
   _finite(jd);
   final groups = planetSeries[planet.name]!;
-  final limits = accuracy == Accuracy.accurate
-      ? null
-      : planetPrefixes[planet.name]![accuracy.name];
+  final limits =
+      prefixOverride ??
+      (accuracy == Accuracy.accurate
+          ? null
+          : planetPrefixes[planet.name]![accuracy.name]);
   final t = (jd - j2000) / 365250;
   final degree = groups.map((axis) => axis.length).reduce(math.max) - 1;
   final basis = List<double>.filled(degree + 1, 0),
@@ -114,7 +127,9 @@ CartesianState planetHeliocentricState(
   Planet planet,
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
-}) => _planet(planet, jdTT, accuracy);
+}) => planet == Planet.pluto
+    ? _pluto(jdTT, accuracy)
+    : _planet(planet, jdTT, accuracy);
 List<double> planetHeliocentricPosition(
   Planet planet,
   double jdTT, {
@@ -194,28 +209,50 @@ class _MoonEvaluation {
     );
   }
 
-  ({double value, double rate}) coordinate(int c, Accuracy accuracy) {
+  ({double value, double rate}) coordinate(
+    int c,
+    Accuracy accuracy, {
+    int? terms,
+  }) {
     final groups = [moonL, moonB, moonR][c];
     final counts = accuracy == Accuracy.accurate
         ? null
         : moonPrefixes[c][accuracy.name]!;
     var value = 0.0, rate = 0.0;
-    for (var n = 0; n < groups.length; n++) {
-      final rows = groups[n];
-      final end = counts == null
-          ? rows.length
-          : math.min((n < counts.length ? counts[n] : 0) * 3, rows.length);
-      var sum = 0.0, derivative = 0.0;
-      for (var i = 0; i < end; i += 3) {
-        final arg = argument(rows[i + 2].toInt());
-        sum += rows[i] * arg.sine + rows[i + 1] * arg.cosine;
-        derivative +=
-            (rows[i] * arg.cosine - rows[i + 1] * arg.sine) * arg.speed;
+    if (terms != null) {
+      final ranked = moonRankedIndices[c];
+      if (terms < 0 || terms > ranked.length) {
+        throw RangeError('Invalid lunar term limit');
       }
-      final env = math.pow(x, n).toDouble(),
-          dr = n == 0 ? 0.0 : n * math.pow(x, n - 1) / moonScaleDays;
-      value += sum * env;
-      rate += derivative * env + sum * dr;
+      for (var i = 0; i < terms; i++) {
+        final n = ranked[i][0], index = ranked[i][1], rows = groups[n];
+        final arg = argument(rows[index + 2].toInt());
+        final v = rows[index] * arg.sine + rows[index + 1] * arg.cosine;
+        final dv =
+            (rows[index] * arg.cosine - rows[index + 1] * arg.sine) * arg.speed;
+        final env = math.pow(x, n).toDouble(),
+            dr = n == 0 ? 0.0 : n * math.pow(x, n - 1) / moonScaleDays;
+        value += v * env;
+        rate += dv * env + v * dr;
+      }
+    } else {
+      for (var n = 0; n < groups.length; n++) {
+        final rows = groups[n];
+        final end = counts == null
+            ? rows.length
+            : math.min((n < counts.length ? counts[n] : 0) * 3, rows.length);
+        var sum = 0.0, derivative = 0.0;
+        for (var i = 0; i < end; i += 3) {
+          final arg = argument(rows[i + 2].toInt());
+          sum += rows[i] * arg.sine + rows[i + 1] * arg.cosine;
+          derivative +=
+              (rows[i] * arg.cosine - rows[i + 1] * arg.sine) * arg.speed;
+        }
+        final env = math.pow(x, n).toDouble(),
+            dr = n == 0 ? 0.0 : n * math.pow(x, n - 1) / moonScaleDays;
+        value += sum * env;
+        rate += derivative * env + sum * dr;
+      }
     }
     if (c == 0) {
       final m = _poly(moonW1, x, 1 / moonScaleDays);
@@ -226,11 +263,17 @@ class _MoonEvaluation {
   }
 }
 
-CartesianState _moon(double jd, Accuracy accuracy, {bool direction = false}) {
+CartesianState _moon(
+  double jd,
+  Accuracy accuracy, {
+  bool direction = false,
+  int? latitudeTerms,
+  int? longitudeTerms,
+}) {
   _finite(jd);
   final evaluation = _MoonEvaluation(jd);
-  final l = evaluation.coordinate(0, accuracy),
-      b = evaluation.coordinate(1, accuracy);
+  final l = evaluation.coordinate(0, accuracy, terms: longitudeTerms),
+      b = evaluation.coordinate(1, accuracy, terms: latitudeTerms);
   final r = direction
       ? (value: 1.0, rate: 0.0)
       : evaluation.coordinate(2, accuracy);
@@ -305,3 +348,126 @@ CartesianState embState(double jdTT, {Accuracy accuracy = Accuracy.accurate}) =>
       moonState(jdTT, accuracy: accuracy),
       1 / ((1 + earthMoonMassRatio) * auKm),
     );
+
+/// Pluto is recommended only for 1600–2200. Outside this interval a coarse
+/// fallback remains computable; this is not a precision wide-epoch ephemeris.
+CartesianState _pluto(double jd, Accuracy accuracy) {
+  _finite(jd);
+  final year = 2000 + (jd - j2000) / 365.25;
+  if (year >= 1600 && year <= 2200) return _plutoNear(jd, accuracy);
+  if (year <= 1590 || year >= 2210) return _plutoFar(jd);
+  final near = _plutoNear(jd, accuracy), far = _plutoFar(jd);
+  final x = year < 1600 ? (year - 1590) / 10 : (2210 - year) / 10;
+  final weight = math.pow(x, 3) * (10 - 15 * x + 6 * x * x);
+  final rate =
+      30 * x * x * math.pow(1 - x, 2) * (year < 1600 ? 1 : -1) / (10 * 365.25);
+  return CartesianState(
+    List.generate(
+      3,
+      (k) => far.position[k] + weight * (near.position[k] - far.position[k]),
+    ),
+    List.generate(
+      3,
+      (k) =>
+          far.velocity[k] +
+          weight * (near.velocity[k] - far.velocity[k]) +
+          rate * (near.position[k] - far.position[k]),
+    ),
+  );
+}
+
+CartesianState _plutoNear(double jd, Accuracy accuracy) {
+  final x = (jd - plutoNearEpoch) / plutoNearScaleDays;
+  final limit = switch (accuracy) {
+    Accuracy.fast => 336,
+    Accuracy.mid => 368,
+    Accuracy.accurate => plutoNear[0].length,
+  };
+  final v = <double>[], rates = <double>[];
+  for (final a in plutoNear) {
+    var b1 = 0.0, b2 = 0.0, d1 = 0.0, d2 = 0.0;
+    for (
+      var i =
+          (accuracy == Accuracy.accurate
+              ? a.length
+              : math.min(a.length, limit)) -
+          1;
+      i > 0;
+      i--
+    ) {
+      final b = 2 * x * b1 - b2 + a[i], d = 2 * b1 + 2 * x * d1 - d2;
+      b2 = b1;
+      b1 = b;
+      d2 = d1;
+      d1 = d;
+    }
+    v.add(x * b1 - b2 + a[0]);
+    rates.add((b1 + x * d1 - d2) / plutoNearScaleDays);
+  }
+  v[0] = v[0] + plutoNearPhase + plutoNearMotion * (jd - j2000) / 365250;
+  rates[0] += plutoNearMotion / 365250;
+  final s = _spherical(v, rates);
+  return CartesianState(
+    _apply(_toJ2000, s.position),
+    _apply(_toJ2000, s.velocity),
+  );
+}
+
+CartesianState _plutoFar(double jd) {
+  const scale = 2922000.0;
+  final x = (jd - j2000) / scale, t = (jd - j2000) / 365250;
+  final degree = plutoFallback.map((a) => a.length).reduce(math.max) - 1;
+  final basis = List<double>.filled(degree + 1, 0),
+      derivative = List<double>.filled(degree + 1, 0);
+  basis[0] = 1;
+  if (degree > 0) {
+    basis[1] = x;
+    derivative[1] = 1 / scale;
+  }
+  for (var n = 2; n <= degree; n++) {
+    basis[n] = ((2 * n - 1) * x * basis[n - 1] - (n - 1) * basis[n - 2]) / n;
+    derivative[n] =
+        ((2 * n - 1) * (basis[n - 1] / scale + x * derivative[n - 1]) -
+            (n - 1) * derivative[n - 2]) /
+        n;
+  }
+  final v = [0.0, 0.0, 0.0], rates = [0.0, 0.0, 0.0];
+  for (var c = 0; c < 3; c++) {
+    for (var n = 0; n < plutoFallback[c].length; n++) {
+      var value = 0.0, rate = 0.0;
+      final a = plutoFallback[c][n];
+      for (var i = 0; i < a.length; i += 3) {
+        final arg = a[i + 1] + a[i + 2] * t;
+        value += a[i] * math.cos(arg);
+        rate -= a[i] * a[i + 2] * math.sin(arg) / 365250;
+      }
+      v[c] += basis[n] * value;
+      rates[c] += derivative[n] * value + basis[n] * rate;
+    }
+  }
+  v[0] = math.atan2(math.sin(v[0]), math.cos(v[0]));
+  final s = _spherical(v, rates);
+  return CartesianState(
+    _apply(_toJ2000, s.position),
+    _apply(_toJ2000, s.velocity),
+  );
+}
+
+// Internal calendar model entry points, hidden by the package barrel.
+CartesianState earthStateWithPrefixes(double jd, List<List<int>?> counts) =>
+    _planet(Planet.earth, jd, Accuracy.accurate, prefixOverride: counts);
+CartesianState moonDirectionWithTerms(
+  double jd, {
+  int? latitudeTerms,
+  int? longitudeTerms,
+}) => _moon(
+  jd,
+  Accuracy.accurate,
+  direction: true,
+  latitudeTerms: latitudeTerms,
+  longitudeTerms: longitudeTerms,
+);
+({double value, double rate}) moonLongitudeWithTerms(double jd, int terms) {
+  _finite(jd);
+  return _MoonEvaluation(jd).coordinate(0, Accuracy.accurate, terms: terms);
+}

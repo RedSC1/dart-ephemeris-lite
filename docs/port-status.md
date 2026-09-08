@@ -8,20 +8,23 @@
 | time.js | 时间/历法转换、ΔT、JulianTime、ZonedTime；Dart 命名参数和 DateTime 接口 |
 | direct-planet-model.js / planet-models.js / planet-frame.js | 八颗行星的 monomial 求值、三档前缀与固定旋转；未暴露内部任意项数接口 |
 | moon-model.js | 全量与两档前缀、地心状态/方向、原生黄经；未暴露内部任意项数接口 |
-| ephemeris.js | 已有天体的通用几何状态、中心转换；冥王星与部分便捷别名尚未移植 |
+| ephemeris.js / pluto-model.js | 通用几何状态、冥王星近/远模型及过渡；部分逐天体便捷别名尚未移植 |
+| coordinates.js / nutation-series.js | 岁差、章动、日期矩阵、ICRF→J2000及解析导数 |
+| apparent.js | 三种参考系及修正开关、完整链路差分速度；内部 illumination geometry 尚未单独导出 |
+| calendar-events.js / event-*.js | 三档最近气朔求解、快速/精确展开角入口、均衡状态与估计器；自定义求解黄纬预算尚未开放 |
+| solar-core.js / solar-time.js | 太阳钟、均时差、恒星时及正反转换 |
 
 生成数据与手写求值器分离。初期优先确认算法一致性，尚未进行 Dart 专项速度或内存优化。
 月球相位缓存采用每次求值局部存储，避免引入全局可变配置；后续需测量分配成本。
 
 ## 接下来按依赖顺序移植
 
-1. 通用坐标模块：IAU2000B、Vondrák2011、参考系与导数。
-2. 冥王星 near/fallback/blend 模型、完整几何接口与视位置。
-3. 气朔三个求解档位、节气月相事件；复用完整 JS 回归样本。
-4. 历史历法、农历、纪年、干支、真太阳时。
-5. 可见性、行星事件、日月食、恒星接口。
-6. 对齐公共 API 清单、Dart VM/编译 JS 数值回归、文档与打包审计。
-7. 再迁移独立的 bazi_core、ziwei_core，补旧数据迁移说明。
+1. 历史历法归日与农历月序、特殊历史月名、气朔年表。
+2. 纪年、干支及排盘需要的历法选项。
+3. 可见性、行星事件、日月食、恒星接口。
+4. 对齐公共 API 清单，补剩余选项/别名/序列化。
+5. Dart 专项性能与内存基准、打包审计；目前均衡气朔的部分仅需数值的步骤复用了解析状态求值器，结果对齐但尚未达到 JS 的 value-only 工作量。
+6. 再迁移独立的 bazi_core、ziwei_core，补旧数据迁移说明。
 
 ## 对外发布门槛
 
