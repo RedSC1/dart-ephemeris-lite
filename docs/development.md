@@ -14,6 +14,10 @@ node tool/generate_solar_time_oracles.mjs ../taiyin-lite
 node tool/generate_historical_oracles.mjs ../taiyin-lite
 node tool/generate_qi_shuo_oracles.mjs ../taiyin-lite
 node tool/generate_lunar_oracles.mjs ../taiyin-lite
+node tool/generate_ganzhi_oracles.mjs ../taiyin-lite
+node tool/generate_era_oracles.mjs ../taiyin-lite
+node tool/generate_calendar_portability.mjs
+dart format tool/calendar_portability_check.dart
 dart format tool/lunar_check.dart
 node tool/generate_portability_check.mjs
 dart format tool/portability_check.dart
@@ -64,3 +68,12 @@ CI 运行静态分析、回归测试，并编译/执行纯 Dart 示例的 JavaSc
 - 846 组日期对拍包括月初和月末；33 组瞬时转换检查本地日界；72 个指定节气、24 个前后节气查询检查档位与精确边界语义。
 - `tool/lunar_check.dart` 抽取 102 组普通月和特殊历史月，编译成 JS 后仍执行正反转换对拍。
 - 已知历史反查歧义单独计数并保留预期行为，详见 calendar-history.md；没有放宽整数日期、月名或闰标断言。
+
+## 干支和纪年
+
+- 426 个四柱结果对拍覆盖历史年份、三档气朔、三种子时规则，以及实际节气时刻／历史归日边界前后。
+- 76 个钟面规范化结果包含全天整点的 JD 往返、前后 1 毫秒及真实小数秒；另有 6 个平太阳钟／真太阳钟边界四柱对拍。
+- 173 个纪年查询核对候选、文本、年次、区间、精度和来源，其中一个上游历史反查错误作为已知限制保留；不是 173 个全部可返回纪年结果的样本。
+- `tool/calendar_portability_check.dart` 在编译 JS 后核对 33 个四柱、76 个钟面和 14 个纪年查询。
+- 纪年源数据包含 529 条主记录与 223 条补充记录，由导入器生成强类型 Dart 表；数值和文字来源、许可证沿用第三方说明，数据哈希记录于 upstream.json。
+- 纪年年初日期只做单次查询内的缓存，不引入全局精度状态或无界年份缓存。当前优先验证语义，未承诺与 JS 一样的查询速度。

@@ -21,6 +21,9 @@
     "sky-math.js": "e01ea7dffb35bf40a559792e9a3a85cf6d3432cefec7e27e32136d3aa5809c79",
     "chinese-calendar.js": "16c836c59ea700912796f8516974fefbbb2ed9780133804fab8084fc07041659",
     "qi-shuo.js": "f034c311b76aa43971276f88994a9a36ab72312986569e0aa2985c56aed622df",
-    "generated/historical-calendar-data.js": "58b0bc3524210b2c3f9c58a002f18b8ae4c45316a0b142f94f7b927323e5c7de"
+    "generated/historical-calendar-data.js": "58b0bc3524210b2c3f9c58a002f18b8ae4c45316a0b142f94f7b927323e5c7de",
+    "ganzhi.js": "a5b510fb612191354536bca971efbbb2b73a92f44d9863386b844c74e523e236",
+    "chinese-era.js": "55c7f2ac9a68f4b0c98b2b4c4fc6cd8e99d3c61e31b97ab62f41983c56b17f6e",
+    "generated/chinese-era-data.js": "d6e665ff2d05afac999b3c046dea2fbcceae6fcf02d1f7e084c854d61707e363"
   }
 }

@@ -20,9 +20,11 @@
 - 平太阳时、真太阳时、均时差、恒星时及太阳钟反算。
 - 历史气朔归日表；固定时区或经线归日选项。
 - 农历月序、特殊历史月名、正反转换、前后节气与指定节气查询。
+- 干支编码、纳音五行、四柱基础计算、三种子时规则和历史节气边界开关。
+- 中文纪年候选查询，保留来源、有效区间及日／年级精度。
 - 按民用年列出的节气、候与月相，分别保留天文时刻、本地日期和历法指定日期。
 
-**尚未实现**：纪年、干支、可见性、其他天象事件、日月食和恒星接口。完整清单见 [移植进度](docs/port-status.md)。
+**尚未实现**：可见性、其他天象事件、日月食和恒星接口。完整清单见 [移植进度](docs/port-status.md)。
 
 ## 开发阶段使用
 
@@ -142,3 +144,25 @@ print(solar.toJson());
 **历史边界限制**：秦汉和 762 年改历的重复年份/月标，沿用上游首个匹配反查时存在歧义。
 移植一致性不等于所有历史日期都能正确往返，详见 [历史历法说明](docs/calendar-history.md)。
 旧排盘包暂不切换底层。
+
+### 干支与纪年
+
+```dart
+final clock = ZonedTime(
+  year: 2003, month: 3, day: 13, hour: 11, offsetMinutes: 480,
+);
+final pillars = fourPillarsForZonedTime(clock,
+  options: CalendarOptions(mode: CalendarMode.chinaAstronomical),
+  ratHourMode: RatHourMode.nextDay,
+);
+print(describeFourPillars(pillars));
+final eras = getChineseEraNames(clock.toJulianTime().jdUT1);
+```
+
+四柱基础接口以立春换年、节换月，不提供春节换年开关；完整八字／紫微排盘属于后续独立包。
+`calculateFourPillars(jdUT1, virtualTime)` 的日时柱可使用另行求得的平太阳钟或真太阳钟，年、月边界仍比较实际 UT1 时刻。
+子时默认 `nextDay`；`currentDay` 保持当天日柱与时干，`currentDayTomorrowStem` 保持当天日柱但取次日日干计算时干。
+历史节气开关由 `PillarHistoricalMode` 控制，默认跟随历法模式；历史归日的柱界使用 UTC+8 当日零点。
+
+`getChineseEraNames` 独立使用中国历史历法，不跟随 UI 时区。并存政权可返回多个候选，只有年份的资料保留 `EraPrecision.year`，不暗示精确改元日。
+纪年查询依赖农历反查，继承前述历史边界限制；它不是史料真伪或争议裁决接口。

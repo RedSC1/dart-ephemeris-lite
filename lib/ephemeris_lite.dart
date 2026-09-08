@@ -24,3 +24,5 @@ export 'src/solar_time.dart';
 export 'src/historical_calendar.dart';
 export 'src/qi_shuo.dart';
 export 'src/chinese_calendar.dart';
+export 'src/ganzhi.dart';
+export 'src/chinese_era.dart';

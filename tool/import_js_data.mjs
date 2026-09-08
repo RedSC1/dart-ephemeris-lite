@@ -7,7 +7,7 @@ import { execFileSync } from 'node:child_process';
 const source = resolve(process.argv[2] ?? '../taiyin-lite');
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const load = name => import(pathToFileURL(resolve(source, 'src', name)));
-const files = ['planet-series.js', 'planet-prefix-counts.js', 'earth-prefix-counts.js', 'moon-series.js', 'moon-prefix-counts.js', 'time.js', 'coordinates.js', 'nutation-series.js', 'event-series.js', 'event-fast-values.js', 'event-rates.js', 'pluto-model.js', 'apparent.js', 'solar-core.js', 'solar-time.js', 'calendar-events.js', 'sky-math.js', 'chinese-calendar.js', 'qi-shuo.js', 'generated/historical-calendar-data.js'];
+const files = ['planet-series.js', 'planet-prefix-counts.js', 'earth-prefix-counts.js', 'moon-series.js', 'moon-prefix-counts.js', 'time.js', 'coordinates.js', 'nutation-series.js', 'event-series.js', 'event-fast-values.js', 'event-rates.js', 'pluto-model.js', 'apparent.js', 'solar-core.js', 'solar-time.js', 'calendar-events.js', 'sky-math.js', 'chinese-calendar.js', 'qi-shuo.js', 'generated/historical-calendar-data.js', 'ganzhi.js', 'chinese-era.js', 'generated/chinese-era-data.js'];
 const [p, prefixes, earth, moon, moonPrefixes] = await Promise.all(files.slice(0,5).map(load));
 const literal = value => {
   if (Array.isArray(value)) return `[${value.map(literal).join(',')}]`;
@@ -117,6 +117,26 @@ for(const [key,name] of [['solarTerm','historicalSolarTerm'],['newMoon','histori
  historyData += `const ${name} = HistoricalProfile(${p.firstPhaseIndex},${p.eventCount},${literal(p.exactSegments)},${literal(p.tail)},${literal(p.phaseTicks??[])},${literal(Array.from(p.residualMask))},${literal(Array.from(p.residualSigns))},${literal(Array.from(p.residualRank))});\n`;
 }
 await writeFile(resolve(root,'lib/src/generated/historical_calendar_data.dart'),historyData);
+
+const eraData=await load('generated/chinese-era-data.js');
+const eraRows=[...eraData.CHINESE_ERA_RECORDS,...eraData.MANAKAI_SUPPLEMENTAL_ERA_RECORDS];
+let eraDart=`// GENERATED; see THIRD_PARTY_NOTICES.md for text and boundary data licenses.
+// Text: Shou Xing; day boundaries: DDBC and manakai/data-locale.
+class EraRecord {
+ final int startYear,duration,usedYears;
+ final String dynasty,title,ruler,era;
+ final List<List<double>>? ddbc;
+ final List<double?>? manakai;
+ const EraRecord(this.startYear,this.duration,this.usedYears,this.dynasty,
+   this.title,this.ruler,this.era,this.ddbc,this.manakai);
+}
+const chineseEraRecords=<EraRecord>[`;
+for(const r of eraRows) {
+ const b=r[7],ddbc=Array.isArray(b)?b:b?.ddbc??null,manakai=Array.isArray(b?.manakai)?b.manakai:null;
+ eraDart+=`EraRecord(${r.slice(0,7).map(literal).join(',')},${literal(ddbc)},${literal(manakai)}),\n`;
+}
+eraDart+='];\n';
+await writeFile(resolve(root,'lib/src/generated/chinese_era_data.dart'),eraDart);
 
 const hashes = {};
 for (const file of files) hashes[file]=createHash('sha256').update(await readFile(resolve(source,'src',file))).digest('hex');
