@@ -28,6 +28,60 @@ PillarHistoricalMode _historical(String? value) => switch (value) {
   _ => PillarHistoricalMode.followCalendar,
 };
 void main() {
+  test(
+    'historical pillars switch at every assigned Jie boundary, early or late',
+    () {
+      for (final year in [
+        -700,
+        -221,
+        -104,
+        100,
+        237,
+        690,
+        761,
+        1000,
+        1600,
+        2026,
+      ]) {
+        var cursor = julianDay(year: year, month: 1, day: 1);
+        for (var i = 0; i < 12; i++) {
+          final term = getNextJie(cursor);
+          cursor = term.time.jdUT1 + 2;
+          for (final mode in PillarHistoricalMode.values) {
+            final boundary = getPillarTermBoundary(
+              term,
+              pillarHistoricalMode: mode,
+            );
+            for (final delta in [-1, 1]) {
+              final time = JulianTime.fromUT1(
+                boundary + delta / 86400,
+              ).toZonedTime(480);
+              final selected = getPreviousPillarJie(
+                time.toJulianTime().jdUT1,
+                pillarHistoricalMode: mode,
+              );
+              final pillars = fourPillarsForZonedTime(
+                time,
+                pillarHistoricalMode: mode,
+              );
+              final expected = ((term.indexFromWinterSolstice + 1) ~/ 2) % 12;
+              expect(
+                ganzhiBranch(pillars.month),
+                delta > 0 ? expected : (expected + 11) % 12,
+              );
+              expect(
+                selected.indexFromWinterSolstice,
+                delta > 0
+                    ? term.indexFromWinterSolstice
+                    : (term.indexFromWinterSolstice + 22) % 24,
+              );
+            }
+          }
+        }
+      }
+    },
+  );
+
   final f =
       jsonDecode(File('test/fixtures/ganzhi.json').readAsStringSync()) as Map;
   test('60 packed Ganzhi values, Nayin and signed advancement', () {

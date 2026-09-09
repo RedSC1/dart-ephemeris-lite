@@ -259,6 +259,42 @@ Map<String, String> describeFourPillars(FourPillars pillars) =>
   );
 }
 
+/// Physical boundary shared by pillar and downstream calendar consumers.
+double getPillarTermBoundary(
+  CalendarSolarTerm term, {
+  CalendarOptions? options,
+  PillarHistoricalMode pillarHistoricalMode =
+      PillarHistoricalMode.followCalendar,
+}) {
+  final historical =
+      pillarHistoricalMode == PillarHistoricalMode.on ||
+      (pillarHistoricalMode == PillarHistoricalMode.followCalendar &&
+          (options ?? CalendarOptions()).mode == CalendarMode.historical);
+  return _boundary(term, historical).jdUT1;
+}
+
+/// Select by assigned boundary, including term days preceding the astronomical event.
+CalendarSolarTerm getPreviousPillarJie(
+  double jd, {
+  CalendarOptions? options,
+  PillarHistoricalMode pillarHistoricalMode =
+      PillarHistoricalMode.followCalendar,
+}) {
+  if (!jd.isFinite) throw ArgumentError.value(jd, 'jd');
+  final o = options ?? CalendarOptions();
+  final historical =
+      pillarHistoricalMode == PillarHistoricalMode.on ||
+      (pillarHistoricalMode == PillarHistoricalMode.followCalendar &&
+          o.mode == CalendarMode.historical);
+  // Include the following Jie, then walk back by effective boundary.
+  var term = getPreviousJie(jd + (historical ? 40 : 0), options: o);
+  for (var i = 0; i < 8; i++) {
+    if (_boundary(term, historical).jdUT1 <= jd + 1e-10) return term;
+    term = getPreviousJie(term.time.jdUT1 - 10, options: o);
+  }
+  throw StateError('previous pillar Jie boundary not found');
+}
+
 /// Year/month use the physical UT1 instant; day/hour use [virtualTime], which
 /// may be a wall clock or an independently resolved mean/apparent solar clock.
 /// This low-level four-pillar API uses Li Chun, not Lunar New Year, as year start.
@@ -284,14 +320,11 @@ FourPillars calculateFourPillars(
   final pillarYear =
       v.year + (jdUT1 - _boundary(lichun, historical).jdUT1 < -1e-10 ? -1 : 0);
   final yi = (pillarYear - 1984) % 60, year = makeGanzhi(yi % 10, yi % 12);
-  var jie = getPreviousJie(jdUT1 + (historical ? 1 : 0), options: o);
-  final boundary = _boundary(jie, historical);
-  final future = boundary.assignedDay != null
-      ? boundary.assignedDay! > civilDayNumber(jdUT1, 480 / 1440)
-      : jie.time.jdUT1 - jdUT1 > 1e-10;
-  if (future) {
-    jie = getPreviousJie(jie.time.jdUT1 - 10, options: o);
-  }
+  final jie = getPreviousPillarJie(
+    jdUT1,
+    options: o,
+    pillarHistoricalMode: pillarHistoricalMode,
+  );
   final index = jie.indexFromWinterSolstice;
   if ((index & 1) == 0) {
     throw StateError('previous Jie has an invalid index');
