@@ -46,7 +46,7 @@ The general API returns all rises, sets, upper transits and lower transits; list
 
 `bodyHorizontalPosition` requires `SkyFrame.trueOfDate`. `BodyVisibilityOptions.apparent` retains position accuracy and light-time/aberration/solar-deflection options. The Fast in `computeSolarRiseSetFast` describes its rise/set seed and limited iterations, not `Accuracy.fast`; it has a fixed dedicated solar model.
 
-The dedicated and general chains differ in apparent positions, observer rotation and solar-radius constants. Their results are not expected to agree second for second.
+The dedicated and general chains differ in apparent positions, observer rotation and solar-radius constants. Their results are not expected to agree second for second. Use the general API when all rise, set and transit events are required.
 
 Default observer atmosphere is 1013.25 mbar and 15°C. The independent refraction function instead defaults to 1010 mbar and 10°C. Refraction is zero below −1°; the general solver rejects false roots caused by this cutoff. Its ten-minute scan refines local extrema to detect paired crossings within a sample interval. The dedicated solar fallback retains two-hour sampling and does not promise the same grazing-event detection.
 

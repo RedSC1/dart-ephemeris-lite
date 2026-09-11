@@ -10,7 +10,7 @@
 dart run example/fixed_stars.dart /path/to/catalog.tsc1
 ```
 
-将路径替换为实际 TSC1 文件。仓库开发环境可使用 `test/fixtures/stars.tsc1`；pub 包不附带该文件。
+将路径替换为实际 TSC1 文件。星表需单独取得，不随本包发布。
 
 <!-- example: example/fixed_stars.dart -->
 ```dart
@@ -38,6 +38,6 @@ void main(List<String> args) {
 
 底层只依赖 Dart 核心库，不自动联网或读取文件。应用自行取得 TSC1 字节；Node/JS 独立星表包中的文件可直接复用。`example/fixed_stars.dart` 演示 Dart CLI 读取文件；网页可把下载字节交给相同解析器。
 
-测试夹具为上游完整 lite 文件，2057 条记录、12242 条别名；包含亮星以及传统中国星官、十二星座线图补全和特殊方向记录，不是单独 V≤5 截断。夹具来源声明在 `test/fixtures/STARS_THIRD_PARTY_NOTICES.md`，不进入底层发布产物。
+本库不限定目录的筛选方式。与本项目配套的 lite 星表包含亮星、传统中国星官、十二星座线图补全和特殊方向记录，并非简单按 `V ≤ 5` 截断；星表需单独获取，不随本包发布。
 
 线性自行不是完整 N 体恒星轨道模型；大年代传播和缺测记录需要按数据本身的不确定性解释。

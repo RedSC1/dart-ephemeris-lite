@@ -24,7 +24,7 @@ void main() {
 
 ## API and model
 
-Use `solarToHijri`, `hijriToSolar` and `instantToHijri` for conversion, and `hijriMonthDays` / `isHijriLeapYear` for calendar rules. The implementation retains the arithmetic rules of `oba.getHuiLi()`, expressed with integer cycle arithmetic and a reverse conversion. Frozen JS/Dart samples include daily comparison over five complete cycles (53,155 days).
+Use `solarToHijri`, `hijriToSolar` and `instantToHijri` for conversion, and `hijriMonthDays` / `isHijriLeapYear` for calendar rules. The implementation uses integer cycle arithmetic and supports conversion in both directions between civil dates and the arithmetic Hijri calendar.
 
 ## Rules and limits
 
@@ -36,4 +36,4 @@ Use `solarToHijri`, `hijriToSolar` and `instantToHijri` for conversion, and `hij
 - This is an arithmetic calendar, not local crescent observation, religious announcements or the Umm al-Qura table.
 - `HijriDate` validates the actual month length and is immutable. Leap-year and month-length helpers accept Hijri years −10000 through 10000; conversion is additionally limited by the civil-date range.
 
-The implementation needs no ephemeris evaluation, runtime data table or additional dependency. See the third-party notices for attribution.
+This feature needs no ephemeris evaluation, network access, or external data table. See the third-party notices for attribution.

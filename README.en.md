@@ -49,19 +49,19 @@ void main() {
 
 | Task | Guide |
 | --- | --- |
-| Time scales, positions and frames | [positions.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/time-and-positions.en.md) |
-| Solar terms, phases and solar time | [solar_time.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/qi-shuo-solar-time.en.md) |
-| Chinese and historical calendars | [calendar.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/calendar-history.en.md) |
-| Arithmetic Hijri calendar | [hijri_calendar.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/hijri-calendar.en.md) |
-| Ganzhi, pillars and era names | [four_pillars.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/ganzhi.en.md) |
-| Rise/set, horizontal coordinates and polar regions | [visibility.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/visibility.en.md) |
-| Illumination, conjunctions, stations and orbital events | [sky_events.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/sky-events.en.md) |
-| Global and local lunar eclipses | [local_lunar_eclipse.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/lunar-eclipses.en.md) |
-| Global and local solar eclipses | [local_solar_eclipse.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/solar-eclipses.en.md) |
-| Fixed stars and external catalogs | [fixed_stars.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/fixed-stars.en.md) |
-| Sun/Moon entry point and code size | [sun_moon.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/module-loading.en.md) |
+| Time scales, positions and frames | [Open guide](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/time-and-positions.en.md) |
+| Solar terms, phases and solar time | [Open guide](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/qi-shuo-solar-time.en.md) |
+| Chinese and historical calendars | [Open guide](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/calendar-history.en.md) |
+| Arithmetic Hijri calendar | [Open guide](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/hijri-calendar.en.md) |
+| Ganzhi, pillars and era names | [Open guide](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/ganzhi.en.md) |
+| Rise/set, horizontal coordinates and polar regions | [Open guide](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/visibility.en.md) |
+| Illumination, conjunctions, stations and orbital events | [Open guide](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/sky-events.en.md) |
+| Global and local lunar eclipses | [Open guide](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/lunar-eclipses.en.md) |
+| Global and local solar eclipses | [Open guide](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/solar-eclipses.en.md) |
+| Fixed stars and external catalogs | [Open guide](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/fixed-stars.en.md) |
+| Sun/Moon entry point and code size | [Open guide](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/module-loading.en.md) |
 
-[All guides and developer references](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/README.en.md)
+[Complete documentation](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/README.en.md) · [API reference](https://pub.dev/documentation/ephemeris_lite/latest/)
 
 ## Key conventions
 
@@ -71,16 +71,6 @@ void main() {
 - **Historical calendars:** physical events and assigned civil dates are separate. Known reform-era reverse-lookup ambiguities prevent unique round trips for every historical date.
 - **Limits:** errors vary by body and epoch. Pluto is recommended for 1600–2200; future ΔT includes an experimental fit. Solver tolerance is not an astronomical accuracy guarantee.
 
-## Generate documentation and validate
-
-```sh
-dart doc --validate-links
-dart analyze
-dart test
-```
-
-Dartdoc generates `doc/api/index.html` from source `///` comments; generated HTML is not committed or published. Complete guide examples are kept in sync with `example/`. The testing guide distinguishes independent controls, JS port comparisons and known skipped assertions; port agreement is not a new astronomical accuracy certification.
-
 ## License and provenance
 
-[MPL-2.0](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/LICENSE) · [中文第三方声明](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/THIRD_PARTY_NOTICES.zh-CN.md) · [Third-party notices](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/THIRD_PARTY_NOTICES.md) · [Upstream manifest](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/upstream.json)
+[MPL-2.0](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/LICENSE) · [中文第三方声明](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/THIRD_PARTY_NOTICES.zh-CN.md) · [Third-party notices](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/THIRD_PARTY_NOTICES.md)

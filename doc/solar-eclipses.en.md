@@ -43,12 +43,12 @@ Global results include partial/total/annular/hybrid type, new moon and maximum, 
 
 ## Interpolation and geometry
 
-Five-point Newton interpolation shares the three-dimensional apparent Sun/Moon vectors within ±0.25 days of its center. Outside that window, the geometry is evaluated directly. The shadow cone intersects a WGS84 ellipsoid; local circumstances use three-dimensional apparent disc overlap. There is no additional accuracy switch.
+Five-point Newton interpolation shares the three-dimensional apparent Sun/Moon vectors within ±0.25 days of its center. Outside that window, the geometry is evaluated directly. The shadow cone intersects a WGS84 ellipsoid; local circumstances use three-dimensional apparent disc overlap. This API uses a fixed model and has no additional accuracy switch.
 
 ## Local circumstances
 
 `getLocalSolarEclipse(date, observer)` uses longitude, latitude and height with standard atmosphere (1013.25 mbar, 15°C), ignoring custom weather fields. It returns visible local magnitude/type, sunrise/sunset, horizon clipping and contact times. Local contacts below the horizon are set to `null`, unlike the retained geometric contacts in the local lunar-eclipse result.
 
-Visibility uses the refracted upper solar limb. Terrain and lunar limb valleys are not modeled. Geographical contacts, greatest-eclipse location and instantaneous width are numeric results; the library does not render maps or expose retired mutable calculators.
+Visibility uses the refracted upper solar limb. Terrain and lunar limb valleys are not modeled. Geographical contacts, greatest-eclipse location and instantaneous width are numeric results; the library does not render maps.
 
-Historical/future ground locations and local times depend on ΔT. JS/Dart agreement is a port check, not observational certification. A retained independent width discrepancy is documented in [testing](test-migration.en.md); see also [lunar eclipses](lunar-eclipses.en.md).
+Historical/future ground locations and local times depend on ΔT. Computed results should not be read as observational certification. See also [lunar eclipses](lunar-eclipses.en.md).

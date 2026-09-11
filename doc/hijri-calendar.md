@@ -22,9 +22,9 @@ void main() {
 }
 ```
 
-`solarToHijri`、`hijriToSolar`、`instantToHijri` 与 JS 同步提供。
-保留原 `oba.getHuiLi()` 的算术规则，用整数周期运算实现并补充反向转换；
-与旧近似公式逐日比较五个完整周期（53155 天），JS/Dart 共用冻结样本。
+## API 与模型
+
+使用 `solarToHijri`、`hijriToSolar` 和 `instantToHijri` 完成转换；使用 `hijriMonthDays` 与 `isHijriLeapYear` 查询历法规则。实现采用整数周期运算，并提供民用历与算术回历之间的双向转换。
 
 
 ## 规则与限制
@@ -42,4 +42,4 @@ void main() {
 - `HijriDate` 校验真实月长，字段不可变；闰年/月长辅助函数接受回历年 −10000..10000，
   但正反日期转换另受上述民用日期范围限制。
 
-来源署名见根目录第三方声明。无星历调用、无运行时数据表、无新增依赖。
+此功能不调用星历，也不需要联网或额外数据表。来源署名见根目录第三方声明。

@@ -48,7 +48,7 @@ void main() {
 
 ## Historical month and year labels
 
-`MonthName` preserves the JS codes: `normal`, `thirteen`, `laterNine`, `altTwelve`, `altOne`, `laterSameName`. Month names and `isLeap` are separate fields; a special name does not imply a leap month. The core returns a number and name code, not formatted Chinese month text.
+`MonthName` can be `normal`, `thirteen`, `laterNine`, `altTwelve`, `altOne` or `laterSameName`. Month names and `isLeap` are separate fields; a special name does not imply a leap month. The core returns a number and name code, not formatted Chinese month text.
 
 - `lunarYear` / `LunarDate.year` is the source lunar-year label.
 - `historicalYear` records the historical year used by the calendar and Ganzhi rules. It can differ around reforms.
@@ -56,12 +56,12 @@ void main() {
 
 ## Known reverse-lookup limitations
 
-The current lookup selects the first matching source year, month, leap flag and name. It does not disambiguate repeated labels by `historicalYear`. These are inherited behaviors, not guarantees that every historical date round-trips:
+The current lookup selects the first matching lunar year, month, leap flag and name. It does not disambiguate repeated labels by `historicalYear`:
 
 1. Civil date −221-10-31 converts to lunar year −221, historical year −220, month 10 day 1; reverse lookup returns −221-09-01.
 2. Around the 762 reform, converting 762-04-29 and back returns 762-03-01.
 3. At −721-12-07, the required window can extend before the historical profile and throw a range error.
 
-The frozen samples contain 24 non-identity round trips, including duplicate cases from overlapping windows, two Qin/Han reverse lookups that throw a month-length error, and one forward lookup that throws at the start boundary. This is not an exhaustive list of affected dates. Do not rely on reverse conversion in these reform windows without resolving the ambiguity.
+These examples are not an exhaustive list of affected dates. Do not rely on reverse conversion in these reform windows for chart construction or historical data editing until the ambiguity has been resolved.
 
-Era lookup inherits these limits. For −456-06-01 at UT1 midnight, the reference throws `lunar date not found`; Dart retains and tests that result rather than treating it as an empty list of active eras.
+Era lookup shares these limits. For −456-06-01 at UT1 midnight, it throws `lunar date not found`; do not reinterpret that error as an empty list of active eras.

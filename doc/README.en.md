@@ -18,11 +18,12 @@ Start with a task below. Every usage guide includes complete Dart examples, run 
 | [Fixed stars and external catalogs](fixed-stars.en.md) | [fixed_stars.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/example/fixed_stars.dart) |
 | [Sun/Moon entry point and code size](module-loading.en.md) | [sun_moon.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/example/sun_moon.dart) |
 
-## Development and migration reference
+## API reference
 
 - [JS → Dart API map](api-map.en.md)
-- [Scope and compatibility](port-status.en.md)
-- [Test provenance and known discrepancies](test-migration.en.md)
-- [Documentation, validation and data regeneration](development.en.md)
 
-These pages are reference material, not prerequisites for first use. Generated Dartdoc describes individual parameters and results; it complements these task examples.
+Parameter, result and default-value documentation is available through IDE Dartdoc hints and the [pub.dev API reference](https://pub.dev/documentation/ephemeris_lite/latest/). When migrating from the JavaScript package, use the API map to find corresponding Dart names.
+
+## Contributing
+
+Read [development](development.en.md), [testing and known discrepancies](test-migration.en.md), and [scope and compatibility](port-status.en.md) when contributing code, regenerating data, or auditing the port. They are not prerequisites for using the package.

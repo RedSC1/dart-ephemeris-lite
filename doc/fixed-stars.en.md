@@ -10,7 +10,7 @@
 dart run example/fixed_stars.dart /path/to/catalog.tsc1
 ```
 
-Replace the path with an actual TSC1 file. A repository checkout can use `test/fixtures/stars.tsc1`; the published package does not include it.
+Replace the path with an actual TSC1 file. Catalog data is obtained separately and is not bundled with this package.
 
 <!-- example: example/fixed_stars.dart -->
 ```dart
@@ -49,6 +49,6 @@ The library performs no network or file I/O. Obtain the bytes in your applicatio
 
 Vectors and result fields are read-only. Linear motion is not an N-body stellar orbit model; long-epoch propagation and missing measurements must be interpreted with the catalog's uncertainties.
 
-## Test catalog
+## Catalog contents
 
-The repository fixture is the complete upstream lite catalog: 2,057 records and 12,242 aliases. It includes bright stars, completion of traditional Chinese asterisms and zodiac line figures, and special direction records; it is not simply a V ≤ 5 cut. Attribution is in `test/fixtures/STARS_THIRD_PARTY_NOTICES.md`. The fixture is excluded from the published core package.
+The library does not prescribe how a catalog is filtered. The companion lite catalog contains bright stars, completion of traditional Chinese asterisms and zodiac line figures, and special direction records; it is not simply a `V ≤ 5` cut. Obtain the catalog separately because it is not bundled with this package.

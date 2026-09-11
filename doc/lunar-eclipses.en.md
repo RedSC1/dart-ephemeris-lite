@@ -60,4 +60,4 @@ Only longitude, latitude and height are taken from `Observer`. Local circumstanc
 
 `visible` means some part is visible, not the whole eclipse. In addition to contacts, visibility is sampled at ten-minute intervals during the event. `horizonClipped` can indicate moonrise, moonset, both or neither. Geometric contacts are retained even below the horizon, with visibility recorded separately.
 
-Terrain, lunar limb valleys and actual weather are not modeled. Historical/future UT1 and local visibility depend on uncertain ΔT. Port comparisons do not constitute a new C++, DE441 or observational accuracy assessment. See also [solar eclipses](solar-eclipses.en.md).
+Terrain, lunar limb valleys and actual weather are not modeled. Historical/future UT1 and local visibility depend on uncertain ΔT, so results are not an observational accuracy guarantee. See also [solar eclipses](solar-eclipses.en.md).

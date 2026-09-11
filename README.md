@@ -49,19 +49,19 @@ void main() {
 
 | 任务 | 指南 |
 | --- | --- |
-| 时间尺度、位置与参考系 | [positions.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/time-and-positions.md) |
-| 气朔、年表与太阳时 | [solar_time.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/qi-shuo-solar-time.md) |
-| 农历与历史月名 | [calendar.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/calendar-history.md) |
-| 算术回历 | [hijri_calendar.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/hijri-calendar.md) |
-| 干支、四柱与纪年 | [four_pillars.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/ganzhi.md) |
-| 升落、地平坐标与极区 | [visibility.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/visibility.md) |
-| 照明、合冲、留与轨道事件 | [sky_events.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/sky-events.md) |
-| 全球与地方月食 | [local_lunar_eclipse.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/lunar-eclipses.md) |
-| 全球与地方日食 | [local_solar_eclipse.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/solar-eclipses.md) |
-| 恒星与外部星表 | [fixed_stars.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/fixed-stars.md) |
-| 日月独立入口与体积 | [sun_moon.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/module-loading.md) |
+| 时间尺度、位置与参考系 | [查看指南](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/time-and-positions.md) |
+| 气朔、年表与太阳时 | [查看指南](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/qi-shuo-solar-time.md) |
+| 农历与历史月名 | [查看指南](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/calendar-history.md) |
+| 算术回历 | [查看指南](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/hijri-calendar.md) |
+| 干支、四柱与纪年 | [查看指南](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/ganzhi.md) |
+| 升落、地平坐标与极区 | [查看指南](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/visibility.md) |
+| 照明、合冲、留与轨道事件 | [查看指南](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/sky-events.md) |
+| 全球与地方月食 | [查看指南](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/lunar-eclipses.md) |
+| 全球与地方日食 | [查看指南](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/solar-eclipses.md) |
+| 恒星与外部星表 | [查看指南](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/fixed-stars.md) |
+| 日月独立入口与体积 | [查看指南](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/module-loading.md) |
 
-[全部文档与开发参考](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/README.md)
+[完整使用文档](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/README.md) · [API 参考](https://pub.dev/documentation/ephemeris_lite/latest/)
 
 ## 关键约定
 
@@ -71,16 +71,6 @@ void main() {
 - **历史历法**：实际天文时刻与历法归日分开保存。改历窗口有已知反查歧义，不能承诺所有历史日期都唯一往返。
 - **范围与限制**：天体和年代不同，误差也不同。冥王星推荐 1600～2200；未来 ΔT 含实验性拟合。数值容差不等于天文精度保证。
 
-## 生成文档与验证
-
-```sh
-dart doc --validate-links
-dart analyze
-dart test
-```
-
-Dartdoc 输出在 `doc/api/index.html`，从源码的 `///` 注释生成，生成文件不提交或发布。专题文档中的完整示例与 `example/` 同步维护。独立精度控制、JS 对拍和已知跳过项见测试文档；不能把移植一致性当成新的天文精度认证。
-
 ## 许可证与来源
 
-[MPL-2.0](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/LICENSE) · [中文第三方声明](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/THIRD_PARTY_NOTICES.zh-CN.md) · [Third-party notices](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/THIRD_PARTY_NOTICES.md) · [Upstream manifest](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/upstream.json)
+[MPL-2.0](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/LICENSE) · [中文第三方声明](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/THIRD_PARTY_NOTICES.zh-CN.md) · [Third-party notices](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/THIRD_PARTY_NOTICES.md)

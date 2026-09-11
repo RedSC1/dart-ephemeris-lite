@@ -18,11 +18,12 @@
 | [恒星与外部星表](fixed-stars.md) | [fixed_stars.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/example/fixed_stars.dart) |
 | [日月独立入口与体积](module-loading.md) | [sun_moon.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/example/sun_moon.dart) |
 
-## 开发与迁移参考
+## API 参考
 
 - [JS → Dart API 对照](api-map.md)
-- [功能范围与兼容性](port-status.md)
-- [测试来源与已知差异](test-migration.md)
-- [文档生成、验证与数据同步](development.md)
 
-这些页面属于开发参考，不是首次使用的前置知识。生成的 Dartdoc 用于逐项查询参数和返回值，不替代专题示例。
+逐项参数、返回值和默认值可在 IDE 的 Dartdoc 提示或 [pub.dev API 文档](https://pub.dev/documentation/ephemeris_lite/latest/)中查看。从 JavaScript 版本迁移时，可使用 API 对照表查找对应名称。
+
+## 参与开发
+
+准备贡献代码、重新生成数据或核对移植范围时，再阅读[开发说明](development.md)、[测试方法与已知差异](test-migration.md)和[功能范围与兼容性](port-status.md)。它们不属于使用本库的前置知识。
