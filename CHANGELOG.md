@@ -1,25 +1,16 @@
+## 1.0.0-beta.1
+
+首个公开测试版本，固定底层天文与历法 API，供独立的排盘包后续接入。
+
+- 提供天体位置与解析速度、岁差章动、视位置、三档气朔、太阳时、升落与天象事件。
+- 提供历史／现代农历、干支、中文纪年、算术回历、全球与地方日月食、TSC1 恒星数据解析。
+- 日月求值与其他行星依赖分离，新增 `sun_moon.dart`，不减少系数、不改变数值结果。
+- API 使用 Dart 命名参数、枚举和不可变结果；无运行时依赖、FFI 或 JavaScript 引擎。
+- 包含 JS 对拍、独立天文基准、旧规则回归及 dart2js 跨运行时验证。
+- 保留精度、历史历法和日食带宽的已知限制，详见 doc/port-status.md 与各模块文档。
+- 八字、紫微不包含在本次发布中，后续分别固定依赖与验证迁移。
+
 ## 0.1.0-dev.1 (unpublished)
 
-- 完成主包公共功能移植：日食、TSC1 恒星、自定义黄纬预算、几何别名和公共元数据，增加 195 项导出编译检查及网页回归。
-- 移植现代月食搜索、接触求解和地方可见性；加入历史／远期与地平截断对拍。
-- 移植轨道事件：月地近远点、月球交点、水金大距、相对赤经和赤经留，补 JS 对拍与跨运行时验证。
-- Start the pure Dart port from js-ephemeris-lite 1.0.0-rc.1.
-- Port astronomical time, Delta-T, fixed-offset civil time, and geometric
-  Mercury-through-Neptune/Moon states with three position-accuracy tiers.
-- Add reproducible coefficient import, 1107 JS state oracles, boundary tests,
-  development documentation and CI.
-- Add precession/nutation matrices and rates, Pluto near/fallback models,
-  apparent positions and finite-difference rates, three event-solving tiers,
-  equation of time and solar-clock conversions.
-- Add JS oracles and a dart2js numerical portability check.
-- Chinese calendar, annual event tables and the remaining sky APIs are not yet ported.
-
-- 移植历史气朔归日及民用年气朔表；全量历史日期对拍和年表回归加入测试。农历月序与干支仍待移植。
-
-- 移植农历窗口、月序与特殊月名、农历正反转换和节气查询；记录并回归验证上游历史反查边界限制。
-
-- 移植干支／四柱基础算法、子时和历史节气选项、精确整点规范化，以及中文纪年数据与来源边界查询。
-
-- 移植折射、太阳快速升落、通用地平坐标与全天升落／中天，以及标量／角度变号根搜索；新增极区、擦边与跨运行时回归。
-
-- 移植光照相位、月球盈亏、圆面参数与黄经事件搜索，复用只读视位置几何；补充逆行入宫及留后方向回归。
+- 完成从 js-ephemeris-lite 移植至纯 Dart 的开发阶段。
+- 建立系数生成、来源哈希、测试数据与 CI；中间进度保留在 Git 历史中。

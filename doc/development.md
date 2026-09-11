@@ -124,6 +124,6 @@ CI 运行静态分析、回归测试，并编译/执行纯 Dart 示例的 JavaSc
 - `generate_budget_oracles.mjs`：100 个自定义预算案例，覆盖 0/10/30/277/full、两个均衡求根器和三档位置精度。
 - `generate_api_metadata.mjs`：生成公共元数据、195 项导出编译清单与 API 对照文档。每次生成后运行 Dart format。
 - `tool/remaining_portability_check.dart` 编译到 JS 后重新核对恒星及日食。64 位哈希和 Gaia ID 不经过 double。
-- `.pubignore` 排除测试、星表、工具与本地计划，运行库不含外置星表。`publish_to: none` 保留，不能把移植完成等同于已发布或旧排盘兼容性验证完成。
+- `.pubignore` 排除测试、星表、工具与本地计划，运行库不含外置星表。发布前运行 `dart pub publish --dry-run`；底层发布与上层包的迁移、发布分别处理。
 
 Pub 打包遵循 `doc/` 单数目录约定。源哈希同步保存在 `doc/upstream.json`，运行包保留来源追踪，开发工具不随包分发。

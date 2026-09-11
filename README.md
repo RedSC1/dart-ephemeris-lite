@@ -3,8 +3,8 @@
 `js-ephemeris-lite` 的纯 Dart 移植，运行时不依赖 `sxwnl_spa_dart`、JavaScript 引擎或 FFI。
 算法、系数和数值语义以 [JS 原库](https://github.com/RedSC1/js-ephemeris-lite) 为基准；API 使用 Dart 的命名参数、枚举和不可变结果。
 
-**JS 1.0.0-rc.1 主包的公共功能已完成 Dart 移植。仍为私有开发版，未发布到 pub.dev；旧排盘包接入需另做迁移验证。**
-当前版本 `0.1.0-dev.1`，上游基准 `1.0.0-rc.1`；具体源码提交和数据哈希见 [doc/upstream.json](doc/upstream.json)。
+**首个公开测试版本，提供纯 Dart 天文与中国历法内核。八字、紫微保持为独立上层包，不随本包发布。**
+当前版本 `1.0.0-beta.1`，源自 JS `1.0.0-rc.1` 并同步后续日月依赖拆分；具体源码提交和数据哈希见 [doc/upstream.json](doc/upstream.json)。
 
 ## 已实现
 
@@ -35,14 +35,13 @@
 
 完整清单见 [移植状态](doc/port-status.md)，200 个 JS 公共导出的对应关系见 [API 对照表](doc/api-map.md)。
 
-## 开发阶段使用
+## 安装
 
-在同级工程中用路径依赖；不要将下面写成 pub.dev 安装指令：
+首次接入可固定测试版本，确认兼容后再调整版本约束：
 
 ```yaml
 dependencies:
-  ephemeris_lite:
-    path: ../ephemeris_lite
+  ephemeris_lite: 1.0.0-beta.1
 ```
 
 ```dart
