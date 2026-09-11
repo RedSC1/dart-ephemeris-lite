@@ -1,7 +1,7 @@
 // Port of solar-core.js and solar-time.js. MPL-2.0.
 import 'dart:math' as math;
 import 'coordinates.dart';
-import 'ephemeris.dart';
+import 'sun_moon_ephemeris.dart';
 import 'sky_math.dart';
 import 'time.dart';
 

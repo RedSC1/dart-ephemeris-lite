@@ -2,8 +2,33 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:ephemeris_lite/ephemeris_lite.dart';
 import 'package:test/test.dart';
+import 'package:ephemeris_lite/src/sun_moon_apparent.dart' as dedicated;
 
 void main() {
+  test('Sun/Moon apparent entry exactly matches the general evaluator', () {
+    for (final jd in [2451545.0 - 2922000, 2451545.0, 2451545.0 + 2922000]) {
+      for (final body in [SkyBody.sun, SkyBody.moon]) {
+        for (final accuracy in Accuracy.values) {
+          for (final frame in SkyFrame.values) {
+            final options = ApparentOptions(accuracy: accuracy, frame: frame);
+            final a = dedicated.apparentBodyState(body, jd, options: options);
+            final b = apparentBodyState(body, jd, options: options);
+            expect(a.eclipticPositionAu, b.eclipticPositionAu);
+            expect(a.equatorialPositionAu, b.equatorialPositionAu);
+            expect(a.eclipticVelocityAuPerDay, b.eclipticVelocityAuPerDay);
+            expect(a.equatorialVelocityAuPerDay, b.equatorialVelocityAuPerDay);
+            expect(a.longitudeSpeedDegPerDay, b.longitudeSpeedDegPerDay);
+            expect(a.latitudeSpeedDegPerDay, b.latitudeSpeedDegPerDay);
+            expect(a.lightTimeDays, b.lightTimeDays);
+          }
+        }
+      }
+    }
+    expect(
+      () => dedicated.apparentBodyPosition(SkyBody.mars, 2451545),
+      throwsArgumentError,
+    );
+  });
   final data = jsonDecode(
     File('test/fixtures/js_apparent.json').readAsStringSync(),
   );

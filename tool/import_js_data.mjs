@@ -1,3 +1,4 @@
+import { writeSplitSeries } from './split_series.mjs';
 // Development-only importer. Dart applications do not need JS or this checkout.
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
@@ -8,6 +9,8 @@ const source = resolve(process.argv[2] ?? '../taiyin-lite');
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const load = name => import(pathToFileURL(resolve(source, 'src', name)));
 const files = ['planet-series.js', 'planet-prefix-counts.js', 'earth-prefix-counts.js', 'moon-series.js', 'moon-prefix-counts.js', 'time.js', 'coordinates.js', 'nutation-series.js', 'event-series.js', 'event-fast-values.js', 'event-rates.js', 'pluto-model.js', 'apparent.js', 'solar-core.js', 'solar-time.js', 'calendar-events.js', 'sky-math.js', 'chinese-calendar.js', 'qi-shuo.js', 'generated/historical-calendar-data.js', 'ganzhi.js', 'chinese-era.js', 'generated/chinese-era-data.js', 'event-search.js', 'body-visibility.js', 'solar-visibility.js', 'phenomena.js', 'orbital-events.js', 'eclipse-lunar.js', 'eclipse-geometry.js', 'eclipse-search.js', 'eclipse-solar.js', 'eclipse-cone.js', 'fixed-stars.js', 'index.js', 'accuracy.js'];
+// Hash the actual split sources as well as the compatibility aggregate.
+files.push(...['earth', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'].map(body => `${body}-series.js`), 'planet-constants.js', 'earth-model.js', 'sun-moon-ephemeris.js', 'apparent-core.js', 'sun-moon-apparent.js');
 const [p, prefixes, earth, moon, moonPrefixes] = await Promise.all(files.slice(0,5).map(load));
 const literal = value => {
   if (Array.isArray(value)) return `[${value.map(literal).join(',')}]`;
@@ -44,7 +47,7 @@ for (const [key,name] of [['PLUTO_NEAR_EPOCH_JD','plutoNearEpoch'],['PLUTO_NEAR_
 }
 const moonRankingIndices = [moon.MOON_L,moon.MOON_B,moon.MOON_R].map(blocks=>blocks.flatMap((a,n)=>Array.from({length:a.length/3},(_,i)=>({n,i:i*3,score:Math.hypot(a[i*3],a[i*3+1])}))).sort((a,b)=>b.score-a.score).map(({n,i})=>[n,i]));
 data += `const moonRankedIndices = <List<List<int>>>${literal(moonRankingIndices)};\n`;
-await writeFile(resolve(root,'lib/src/generated/series.dart'),data);
+await writeSplitSeries(root, data);
 const time = await readFile(resolve(source,'src/time.js'),'utf8');
 const table = name => JSON.parse(time.match(new RegExp(`const ${name} = (\\[[\\s\\S]*?\\n\\]);`))[1].replace(/,\s*]/g,']'));
 await writeFile(resolve(root,'lib/src/generated/delta_t_data.dart'),

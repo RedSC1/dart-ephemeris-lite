@@ -2,8 +2,51 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:ephemeris_lite/ephemeris_lite.dart';
 import 'package:test/test.dart';
+import 'package:ephemeris_lite/sun_moon.dart' as dedicated;
 
 void main() {
+  test(
+    'Sun/Moon entry shares types and keeps other planets out of calendar dependencies',
+    () {
+      expect(
+        dedicated.earthState(2451545).position,
+        earthState(2451545).position,
+      );
+      expect(
+        dedicated.moonState(2451545).velocity,
+        moonState(2451545).velocity,
+      );
+      final seen = <Uri>{};
+      void visit(Uri uri) {
+        uri = uri.normalizePath();
+        if (!seen.add(uri)) return;
+        final source = File.fromUri(uri).readAsStringSync();
+        for (final match in RegExp(
+          r"(?:import|export)\s+'([^']+)'",
+        ).allMatches(source)) {
+          final path = match[1]!;
+          if (!path.contains(':')) visit(uri.resolve(path));
+        }
+      }
+
+      for (final path in [
+        'lib/sun_moon.dart',
+        'lib/src/qi_shuo.dart',
+        'lib/src/solar_time.dart',
+      ]) {
+        visit(File(path).absolute.uri);
+      }
+      for (final uri in seen) {
+        expect(
+          RegExp(
+            r'/(planet_models|planet_series|series|(?:mercury|venus|mars|jupiter|saturn|uranus|neptune|pluto)_series)\.dart$',
+          ).hasMatch(uri.path),
+          isFalse,
+          reason: '$uri',
+        );
+      }
+    },
+  );
   test(
     'custom lunar latitude budgets match JS for all position tiers and mid solvers',
     () {

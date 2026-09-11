@@ -2,9 +2,10 @@
 // event-rates.js. This is not the position Accuracy.fast model. MPL-2.0.
 import 'dart:math' as math;
 import 'coordinates.dart';
-import 'ephemeris.dart' show j2000;
+import 'sun_moon_ephemeris.dart' show j2000;
 import 'generated/event_data.dart';
-import 'generated/series.dart';
+import 'generated/earth_series.dart';
+import 'generated/moon_series.dart';
 
 const _tau = 2 * math.pi;
 const _scale = 2922000.0;
@@ -28,7 +29,7 @@ double _value(List<double> a, double x) {
 }
 
 List<double> _earthValues(double jd, int? l, int? b, int? r) {
-  final t = (jd - j2000) / 365250, groups = planetSeries['earth']!;
+  final t = (jd - j2000) / 365250, groups = earthSeries;
   final degree = groups.map((a) => a.length).reduce(math.max) - 1;
   final basis = List<double>.filled(degree + 1, 0);
   basis[0] = 1;

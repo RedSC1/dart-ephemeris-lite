@@ -1,6 +1,6 @@
 // Pure Dart port of coordinates.js. MPL-2.0.
 import 'dart:math' as math;
-import 'ephemeris.dart' show j2000;
+import 'ephemeris_types.dart' show j2000;
 import 'generated/coordinate_data.dart';
 
 const arcsecToRad = math.pi / 648000;

@@ -1,8 +1,8 @@
 // Accurate apparent-position event roots, ported from calendar-events.js.
 import 'dart:math' as math;
-import 'apparent.dart';
+import 'sun_moon_apparent.dart';
 import 'coordinates.dart' show ScalarState;
-import 'ephemeris.dart' show j2000;
+import 'sun_moon_ephemeris.dart' show j2000;
 import 'event_fast.dart';
 
 double _wrap(double angle) => math.atan2(math.sin(angle), math.cos(angle));

@@ -1,7 +1,7 @@
 // Dedicated calendar-event model. The mid model is not apparentBodyState.
 import 'dart:math' as math;
 import 'coordinates.dart';
-import 'ephemeris.dart';
+import 'sun_moon_ephemeris.dart';
 import 'event_fast.dart';
 import 'generated/event_data.dart';
 import 'sky_math.dart';

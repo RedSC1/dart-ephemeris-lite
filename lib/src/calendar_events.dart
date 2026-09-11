@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'accuracy.dart';
-import 'ephemeris.dart' show j2000;
+import 'sun_moon_ephemeris.dart' show j2000;
 import 'event_fast.dart';
 import 'event_accurate.dart';
 import 'event_mid.dart';
