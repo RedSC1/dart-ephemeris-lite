@@ -2,7 +2,7 @@ name: ephemeris_lite
 description: >-
   Pure Dart astronomy and calendar library with planetary and lunar positions,
   solar terms, moon phases, eclipses, Chinese calendars and solar time.
-version: 1.0.0-beta.2
+version: 1.0.0
 repository: https://github.com/RedSC1/dart-ephemeris-lite
 topics:
   - astronomy

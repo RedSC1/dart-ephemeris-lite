@@ -36,11 +36,11 @@ Generated tables and evaluators are separate. Lunar phase caches are local to an
 
 Historical reverse-lookup ambiguities remain documented in [historical calendars](calendar-history.en.md). Matching an inherited result is not a correction of that result.
 
-New `bazi_core` and `ziwei_core` consumers have integration regressions but remain separately versioned. The core beta is published; consumers pin dependencies independently. Legacy application/data migration needs separate validation.
+New `bazi_core` and `ziwei_core` consumers have integration regressions but remain separately versioned. The core and its consumers are published independently and pin their dependencies separately. Legacy application/data migration needs separate validation.
 
 Dart-specific optimization and stable-release review are separate work. Some mid value-only stages reuse derivative evaluators, so equivalent numeric results do not imply identical JS work or performance.
 
-A release must retain provenance hashes, avoid placeholder implementations and unexplained tolerance relaxation, and pass content review, analysis, tests and `dart pub publish --dry-run`. The current baseline is `1.0.0-beta.2`; publication does not remove known limitations.
+A release must retain provenance hashes, avoid placeholder implementations and unexplained tolerance relaxation, and pass content review, analysis, tests and `dart pub publish --dry-run`. The current baseline is `1.0.0`; publication does not remove known limitations.
 
 ## Verification entry points
 

@@ -6,16 +6,16 @@ A pure Dart astronomy and calendar library for Dart and Flutter. It provides cel
 
 Ported from [js-ephemeris-lite](https://github.com/RedSC1/js-ephemeris-lite). Planetary models derive from VSOP2013/TOP2013, the Moon from ELP/MPP02, with selected coefficients calibrated against DE441. Historical-calendar and other data sources are documented in the third-party notices. APIs use Dart named parameters, enums and result types, without a JavaScript engine or FFI.
 
-Current version: `1.0.0-beta.2`. This is the astronomy/calendar core; Ten Gods and full BaZi/Ziwei charts belong to separate higher-level packages. Star catalogs are supplied by the application, not bundled.
+Current stable version: `1.0.0`. This is the astronomy/calendar core; Ten Gods and full BaZi/Ziwei charts belong to separate higher-level packages. Star catalogs are supplied by the application, not bundled.
 
 ## Installation
 
 ```yaml
 dependencies:
-  ephemeris_lite: 1.0.0-beta.2
+  ephemeris_lite: ^1.0.0
 ```
 
-Run `dart pub get`, or `flutter pub get` in a Flutter project. Pin the prerelease initially and adjust the constraint after validating compatibility.
+Run `dart pub get`, or `flutter pub get` in a Flutter project.
 
 ## Runnable example
 

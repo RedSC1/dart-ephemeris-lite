@@ -6,16 +6,16 @@
 
 移植自 [js-ephemeris-lite](https://github.com/RedSC1/js-ephemeris-lite)。行星模型基于 VSOP2013/TOP2013，月球基于 ELP/MPP02，部分系数经 DE441 校准；历史历法及相关数据来源见第三方声明。API 使用 Dart 命名参数、枚举和结果类型，不依赖 JavaScript 引擎或 FFI。
 
-当前版本：`1.0.0-beta.2`。本包是天文与历法内核；十神及完整八字、紫微排盘属于独立上层包，不包含在本包中。恒星表由应用加载，不内置目录数据。
+当前稳定版本：`1.0.0`。本包是天文与历法内核；十神及完整八字、紫微排盘属于独立上层包，不包含在本包中。恒星表由应用加载，不内置目录数据。
 
 ## 安装
 
 ```yaml
 dependencies:
-  ephemeris_lite: 1.0.0-beta.2
+  ephemeris_lite: ^1.0.0
 ```
 
-运行 `dart pub get`，Flutter 项目使用 `flutter pub get`。测试版可先固定版本，确认兼容后再调整约束。
+运行 `dart pub get`，Flutter 项目使用 `flutter pub get`。
 
 ## 可运行示例
 
