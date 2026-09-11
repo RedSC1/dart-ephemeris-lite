@@ -1,5 +1,8 @@
 name: Dart port tests
-on: [push, pull_request]
+on:
+  push:
+    tags:
+      - "v*"
 permissions:
   contents: read
 jobs:
