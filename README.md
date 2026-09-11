@@ -6,11 +6,11 @@
 
 本项目移植自 [js-ephemeris-lite](https://github.com/RedSC1/js-ephemeris-lite)。
 行星模型基于 VSOP2013/TOP2013，月球模型基于 ELP/MPP02，部分系数采用 DE441 校准；
-历史历法、算术回历及纪年资料的来源见[第三方声明](https://github.com/RedSC1/ephemeris_lite/blob/main/THIRD_PARTY_NOTICES.zh-CN.md)。
+历史历法、算术回历及纪年资料的来源见[第三方声明](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/THIRD_PARTY_NOTICES.zh-CN.md)。
 API 使用 Dart 的命名参数、枚举和结果类型，不依赖 JavaScript 引擎或 FFI。
 
 当前版本为 `1.0.0-beta.1`。算法与数值语义以对应 JS 实现为基准，
-源码版本和数据哈希记录在 [上游记录](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/upstream.json) 中。
+源码版本和数据哈希记录在 [上游记录](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/upstream.json) 中。
 
 ## 功能概览
 
@@ -64,14 +64,14 @@ void main() {
 
 | 需求 | 文档 |
 | --- | --- |
-| 从 JavaScript API 迁移 | [API 对照表](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/api-map.md) |
-| 历史月名、归日与反查限制 | [历史历法](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/calendar-history.md) |
-| 算术回历 | [回历转换](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/hijri-calendar.md) |
-| 升落、极区状态与折射 | [可见性](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/visibility.md) |
-| 合冲、留、大距与近远点 | [天象事件](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/sky-events.md) |
-| 全球搜索与地方食况 | [日食](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/solar-eclipses.md)、[月食](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/lunar-eclipses.md) |
-| 外部星表与恒星计算 | [恒星](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/fixed-stars.md) |
-| 日月独立入口与 Web 体积 | [模块加载](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/module-loading.md) |
+| 从 JavaScript API 迁移 | [API 对照表](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/api-map.md) |
+| 历史月名、归日与反查限制 | [历史历法](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/calendar-history.md) |
+| 算术回历 | [回历转换](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/hijri-calendar.md) |
+| 升落、极区状态与折射 | [可见性](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/visibility.md) |
+| 合冲、留、大距与近远点 | [天象事件](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/sky-events.md) |
+| 全球搜索与地方食况 | [日食](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/solar-eclipses.md)、[月食](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/lunar-eclipses.md) |
+| 外部星表与恒星计算 | [恒星](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/fixed-stars.md) |
+| 日月独立入口与 Web 体积 | [模块加载](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/module-loading.md) |
 | 生成 API 文档与运行验证 | [文档与开发](#文档生成与开发验证) |
 
 ## 时间、单位与精度约定
@@ -137,7 +137,7 @@ print(solar.toJson());
 ```
 
 **历史边界限制**：秦汉和 762 年改历的重复年份/月标，沿用上游首个匹配反查时存在歧义。
-移植一致性不等于所有历史日期都能正确往返，详见 [历史历法说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/calendar-history.md)。
+移植一致性不等于所有历史日期都能正确往返，详见 [历史历法说明](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/calendar-history.md)。
 
 ### 干支与纪年
 
@@ -173,7 +173,7 @@ print(moon.upperTransits);
 ```
 
 通用接口的起点是 UT1 儒略日，返回该起点后一天内的全部事件；极昼／极夜不会填入虚构的升落时刻。
-模型差异、时间窗口和地形等限制见 [可见性说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/visibility.md)。
+模型差异、时间窗口和地形等限制见 [可见性说明](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/visibility.md)。
 
 ### 月球照明与行星留
 
@@ -185,7 +185,7 @@ final stations = searchStations(SkyBody.mercury, start.jdTT, end.jdTT);
 ```
 
 事件区间使用 TT，合冲按黄经差定义；数值容差与实际模型精度不同。
-参考系、逆行及圆面模型限制见 [天象事件说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/sky-events.md)。
+参考系、逆行及圆面模型限制见 [天象事件说明](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/sky-events.md)。
 
 ### 近远点、大距与赤经事件
 
@@ -202,7 +202,7 @@ final conjunctions = searchRelativeRightAscension(
 );
 ```
 
-近远点使用全量几何状态；视赤经与大距接口使用视位置选项。月球交点可选择参考黄道，详见 [天象事件说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/sky-events.md)。
+近远点使用全量几何状态；视赤经与大距接口使用视位置选项。月球交点可选择参考黄道，详见 [天象事件说明](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/sky-events.md)。
 
 ### 月食
 
@@ -215,7 +215,7 @@ final local = getLocalLunarEclipse(eclipses.first.maximum,
 print(local?.toJson());
 ```
 
-日月食入口使用 `JulianTime`，避免裸数字的 TT/UT1 歧义；没有额外精度档位。范围、标准大气与圆面限制见 [月食说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/lunar-eclipses.md)。
+日月食入口使用 `JulianTime`，避免裸数字的 TT/UT1 歧义；没有额外精度档位。范围、标准大气与圆面限制见 [月食说明](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/lunar-eclipses.md)。
 
 ### 日食与恒星
 
@@ -234,16 +234,16 @@ print(star.toJson());
 ```
 
 恒星目录外置，底层无网络或文件系统依赖，不把测试用星表加入发布产物。Gaia ID 使用 BigInt，JSON 中转十进制字符串；缺测数值转 null。
-详见 [日食说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/solar-eclipses.md) 与 [恒星说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/fixed-stars.md)。
+详见 [日食说明](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/solar-eclipses.md) 与 [恒星说明](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/fixed-stars.md)。
 
-算术回历正反转换、月长与闰年接口见 [算术回历说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/hijri-calendar.md)。示例：`dart run example/hijri_calendar.dart`。
+算术回历正反转换、月长与闰年接口见 [算术回历说明](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/hijri-calendar.md)。示例：`dart run example/hijri_calendar.dart`。
 
 ## 日月独立入口
 
 只用日月几何位置时，可导入 `package:ephemeris_lite/sun_moon.dart`。
 原主入口保持兼容；气朔、太阳时已脱离其他行星目录，便于编译器按需裁剪。
 拆分不减少系数、不改变精度，也不减少 pub 源码包总量。
-详见[模块拆分与 Dart Web 实测](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/module-loading.md)。
+详见[模块拆分与 Dart Web 实测](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/module-loading.md)。
 
 ## 文档生成与开发验证
 
@@ -267,9 +267,9 @@ dart run example/main.dart
 测试覆盖 JS/Dart 数值对拍、时间尺度、历法边界、气朔、天象事件及非法输入。
 跨运行时验证还包含 Dart 编译到 JavaScript 后的结果对照。
 移植一致性测试不等于独立的 DE441 精度评估，也不构成未来 ΔT 精度保证。
-系数和对拍数据的重建方式见[开发文档](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/development.md)。
+系数和对拍数据的重建方式见[开发文档](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/doc/development.md)。
 
 ## 许可证与来源
 
-本项目采用 [MPL-2.0](https://github.com/RedSC1/ephemeris_lite/blob/main/LICENSE)。数值模型与数据的来源、版权及许可证说明见
-[中文第三方声明](https://github.com/RedSC1/ephemeris_lite/blob/main/THIRD_PARTY_NOTICES.zh-CN.md)和[英文第三方声明](https://github.com/RedSC1/ephemeris_lite/blob/main/THIRD_PARTY_NOTICES.md)。
+本项目采用 [MPL-2.0](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/LICENSE)。数值模型与数据的来源、版权及许可证说明见
+[中文第三方声明](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/THIRD_PARTY_NOTICES.zh-CN.md)和[英文第三方声明](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/THIRD_PARTY_NOTICES.md)。
