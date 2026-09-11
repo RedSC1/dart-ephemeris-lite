@@ -1,5 +1,28 @@
 # 日月与其他行星的模块拆分
 
+[中文](module-loading.md) | [English](module-loading.en.md) · [文档首页](README.md)
+
+## 可运行示例
+
+[sun_moon.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/example/sun_moon.dart)
+
+```sh
+dart run example/sun_moon.dart
+```
+
+<!-- example: example/sun_moon.dart -->
+```dart
+import 'package:ephemeris_lite/sun_moon.dart';
+
+void main() {
+  const jdTT = 2451545.0;
+  final earth = earthState(jdTT, accuracy: Accuracy.mid);
+  final moon = moonState(jdTT, accuracy: Accuracy.fast);
+  print('Earth [AU]: ${earth.position}');
+  print('Moon [km]: ${moon.position}');
+}
+```
+
 `generated/*_series.dart` 按天体存放系数，`generated/series.dart` 保留聚合导出，
 供内部兼容和离线工具使用。地球计算直接读取 `earthSeries`，不经过全部行星
 目录；月球仍使用同一套共享相位求值。`planet_evaluator.dart` 提供通用求值器，
@@ -12,15 +35,6 @@
 现有 `package:ephemeris_lite/ephemeris_lite.dart` API 保持兼容；只需要日月
 几何位置时也可以显式使用：
 
-```dart
-import 'package:ephemeris_lite/sun_moon.dart';
-
-void main() {
-  final earth = earthState(2451545, accuracy: Accuracy.mid);
-  final moon = moonState(2451545, accuracy: Accuracy.fast);
-  print([earth.position, moon.position]);
-}
-```
 
 不必更换上层八字、紫微的依赖或导入。Dart 编译器按可达代码裁剪；关键是
 日月计算不再访问包含所有行星的映射，而不是单纯把一个文件切成多个文件。

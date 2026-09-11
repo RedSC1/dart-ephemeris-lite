@@ -1,5 +1,32 @@
 # 地平坐标与升落
 
+[中文](visibility.md) | [English](visibility.en.md) · [文档首页](README.md)
+
+## 可运行示例
+
+[visibility.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/example/visibility.dart)
+
+```sh
+dart run example/visibility.dart
+```
+
+<!-- example: example/visibility.dart -->
+```dart
+import 'package:ephemeris_lite/ephemeris_lite.dart';
+
+void main() {
+  const site = Observer(longitudeDeg: 116.4074, latitudeDeg: 39.9042);
+  final date = ZonedTime(year: 2026, month: 6, day: 21, offsetMinutes: 480);
+  final solar = solarRiseSetForDate(date, site);
+  print('Sun: ${solar.altitudeState.name}');
+  print(solar.rise?.toZonedTime(480).toJson());
+  final moon = bodyRiseSetForDay(SkyBody.moon, date.toJulianTime().jdUT1, site);
+  for (final rise in moon.rises) {
+    print(rise.toZonedTime(480).toJson());
+  }
+}
+```
+
 ## 两种时间窗口
 
 - `solarRiseSetForDate(ZonedTime, observer)` 使用该时区的民用日期，忽略时分秒，以当地正午为中心取 24 小时。

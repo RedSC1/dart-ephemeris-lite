@@ -1,5 +1,78 @@
 # 光照相位与黄经事件
 
+[中文](sky-events.md) | [English](sky-events.en.md) · [文档首页](README.md)
+
+## 可运行示例
+
+[sky_events.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/example/sky_events.dart)
+
+```sh
+dart run example/sky_events.dart
+```
+
+<!-- example: example/sky_events.dart -->
+```dart
+import 'package:ephemeris_lite/ephemeris_lite.dart';
+
+void main() {
+  final start = ZonedTime(
+    year: 2026,
+    month: 1,
+    day: 1,
+    offsetMinutes: 0,
+  ).toJulianTime().jdTT;
+  final end = ZonedTime(
+    year: 2027,
+    month: 1,
+    day: 1,
+    offsetMinutes: 0,
+  ).toJulianTime().jdTT;
+  for (final station in searchStations(SkyBody.mercury, start, end)) {
+    print(
+      '${station.time.toZonedTime(480).toJson()} ${station.direction.name}',
+    );
+  }
+  print(moonIllumination(start).toJson());
+}
+```
+
+[orbital_events.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/example/orbital_events.dart)
+
+```sh
+dart run example/orbital_events.dart
+```
+
+<!-- example: example/orbital_events.dart -->
+```dart
+import 'package:ephemeris_lite/ephemeris_lite.dart';
+
+void main() {
+  final start = ZonedTime(
+    year: 2026,
+    month: 1,
+    day: 1,
+    offsetMinutes: 0,
+  ).toJulianTime().jdTT;
+  final end = ZonedTime(
+    year: 2027,
+    month: 1,
+    day: 1,
+    offsetMinutes: 0,
+  ).toJulianTime().jdTT;
+  for (final event in searchLunarApsides(start, end)) {
+    print(event.toJson());
+  }
+  for (final event in searchGreatestElongations(
+    SkyBody.mercury,
+    start,
+    end,
+    apparent: const ApparentOptions(accuracy: Accuracy.mid),
+  )) {
+    print(event.toJson());
+  }
+}
+```
+
 ## 光照与视圆面
 
 `bodyPhenomena(body, jdTT)` 返回地心距离、相位角、被照亮比例、太阳角距、视直径和地平视差。太阳自身的相位角和照明比例为 null。

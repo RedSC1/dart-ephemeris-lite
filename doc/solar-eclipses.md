@@ -1,5 +1,40 @@
 # 日食
 
+[中文](solar-eclipses.md) | [English](solar-eclipses.en.md) · [文档首页](README.md)
+
+## 可运行示例
+
+[local_solar_eclipse.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/example/local_solar_eclipse.dart)
+
+```sh
+dart run example/local_solar_eclipse.dart
+```
+
+<!-- example: example/local_solar_eclipse.dart -->
+```dart
+import 'package:ephemeris_lite/ephemeris_lite.dart';
+
+void main() {
+  final date = ZonedTime(
+    year: 2024,
+    month: 4,
+    day: 8,
+    offsetMinutes: 0,
+  ).toJulianTime();
+  final global = getSolarEclipseDetails(date);
+  if (global == null) {
+    print('No solar eclipse in this lunation.');
+    return;
+  }
+  print(global.toJson());
+  final local = getLocalSolarEclipse(
+    date,
+    const Observer(longitudeDeg: -96.8, latitudeDeg: 32.8),
+  );
+  print(local?.toJson());
+}
+```
+
 `getSolarEclipseDetails(date)` 查询输入附近朔所属的日食，无食返回 null，不是任意最近日食搜索。`searchSolarEclipses(start,end)` 按全球食甚筛选半开区间；输入为 JulianTime，结束必须晚于开始，一次至多 5000 个朔望月（含内部余量）。
 
 结果包括 partial / total / annular / hybrid、合朔与食甚、最大食地点、食分、带宽、中心食持续时间及接触地理点。不可把全球食甚等同于每个观测点的地方食甚。未发生的中心食接触返回 null。

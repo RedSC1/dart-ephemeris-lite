@@ -3,6 +3,8 @@ import 'package:ephemeris_lite/ephemeris_lite.dart';
 
 void main() {
   final exports = <Object>[
+    getPillarTermBoundary,
+    getPreviousPillarJie,
     solarToHijri,
     hijriToSolar,
     instantToHijri,

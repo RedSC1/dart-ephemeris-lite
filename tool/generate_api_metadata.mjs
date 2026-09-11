@@ -22,5 +22,23 @@ await writeFile(resolve(root,'tool/api_surface_check.dart'),
 import 'package:ephemeris_lite/ephemeris_lite.dart';
 void main() {final exports=<Object>[${names.join(',')}]; print('Public API entries: \${exports.length}');}
 `);
-const lines=Object.keys(api).map(key=>`| \`${key}\` | \`${mapped[key]??key}\` | ${typeof api[key]==='function'?'Dart 函数／类型':'常量（枚举参数另有类型安全入口）'} |`);
-await writeFile(resolve(root,'doc/api-map.md'),'# JS → Dart 公共 API 对照\n\n以 JS 根入口的 '+names.length+' 个导出为范围。Dart 使用命名参数、枚举、JulianTime 和不可变结果；名称对应不表示可直接复制 JS 调用语法。源码内部求值器不属于公共移植范围。\n\n| JS | Dart | 形式 |\n| --- | --- | --- |\n'+lines.join('\n')+'\n');
+// Update only the marked tables; preserve handwritten bilingual guides.
+for (const [suffix, language] of [['', 'zh'], ['.en', 'en']]) {
+  const file = resolve(root, `doc/api-map${suffix}.md`);
+  const document = await readFile(file, 'utf8');
+  const begin = '<!-- api-map:start -->';
+  const end = '<!-- api-map:end -->';
+  const start = document.indexOf(begin), finish = document.indexOf(end);
+  if (start < 0 || finish < start || document.indexOf(begin, start + 1) >= 0) {
+    throw new Error(`Missing or duplicate API table markers: ${file}`);
+  }
+  const zh = language === 'zh';
+  const lines = Object.keys(api).map(key => {
+    const kind = typeof api[key] === 'function'
+      ? (zh ? 'Dart 函数／类型' : 'Dart function/type')
+      : (zh ? '常量／元数据（参数类型见 API 文档）' : 'Constant/metadata; see typed API parameters');
+    return `| \`${key}\` | \`${mapped[key] ?? key}\` | ${kind} |`;
+  });
+  const table = `| JS | Dart | ${zh ? '形式' : 'Kind'} |\n| --- | --- | --- |\n${lines.join('\n')}`;
+  await writeFile(file, document.slice(0, start) + begin + '\n' + table + '\n' + document.slice(finish));
+}

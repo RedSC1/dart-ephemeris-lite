@@ -1,22 +1,31 @@
 # 算术回历
 
-`solarToHijri`、`hijriToSolar`、`instantToHijri` 与 JS 同步提供。
-保留原 `oba.getHuiLi()` 的算术规则，用整数周期运算实现并补充反向转换；
-与旧近似公式逐日比较五个完整周期（53155 天），JS/Dart 共用冻结样本。
+[中文](hijri-calendar.md) | [English](hijri-calendar.en.md) · [文档首页](README.md)
 
+## 可运行示例
+
+[hijri_calendar.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/example/hijri_calendar.dart)
+
+```sh
+dart run example/hijri_calendar.dart
+```
+
+<!-- example: example/hijri_calendar.dart -->
 ```dart
 import 'package:ephemeris_lite/ephemeris_lite.dart';
 
 void main() {
   final date = solarToHijri(const CalendarDate(year: 2000, month: 1, day: 1));
-  print(date); // 1420-9-24 AH
-  final civil = hijriToSolar(date);
-  print(civil.toJson()); // 2000-01-01，时分秒均为 0
+  print('Arithmetic Hijri: $date');
+  print('Civil date: ${hijriToSolar(date).toJson()}');
   print(instantToHijri(JulianTime.fromUT1(2451545), offsetMinutes: 480));
-  print(hijriMonthDays(2, 12)); // 30
-  print(isHijriLeapYear(2)); // true
 }
 ```
+
+`solarToHijri`、`hijriToSolar`、`instantToHijri` 与 JS 同步提供。
+保留原 `oba.getHuiLi()` 的算术规则，用整数周期运算实现并补充反向转换；
+与旧近似公式逐日比较五个完整周期（53155 天），JS/Dart 共用冻结样本。
+
 
 ## 规则与限制
 

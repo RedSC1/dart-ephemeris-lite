@@ -1,12 +1,14 @@
 # 测试迁移与覆盖审计
 
-本次对照 JS 主包、旧纯 Dart 库和旧 Dart FFI 封装的测试。测试场景按新 API 合并，
+[中文](test-migration.md) | [English](test-migration.en.md) · [文档首页](README.md)
+
+本页记录 JS 主包、旧纯 Dart 库和旧 Dart FFI 封装的测试。测试场景按新 API 合并，
 不保留旧 API 名称、全局状态或 FFI 初始化代码。**公共 API 已移植，不等于旧测试逐条原样通过。**
 
 源版本、文件 SHA-256 和原测试标题清单见 [`tool/test-sources.json`](../tool/test-sources.json)。
 该清单是源测试清单，不是“每一条断言均已迁移”的证明。生成数据与独立参考值分开保存。
 
-## 本轮运行结果（2026-09-08）
+## 历史审计基线（2026-09-08）
 
 - Dart VM：115 项通过，1 项明确跳过（下述 PMO 食带宽差异）；原有 68 项基础上补入回归场景。
 - 静态分析无问题；10 组编译后 JavaScript 回归实际执行通过。
@@ -113,7 +115,6 @@ EPHEMERIS_CHECK_PMO_WIDTH=1 dart test test/upstream_eclipse_test.dart --name 'kn
 dart analyze
 dart test
 dart test --coverage=/tmp/ephemeris-coverage
-dart run coverage:format_coverage --lcov --in=/tmp/ephemeris-coverage --out=/tmp/ephemeris.lcov --report-on=lib
 dart compile js tool/test_regression_portability_check.dart -o /tmp/regressions.js
 node /tmp/regressions.js
 ```
@@ -121,3 +122,5 @@ node /tmp/regressions.js
 测试、冻结星表与生成工具通过 `.pubignore` 排除，不增加发布包的运行时数据或依赖。
 
 后续算术回历测试单独增加了共享冻结样本、五个完整周期的逐日兼容/反向转换检查和 Web 编译运行；上面的运行统计是迁移审计当时的基线。
+
+覆盖率命令输出原始数据；转为 LCOV 需另行安装可选的 `coverage` 开发工具，它不属于运行时依赖。

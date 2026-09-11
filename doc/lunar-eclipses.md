@@ -1,5 +1,41 @@
 # 月食
 
+[中文](lunar-eclipses.md) | [English](lunar-eclipses.en.md) · [文档首页](README.md)
+
+## 可运行示例
+
+[local_lunar_eclipse.dart](https://github.com/RedSC1/dart-ephemeris-lite/blob/main/example/local_lunar_eclipse.dart)
+
+```sh
+dart run example/local_lunar_eclipse.dart
+```
+
+<!-- example: example/local_lunar_eclipse.dart -->
+```dart
+import 'package:ephemeris_lite/ephemeris_lite.dart';
+
+void main() {
+  final start = ZonedTime(
+    year: 2025,
+    month: 1,
+    day: 1,
+    offsetMinutes: 0,
+  ).toJulianTime();
+  final end = ZonedTime(
+    year: 2026,
+    month: 1,
+    day: 1,
+    offsetMinutes: 0,
+  ).toJulianTime();
+  const site = Observer(longitudeDeg: 116.4074, latitudeDeg: 39.9042);
+  for (final eclipse in searchLunarEclipses(start, end)) {
+    print('Global maximum: ${eclipse.maximum.toZonedTime(480).toJson()}');
+    final local = getLocalLunarEclipse(eclipse.maximum, site);
+    print(local?.toJson());
+  }
+}
+```
+
 ## 接口与时间
 
 - `getLunarEclipseDetails(JulianTime date)` 返回日期附近对应望的月食，若该望没有月食则返回 null；不是搜索最近一次月食。

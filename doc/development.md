@@ -1,5 +1,7 @@
 # 开发与数据同步
 
+[中文](development.md) | [English](development.en.md) · [文档首页](README.md)
+
 ## API 文档
 
 公共接口使用 `///` Dartdoc 注释。修改接口时同步维护参数的时间尺度、角度／距离单位、
@@ -16,6 +18,9 @@ dart doc --validate-links
 不提交或发布生成的 HTML；手写指南保留在 `doc/*.md`。
 README 的仓库文件链接使用绝对 URL，以兼容 GitHub、pub.dev 与生成的 HTML。
 链接校验检查生成文档的内部引用，不验证外部仓库访问权限。
+
+中英文专题页使用相同的 `example/` 源码。中文页保留原名，英文页使用 `.en.md`；
+修改示例时同步两页的代码块。API 生成器只更新两种语言的标记表格，不覆盖手写说明。
 
 ## 数据同步
 
@@ -67,7 +72,7 @@ CI 运行静态分析、回归测试，并编译/执行纯 Dart 示例的 JavaSc
 - 不通过 Dart FFI 调用 C++。
 - 不嵌入 JS 引擎或依赖旧 Dart 底层。
 - 不在移植时偷偷更换天文模型或历法策略。
-- 不在新底层尚不可用时修改旧排盘包。
+- 不在本包中发布上层排盘规则。
 
 ## 新增模块的验证
 
@@ -141,7 +146,7 @@ CI 运行静态分析、回归测试，并编译/执行纯 Dart 示例的 JavaSc
 - 日食事件时刻跨语言容差 0.1 秒、接触点／最大食地点 0.002 度、带宽 0.02 km；类目与可见性必须一致。局部极值优化的地点对浮点路径敏感，角度阈值不是地理预测精度承诺。
 - 恒星位置采用绝对加相对舍入容差；远距离坐标的差分速度容差 1e-3 AU/day，角速度 1e-7 度/day。它们不是恒星模型误差界。
 - `generate_budget_oracles.mjs`：100 个自定义预算案例，覆盖 0/10/30/277/full、两个均衡求根器和三档位置精度。
-- `generate_api_metadata.mjs`：生成公共元数据、195 项导出编译清单与 API 对照文档。每次生成后运行 Dart format。
+- `generate_api_metadata.mjs`：生成公共元数据、公共导出编译清单与 API 对照文档。每次生成后运行 Dart format。
 - `tool/remaining_portability_check.dart` 编译到 JS 后重新核对恒星及日食。64 位哈希和 Gaia ID 不经过 double。
 - `.pubignore` 排除测试、星表、工具与本地计划，运行库不含外置星表。发布前运行 `dart pub publish --dry-run`；底层发布与上层包的迁移、发布分别处理。
 
