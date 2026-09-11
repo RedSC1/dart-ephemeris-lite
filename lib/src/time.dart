@@ -367,6 +367,13 @@ class ZonedTime extends CalendarDate {
         offsetMinutes / 1440,
   );
 
+  /// 将同一物理瞬间显示为另一个固定时区的民用钟表。
+  ZonedTime toZonedTime(int offsetMinutes) =>
+      ZonedTime.fromJulianTime(toJulianTime(), offsetMinutes: offsetMinutes);
+
+  /// 将同一物理瞬间显示为 UTC+00:00 钟表。
+  ZonedTime toUtc() => toZonedTime(0);
+
   /// 转换为 UTC DateTime；历史日期按同一时间戳对应。
   DateTime toDateTime() => toJulianTime().toDateTime();
   @override

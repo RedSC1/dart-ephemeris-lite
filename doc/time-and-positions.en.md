@@ -40,6 +40,10 @@ void main() {
 
 Represent a fixed-offset civil time with `ZonedTime`, then convert to `JulianTime`. Geometric/apparent positions and general sky-event searches use `jdTT`. Instant-to-calendar conversion, horizontal coordinates and day boundaries use `jdUT1`. Do not interchange bare numbers.
 
+An existing `ZonedTime` can be displayed directly in another fixed offset with
+`clock.toZonedTime(480)` or `clock.toUtc()`. Both preserve the physical instant;
+fixed offsets do not apply daylight-saving rules.
+
 `JulianTime.fromTT` and `fromUT1` use the built-in ΔT model. `fromValues` accepts external TT, UT1 and ΔT in seconds and checks consistency. UTC labels approximate UT1; there is no complete UTC/TAI leap-second or EOP model.
 
 `DateTime` is imported by timestamp, not by reinterpreting civil fields. Civil dates use the hybrid Julian/Gregorian calendar with the 1582-10-15 cutover and astronomical year numbering (0 = 1 BCE). Use `ZonedTime` to validate dates; low-level `julianDay` permits day-overflow normalization.

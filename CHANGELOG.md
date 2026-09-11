@@ -1,3 +1,9 @@
+## 1.1.0
+
+- 为 `ZonedTime` 增加直接的固定偏移转换 `toZonedTime()` 与 `toUtc()`，无需经由 `JulianTime` 中转。
+- 将排盘钟面时间的规范化入口命名为 `normalizeChartTime()`；旧名 `normalizeChartVirtualTime()` 保留为弃用别名。
+- 补充对应的中英文时间、干支与 API 对照文档；数值模型与历法结果不变。
+
 ## 1.0.0
 
 - 首个稳定版本；公共 API、数值模型与 `1.0.0-beta.2` 保持一致。

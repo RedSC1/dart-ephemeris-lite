@@ -42,7 +42,7 @@ void main() {
 
 ## 时刻与子时规则
 
-`fourPillarsForZonedTime` 接受固定时区民用时间。`calculateFourPillars(jdUT1, virtualTime)` 将实际瞬间和钟面分开：年、月柱比较 UT1 的节气边界，日、时柱读取钟面字段，可用平／真太阳钟。
+`fourPillarsForZonedTime` 接受固定时区民用时间。`calculateFourPillars(jdUT1, chartTime)` 将实际瞬间和钟面分开：年、月柱比较 UT1 的节气边界，日、时柱读取钟面字段，可用平／真太阳钟。`normalizeChartTime` 是规范化入口；旧名 `normalizeChartVirtualTime` 暂作兼容别名。
 
 基础规则为立春换年、节换月，不提供春节换年开关。
 

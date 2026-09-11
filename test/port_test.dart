@@ -111,6 +111,28 @@ void main() {
       j2000,
     );
   });
+  test('ZonedTime converts directly between fixed offsets', () {
+    final china = ZonedTime(
+      year: 2025,
+      month: 1,
+      day: 29,
+      hour: 12,
+      minute: 30,
+      second: 15.25,
+      offsetMinutes: 480,
+    );
+    final utc = china.toUtc();
+    expect(utc.offsetMinutes, 0);
+    expect(
+      [utc.year, utc.month, utc.day, utc.hour, utc.minute],
+      [2025, 1, 29, 4, 30],
+    );
+    expect(utc.second, closeTo(15.25, 5e-5));
+    expect(
+      utc.toZonedTime(480).toJulianTime().jdUT1,
+      closeTo(china.toJulianTime().jdUT1, 1e-12),
+    );
+  });
   test('state results are immutable; centers and units remain explicit', () {
     final e = earthState(j2000),
         m = moonState(j2000),

@@ -166,7 +166,7 @@ The current table has 202 entries, including arithmetic Hijri and pillar term-bo
 | `moonState` | `moonState` | Dart function/type |
 | `neptuneHeliocentricPosition` | `neptuneHeliocentricPosition` | Dart function/type |
 | `neptuneHeliocentricState` | `neptuneHeliocentricState` | Dart function/type |
-| `normalizeChartVirtualTime` | `normalizeChartVirtualTime` | Dart function/type |
+| `normalizeChartTime` | `normalizeChartTime` | Dart function/type; deprecated `normalizeChartVirtualTime` remains an alias |
 | `normalizeTsc1Alias` | `normalizeTsc1Alias` | Dart function/type |
 | `parseTsc1Catalog` | `parseTsc1Catalog` | Dart function/type |
 | `planetGeocentricPosition` | `planetGeocentricPosition` | Dart function/type |

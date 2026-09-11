@@ -187,19 +187,19 @@ void _validate(CalendarDate v) {
       v.hour > 23 ||
       v.minute < 0 ||
       v.minute > 59) {
-    throw RangeError('virtualTime field is outside its valid range');
+    throw RangeError('chartTime field is outside its valid range');
   }
   final roundtrip = calendarDateFromJulianDay(_jd(_clock(v, hour: 12)));
   if (roundtrip.year != v.year ||
       roundtrip.month != v.month ||
       roundtrip.day != v.day) {
-    throw RangeError('invalid virtualTime');
+    throw RangeError('invalid chartTime');
   }
 }
 
 /// Canonicalizes exact JD spellings of civil-hour boundaries, without a broad
 /// time epsilon. Returns civil fields only; it does not redefine the instant.
-CalendarDate normalizeChartVirtualTime(CalendarDate v) {
+CalendarDate normalizeChartTime(CalendarDate v) {
   _validate(v);
   if (v.minute != 0 && v.minute != 59) {
     return v;
@@ -218,6 +218,10 @@ CalendarDate normalizeChartVirtualTime(CalendarDate v) {
   }
   return v;
 }
+
+/// [normalizeChartTime] 的兼容别名。
+@Deprecated('Use normalizeChartTime')
+CalendarDate normalizeChartVirtualTime(CalendarDate v) => normalizeChartTime(v);
 
 /// Civil date only; time-of-day fields are deliberately ignored.
 int calculateDayPillar(CalendarDate date) {
@@ -300,13 +304,13 @@ CalendarSolarTerm getPreviousPillarJie(
   throw StateError('previous pillar Jie boundary not found');
 }
 
-/// 按实际瞬间与虚拟钟面计算四柱。
+/// 按实际瞬间与排盘钟面计算四柱。
 ///
-/// [jdUT1] 控制年、月节气边界；virtualTime 控制日、时柱，可传入
+/// [jdUT1] 控制年、月节气边界；[chartTime] 控制日、时柱，可传入
 /// 平太阳钟或真太阳钟。历史节气规则和子时规则由命名参数分别控制。
 FourPillars calculateFourPillars(
   double jdUT1,
-  CalendarDate virtualTime, {
+  CalendarDate chartTime, {
   CalendarOptions? options,
   RatHourMode ratHourMode = RatHourMode.nextDay,
   PillarHistoricalMode pillarHistoricalMode =
@@ -315,8 +319,7 @@ FourPillars calculateFourPillars(
   if (!jdUT1.isFinite) {
     throw ArgumentError.value(jdUT1, 'jdUT1');
   }
-  final v = normalizeChartVirtualTime(virtualTime),
-      o = options ?? CalendarOptions();
+  final v = normalizeChartTime(chartTime), o = options ?? CalendarOptions();
   final historical = switch (pillarHistoricalMode) {
     PillarHistoricalMode.on => true,
     PillarHistoricalMode.off => false,

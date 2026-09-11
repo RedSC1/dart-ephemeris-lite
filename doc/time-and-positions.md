@@ -40,6 +40,8 @@ void main() {
 
 使用 `ZonedTime` 表达固定时区民用时间，再转换为 `JulianTime`。几何位置、视位置和通用天象搜索使用 `jdTT`；农历瞬时转换、地平坐标与日界使用 `jdUT1`。不要把两个裸数字混用。
 
+已有 `ZonedTime` 时可直接调用 `clock.toZonedTime(480)` 或 `clock.toUtc()`，两者保持同一物理瞬间，无需先转成 `JulianTime`。固定偏移不应用夏令时规则。
+
 `JulianTime.fromTT` 与 `fromUT1` 使用内置 ΔT 换算；`fromValues` 可提供外部 TT、UT1 与 ΔT（秒），三个值必须一致。UTC 标签按 UT1 近似，不含完整 UTC/TAI 闰秒或 EOP 模型。
 
 `DateTime` 按时间戳导入，不重新解释其年月日。民用字段采用混合儒略历／格里高利历，1582-10-15 切换，年 0 表示公元前 1 年。需要验证日期时用 `ZonedTime`；底层 `julianDay` 允许日字段溢出归一化。

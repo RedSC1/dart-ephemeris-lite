@@ -42,7 +42,7 @@ Ten Gods, hidden stems, Shen Sha, fortune cycles and full BaZi charts belong to 
 
 ## Instants and late-Zi-hour rules
 
-`fourPillarsForZonedTime` accepts a fixed-offset civil time. `calculateFourPillars(jdUT1, virtualTime)` separates physical time from clock fields: year/month boundaries compare UT1, while day/hour pillars use the supplied clock, including independently resolved mean/apparent solar clocks.
+`fourPillarsForZonedTime` accepts a fixed-offset civil time. `calculateFourPillars(jdUT1, chartTime)` separates physical time from clock fields: year/month boundaries compare UT1, while day/hour pillars use the supplied clock, including independently resolved mean/apparent solar clocks. `normalizeChartTime` is the canonical validator; `normalizeChartVirtualTime` remains a deprecated alias.
 
 The core changes year at Li Chun and month at Jie; it has no Lunar New Year switch.
 

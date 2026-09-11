@@ -166,7 +166,7 @@
 | `moonState` | `moonState` | Dart 函数／类型 |
 | `neptuneHeliocentricPosition` | `neptuneHeliocentricPosition` | Dart 函数／类型 |
 | `neptuneHeliocentricState` | `neptuneHeliocentricState` | Dart 函数／类型 |
-| `normalizeChartVirtualTime` | `normalizeChartVirtualTime` | Dart 函数／类型 |
+| `normalizeChartTime` | `normalizeChartTime` | Dart 函数／类型；旧名 `normalizeChartVirtualTime` 保留兼容 |
 | `normalizeTsc1Alias` | `normalizeTsc1Alias` | Dart 函数／类型 |
 | `parseTsc1Catalog` | `parseTsc1Catalog` | Dart 函数／类型 |
 | `planetGeocentricPosition` | `planetGeocentricPosition` | Dart 函数／类型 |
