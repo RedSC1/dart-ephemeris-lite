@@ -252,3 +252,10 @@ print(star.toJson());
 详见 [日食说明](doc/solar-eclipses.md) 与 [恒星说明](doc/fixed-stars.md)。
 
 算术回历正反转换、月长与闰年接口见 [算术回历说明](doc/hijri-calendar.md)。示例：`dart run example/hijri_calendar.dart`。
+
+## 日月独立入口
+
+只用日月几何位置时，可导入 `package:ephemeris_lite/sun_moon.dart`。
+原主入口保持兼容；气朔、太阳时已脱离其他行星目录，便于编译器按需裁剪。
+拆分不减少系数、不改变精度，也不减少 pub 源码包总量。
+详见[模块拆分与 Dart Web 实测](doc/module-loading.md)。

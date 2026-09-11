@@ -1,8 +1,8 @@
 // Modern cone/WGS84 solar eclipse solver, ported from js-ephemeris-lite.
 import 'dart:math' as math;
-import 'apparent.dart';
+import 'sun_moon_apparent.dart';
 import 'coordinates.dart';
-import 'ephemeris.dart';
+import 'sun_moon_ephemeris.dart';
 import 'event_accurate.dart';
 import 'sky_math.dart';
 import 'time.dart';

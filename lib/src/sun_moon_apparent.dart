@@ -1,13 +1,9 @@
 import 'apparent_core.dart';
 export 'apparent_core.dart' hide ApparentEvaluator;
-import 'ephemeris.dart';
 
 final _evaluator = ApparentEvaluator(
-  (body, jd, accuracy) => planetHeliocentricState(
-    Planet.values.byName(body.name),
-    jd,
-    accuracy: accuracy,
-  ),
+  (body, jd, accuracy) =>
+      throw ArgumentError.value(body, 'body', 'Expected Sun or Moon'),
 );
 
 ApparentGeometry apparentGeometry(

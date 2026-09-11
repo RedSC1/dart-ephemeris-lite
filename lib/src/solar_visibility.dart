@@ -1,6 +1,6 @@
 // Port of solar-visibility.js. MPL-2.0.
 import 'dart:math' as math;
-import 'ephemeris.dart';
+import 'sun_moon_ephemeris.dart';
 import 'observer.dart';
 import 'sky_math.dart';
 import 'solar_time.dart';

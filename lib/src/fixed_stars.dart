@@ -2,9 +2,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:math' as math;
-import 'apparent.dart';
+import 'apparent_core.dart';
 import 'coordinates.dart';
-import 'ephemeris.dart';
+import 'sun_moon_ephemeris.dart';
 import 'sky_math.dart';
 
 const tsc1Version = 1;

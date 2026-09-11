@@ -1,9 +1,9 @@
 // Modern circular-limb lunar eclipse solver ported from js-ephemeris-lite.
 // Internal geometry uses kilometres and TT days relative to J2000.
 import 'dart:math' as math;
-import 'apparent.dart';
+import 'sun_moon_apparent.dart';
 import 'body_visibility.dart';
-import 'ephemeris.dart';
+import 'sun_moon_ephemeris.dart';
 import 'event_accurate.dart';
 import 'observer.dart';
 import 'sky_math.dart';
