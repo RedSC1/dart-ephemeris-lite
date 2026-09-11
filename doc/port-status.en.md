@@ -40,7 +40,7 @@ New `bazi_core` and `ziwei_core` consumers have integration regressions but rema
 
 Dart-specific optimization and stable-release review are separate work. Some mid value-only stages reuse derivative evaluators, so equivalent numeric results do not imply identical JS work or performance.
 
-A release must retain provenance hashes, avoid placeholder implementations and unexplained tolerance relaxation, and pass content review, analysis, tests and `dart pub publish --dry-run`. The current baseline is `1.0.0-beta.1`; publication does not remove known limitations.
+A release must retain provenance hashes, avoid placeholder implementations and unexplained tolerance relaxation, and pass content review, analysis, tests and `dart pub publish --dry-run`. The current baseline is `1.0.0-beta.2`; publication does not remove known limitations.
 
 ## Verification entry points
 
