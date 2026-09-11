@@ -7,14 +7,26 @@ import 'planet_evaluator.dart';
 import 'generated/earth_series.dart';
 import 'generated/moon_series.dart';
 
+/// 计算 [jdTT] 时刻的日心地球几何位置和解析速度。
+///
+/// 输入为 TT 儒略日，输出为 J2000 平黄道／平春分点坐标，单位为AU 和 AU/day。
+/// [accuracy] 默认全量，不包含光行时、光行差或引力偏折修正。
 CartesianState earthState(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
 }) => evaluatePlanetSeries(earthSeries, earthPrefixes, jdTT, accuracy);
+
+/// 返回 [earthState] 的 x、y、z 位置分量，单位与该状态接口一致。
+///
+/// [jdTT] 为 TT 儒略日；只返回位置不代表使用不同的数值模型。
 List<double> earthPosition(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
 }) => earthState(jdTT, accuracy: accuracy).position;
+
+/// 计算地球日心几何单位方向及其每日导数，输入为 TT 儒略日。
+///
+/// 省略距离级数，结果不是 AU 位置或线速度；坐标系为 J2000 平黄道。
 CartesianState earthDirectionState(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
@@ -25,6 +37,11 @@ CartesianState earthDirectionState(
   accuracy,
   direction: true,
 );
+
+/// 计算 [jdTT] 时刻的地心太阳几何位置和解析速度。
+///
+/// 输入为 TT 儒略日，输出为 J2000 平黄道／平春分点坐标，单位为AU 和 AU/day。
+/// [accuracy] 默认全量，不包含光行时、光行差或引力偏折修正。
 CartesianState sunGeocentricState(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
@@ -173,10 +190,19 @@ CartesianState _moon(
   );
 }
 
+/// 计算 [jdTT] 时刻的地心月球几何位置和解析速度。
+///
+/// 输入为 TT 儒略日，输出为 J2000 平黄道／平春分点坐标，单位为km 和 km/day。
+/// [accuracy] 默认全量，不包含光行时、光行差或引力偏折修正。
 CartesianState moonState(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
 }) => _moon(jdTT, accuracy);
+
+/// 计算月球地心几何单位方向及其每日导数，输入为 TT 儒略日。
+///
+/// 省略距离级数。latitudeTerms 可覆盖黄纬项数（0～277 或 'full'），
+/// 省略时跟随 accuracy；结果不是 km 位置或线速度。
 CartesianState moonDirectionState(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
@@ -196,15 +222,26 @@ CartesianState moonDirectionState(
   );
 }
 
+/// 返回 [moonState] 的 x、y、z 位置分量，单位与该状态接口一致。
+///
+/// [jdTT] 为 TT 儒略日；只返回位置不代表使用不同的数值模型。
 List<double> moonPosition(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
 }) => moonState(jdTT, accuracy: accuracy).position;
+
+/// 返回月球原始 ELP 黄经及其解析导数，分别为弧度、弧度/日。
+///
+/// 输入为 TT 儒略日，使用全量黄经项；这是模型中间量，不是视黄经。
 ({double value, double rate}) moonElpLongitudeState(double jdTT) {
   validateJd(jdTT);
   return _MoonEvaluation(jdTT).coordinate(0, Accuracy.accurate);
 }
 
+/// 计算 [jdTT] 时刻的日心月球几何位置和解析速度。
+///
+/// 输入为 TT 儒略日，输出为 J2000 平黄道／平春分点坐标，单位为AU 和 AU/day。
+/// [accuracy] 默认全量，不包含光行时、光行差或引力偏折修正。
 CartesianState moonHeliocentricState(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
@@ -213,6 +250,11 @@ CartesianState moonHeliocentricState(
   moonState(jdTT, accuracy: accuracy),
   1 / auKm,
 );
+
+/// 计算 [jdTT] 时刻的日心地月质心几何位置和解析速度。
+///
+/// 输入为 TT 儒略日，输出为 J2000 平黄道／平春分点坐标，单位为AU 和 AU/day。
+/// [accuracy] 默认全量，不包含光行时、光行差或引力偏折修正。
 CartesianState embState(double jdTT, {Accuracy accuracy = Accuracy.accurate}) =>
     combineStates(
       earthState(jdTT, accuracy: accuracy),
@@ -246,38 +288,67 @@ CartesianState moonDirectionWithTerms(
 }
 
 // Explicit geometric aliases preserve the upstream units and accuracy option.
+/// [earthState] 的显式中心名称入口；时间尺度、单位和精度选项相同。
 CartesianState earthHeliocentricState(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
 }) => earthState(jdTT, accuracy: accuracy);
+
+/// [moonState] 的显式中心名称入口；时间尺度、单位和精度选项相同。
 CartesianState moonGeocentricState(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
 }) => moonState(jdTT, accuracy: accuracy);
+
+/// [embState] 的显式中心名称入口；时间尺度、单位和精度选项相同。
 CartesianState embHeliocentricState(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
 }) => embState(jdTT, accuracy: accuracy);
+
+/// 返回 [embState] 的 x、y、z 位置分量，单位与该状态接口一致。
+///
+/// [jdTT] 为 TT 儒略日；只返回位置不代表使用不同的数值模型。
 List<double> embPosition(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
 }) => embState(jdTT, accuracy: accuracy).position;
+
+/// 返回 [earthState] 的 x、y、z 位置分量，单位与该状态接口一致。
+///
+/// [jdTT] 为 TT 儒略日；只返回位置不代表使用不同的数值模型。
 List<double> earthHeliocentricPosition(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
 }) => earthState(jdTT, accuracy: accuracy).position;
+
+/// 返回 [moonState] 的 x、y、z 位置分量，单位与该状态接口一致。
+///
+/// [jdTT] 为 TT 儒略日；只返回位置不代表使用不同的数值模型。
 List<double> moonGeocentricPosition(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
 }) => moonState(jdTT, accuracy: accuracy).position;
+
+/// 返回 [moonHeliocentricState] 的 x、y、z 位置分量，单位与该状态接口一致。
+///
+/// [jdTT] 为 TT 儒略日；只返回位置不代表使用不同的数值模型。
 List<double> moonHeliocentricPosition(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
 }) => moonHeliocentricState(jdTT, accuracy: accuracy).position;
+
+/// 返回 [embState] 的 x、y、z 位置分量，单位与该状态接口一致。
+///
+/// [jdTT] 为 TT 儒略日；只返回位置不代表使用不同的数值模型。
 List<double> embHeliocentricPosition(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
 }) => embState(jdTT, accuracy: accuracy).position;
+
+/// 返回 [sunGeocentricState] 的 x、y、z 位置分量，单位与该状态接口一致。
+///
+/// [jdTT] 为 TT 儒略日；只返回位置不代表使用不同的数值模型。
 List<double> sunGeocentricPosition(
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,

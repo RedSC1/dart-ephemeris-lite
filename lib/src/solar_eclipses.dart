@@ -73,6 +73,7 @@ class SolarEclipseContacts {
   };
 }
 
+/// 全球日食结果，包括食甚、类型、接触与中心食几何信息。
 class SolarEclipse {
   final SolarEclipseKind kind;
   final JulianTime conjunction, maximum;
@@ -108,6 +109,7 @@ class SolarEclipse {
   };
 }
 
+/// 指定地点的日食结果，包括接触时刻与地平线截断后的可见食段。
 class LocalSolarEclipse {
   final SolarEclipse global;
   final Observer observer;
@@ -710,12 +712,19 @@ void _check(JulianTime t) {
   }
 }
 
+/// 求 [date] 附近朔对应的全球日食；该朔无日食则返回 null。
+///
+/// 不是向前或向后寻找最近日食。使用固定日食模型，不提供气朔精度档位。
 SolarEclipse? getSolarEclipseDetails(JulianTime date) {
   _check(date);
   final e = _solve(((date.jdTT - j2000 + 8) / _month).floor());
   return e == null ? null : _event(e);
 }
 
+/// 搜索食甚落在起止时刻之间的全球日食，左闭右开。
+///
+/// [start] 与 [end] 均为 JulianTime，最多覆盖 5000 个朔望月。
+/// 使用固定日食模型，不提供额外 accuracy 参数。
 List<SolarEclipse> searchSolarEclipses(JulianTime start, JulianTime end) {
   _check(start);
   _check(end);
@@ -739,6 +748,10 @@ List<SolarEclipse> searchSolarEclipses(JulianTime start, JulianTime end) {
   return List.unmodifiable(result);
 }
 
+/// 计算 [date] 附近日食在指定地点的地方食况。
+///
+/// 地点使用 Observer，可能返回 null；可见性还取决于地平线遮挡。
+/// 使用标准大气，不将 Observer 的自定义气压和温度用于地方食况。
 LocalSolarEclipse? getLocalSolarEclipse(JulianTime date, Observer location) {
   final observer = Observer(
     longitudeDeg: location.longitudeDeg,

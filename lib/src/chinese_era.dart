@@ -13,8 +13,10 @@ const hongxianEraEndJdExclusive = 2420946.1666666665;
 const _hongxian = EraRecord(1916, 1, 0, '中华帝国', '', '', '洪宪', null, null);
 const _chinaOffset = 480 / 1440;
 
+/// 纪年有效边界的资料精度，区分精确到日与仅到年。
 enum EraPrecision { day, year }
 
+/// 纪年候选及其来源、有效范围与资料精度。
 class ChineseEraName {
   final String dynasty, title, ruler, era, boundarySource, text;
   final int yearNumber;
@@ -98,9 +100,12 @@ int _usedYears(EraRecord r) =>
     ? 25
     : r.usedYears;
 
-/// All source-era candidates active at an instant, with source and boundary
-/// precision. Uses the historical China calendar independently of UI settings.
-/// Inherits the calendar's documented reform-era reverse-lookup limitations.
+/// 按 UT1 瞬间查询中国纪年候选，可同时返回并存政权。
+///
+/// 独立采用中国历史历法，不跟随显示时区。年级资料不暗示精确改元日；
+/// 结果是数据查询，不是对史料争议的裁决。
+///
+/// 纪年查询依赖历史农历反查，继承改历时期重复标签的限制。
 List<ChineseEraName> getChineseEraNames(double jdUT1) {
   if (!jdUT1.isFinite) {
     throw ArgumentError.value(jdUT1, 'jdUT1');

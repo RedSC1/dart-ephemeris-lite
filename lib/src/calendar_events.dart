@@ -6,10 +6,16 @@ import 'event_accurate.dart';
 import 'event_mid.dart';
 import 'time.dart';
 
+/// 气朔迭代求解策略；快速档仅支持 auto，其他档可选择带保护的求根。
 enum EventSolver { auto, safeguarded }
 
-/// Nearest astronomical solar-longitude event, returning one physical instant.
-/// Default mid is a dedicated calendar model, not a position truncation tier.
+/// 求 [nearJdTT] 附近最近一次到达目标太阳视黄经的天文时刻。
+///
+/// [targetLongitude] 使用弧度，nearJdTT 为 TT 儒略日；返回同时包含 TT 与 UT1
+/// 的 JulianTime。默认 mid 使用专用事件模型，三档不只是位置级数的截断。
+///
+/// 历史历法只影响事件归日，不改变本函数的根。toleranceSeconds 是数值
+/// 收敛阈值（秒），不是绝对天文误差保证；fast 不接受该参数或 safeguarded。
 JulianTime solveSolarLongitude(
   double targetLongitude,
   double nearJdTT, {
@@ -25,9 +31,14 @@ JulianTime solveSolarLongitude(
   toleranceSeconds,
 );
 
-/// Nearest astronomical elongation event. Mid defaults to ten latitude terms.
-/// moonLatitudeTerms accepts an integer (mid only) or 'full'; null uses the
-/// tier default. Accurate fixes full and fast fixes ten terms.
+/// 求 [nearJdTT] 附近最近一次到达目标日月视黄经差的天文时刻。
+///
+/// [targetElongation] 使用弧度：0 为朔，π/2 为上弦，π 为望，3π/2 为下弦。
+/// nearJdTT 为 TT 儒略日，默认 mid。moonLatitudeTerms 可在 mid 下设为
+/// 0～277 或 'full'；省略为 10 项，fast 固定 10 项，accurate 固定全量。
+///
+/// 历史归日不改变返回的天文时刻。toleranceSeconds 为数值收敛阈值（秒），
+/// 不是绝对天文精度；fast 仅支持默认求解策略和固定阶段。
 JulianTime solveLunarPhase(
   double targetElongation,
   double nearJdTT, {
@@ -44,6 +55,10 @@ JulianTime solveLunarPhase(
   toleranceSeconds,
   moonLatitudeTerms,
 );
+
+/// 求 [nearJdTT] 附近最近一次朔的天文时刻。
+///
+/// 等价于目标角为 0 的 [solveLunarPhase]，精度、黄纬预算和求解选项相同。
 JulianTime solveNewMoon(
   double nearJdTT, {
   Accuracy accuracy = Accuracy.mid,

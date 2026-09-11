@@ -11,12 +11,16 @@ void _validateYear(int year) {
   }
 }
 
+/// 按三十年算术周期判断回历闰年；支持年份 −10000～10000。
+///
+/// 非正年份为数学延拓，不代表历史 AH 纪年；不采用观测新月定月。
 bool isHijriLeapYear(int year) {
   _validateYear(year);
   final n = (year - 1) % 30;
   return _yearStart(n + 1) - _yearStart(n) == 355;
 }
 
+/// 返回算术回历月份天数，month 为 1～12；非法年月抛出 RangeError。
 int hijriMonthDays(int year, int month) {
   _validateYear(year);
   if (month < 1 || month > 12) {

@@ -8,6 +8,9 @@ import 'time.dart';
 
 const _deg = math.pi / 180, _tau = 2 * math.pi;
 
+/// 太阳升落的圆面、折射、固定圆面大小与地平线高度选项。
+///
+/// 默认太阳上缘、启用折射，圆面大小随距离变化；地平线高度单位为度。
 class SolarVisibilityOptions {
   final DiscLimb limb;
   final bool refraction, fixedDiscSize;
@@ -20,6 +23,7 @@ class SolarVisibilityOptions {
   });
 }
 
+/// 太阳高度采样：角度为弧度，高度变化率为弧度/日。
 class SolarAltitudeSample {
   final double slopeRadPerDay,
       centerAltitudeRad,
@@ -35,6 +39,9 @@ class SolarAltitudeSample {
   );
 }
 
+/// 太阳升落结果；没有对应事件时 rise 或 set 为 null。
+///
+/// 需结合 altitudeState 判断极昼、极夜或相切情况。
 class SolarRiseSetResult {
   final AltitudeState altitudeState;
   final JulianTime? rise, set;
@@ -185,6 +192,9 @@ SolarAltitudeSample _sample(
   );
 }
 
+/// 计算给定时刻与观测地点的太阳高度及圆面判定信息。
+///
+/// 折射与圆面选项由 SolarVisibilityOptions 控制，不考虑地形遮挡。
 SolarAltitudeSample solarAltitude(
   Object time,
   Observer observer, {
@@ -309,8 +319,12 @@ double _bisect(
   );
 }
 
-/// Fast solver over the inclusive 24-hour window centred on [center].
-/// Polar/shallow cases fall back to a 2-hour sampled scan and bisection.
+/// 使用专用太阳模型计算中心时刻附近的升落。
+///
+/// 这是升落算法入口，名称中的 Fast 不是气朔 Accuracy.fast 档位。
+///
+/// 窗口为以 center 为中心的 24 小时，包含两端；极区或平缓穿越时
+/// 退回每两小时采样和二分求解。
 SolarRiseSetResult computeSolarRiseSetFast(
   Object center,
   Observer observer, {
@@ -344,8 +358,12 @@ SolarRiseSetResult computeSolarRiseSetFast(
   );
 }
 
-/// ZonedTime selects a local civil date, ignoring its clock time. Numeric UT1
-/// or JulianTime instead selects a centred 24-hour window.
+/// 计算指定日期或中心时刻附近的太阳升落。
+///
+/// 使用专用太阳求解链，极昼／极夜不会伪造升落时刻；不包含地形遮挡。
+///
+/// ZonedTime 选取当地民用日期并忽略其钟面时间；数值 UT1 或 JulianTime
+/// 则选择以该瞬间为中心的 24 小时窗口。
 SolarRiseSetResult solarRiseSetForDate(
   Object dateOrCenter,
   Observer observer, {

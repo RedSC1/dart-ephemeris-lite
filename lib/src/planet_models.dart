@@ -7,6 +7,11 @@ import 'planet_evaluator.dart';
 import 'generated/planet_series.dart';
 import 'generated/pluto_series.dart';
 
+/// 计算行星日心几何位置和解析速度。
+///
+/// [jdTT] 为 TT 儒略日；输出采用 J2000 平黄道／平春分点，单位为 AU、AU/day。
+/// 默认全量。冥王星代表其系统质心，推荐区间为 1600～2200 年；
+/// 区间外使用粗略模型，不保证同等精度。
 CartesianState planetHeliocentricState(
   Planet planet,
   double jdTT, {
@@ -19,11 +24,17 @@ CartesianState planetHeliocentricState(
         jdTT,
         accuracy,
       );
+
+/// 返回 [planetHeliocentricState] 的三维位置，单位 AU。
 List<double> planetHeliocentricPosition(
   Planet planet,
   double jdTT, {
   Accuracy accuracy = Accuracy.accurate,
 }) => planetHeliocentricState(planet, jdTT, accuracy: accuracy).position;
+
+/// 将行星日心状态减去地球日心状态，返回地心几何状态。
+///
+/// 输入为 TT 儒略日；单位 AU、AU/day。未应用光行时与视位置修正。
 CartesianState planetGeocentricState(
   Planet planet,
   double jdTT, {

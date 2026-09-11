@@ -24,3 +24,18 @@ plan.md
 /test/
 /tool/
 /.github/
+
+# Generated Dartdoc HTML is not part of the source package.
+/doc/api/
+
+# Local credentials, editor state and diagnostic output.
+.env
+.env.*
+!.env.example
+!.env.sample
+.npmrc
+.idea/
+.vscode/
+*.log
+*.stacktrace
+/debug/

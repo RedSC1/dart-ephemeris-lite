@@ -9,6 +9,7 @@ import 'sky_math.dart';
 const lightTimeDaysPerAu = auKm / 299792.458 / 86400;
 const _rateStep = 0.0005;
 
+/// 地心视位置支持的太阳、月球与行星目标。
 enum SkyBody {
   sun,
   moon,
@@ -25,9 +26,18 @@ enum SkyBody {
 /// j2000 means mean J2000 ecliptic/equinox, not ICRS.
 enum SkyFrame { j2000, meanOfDate, trueOfDate }
 
+/// 地心视位置的参考系、系数精度与修正开关。
+///
+/// 默认日期真参考系、全量级数，启用光行时、光行差和太阳引力偏折。
+/// 不包含多天体引力偏折、EOP 或 Shapiro 延迟；TT 近似 TDB。
 class ApparentOptions {
+  /// 输出参考系，默认日期真黄道／真赤道。
   final SkyFrame frame;
+
+  /// 几何位置级数的截断档位，默认 accurate；并非气朔事件模型档位。
   final Accuracy accuracy;
+
+  /// 依次控制光行时、光行差及太阳引力偏折；默认均启用。
   final bool lightTime, aberration, solarDeflection;
   const ApparentOptions({
     this.frame = SkyFrame.trueOfDate,
@@ -38,6 +48,10 @@ class ApparentOptions {
   });
 }
 
+/// 地心视位置结果。
+///
+/// 时刻 jdTT 为 TT 儒略日，角度为度，距离和三维坐标为 AU，光行时为日。
+/// 黄道及赤道坐标均使用 frame 指定的参考系；j2000 不等于 ICRS。
 class ApparentPosition {
   final SkyBody body;
   final double jdTT,
@@ -65,6 +79,9 @@ class ApparentPosition {
        equatorialPositionAu = List.unmodifiable(equatorialPositionAu);
 }
 
+/// 地心视位置及完整修正链的数值差分速度。
+///
+/// 角速度为度/日，距离速度和三维速度为 AU/day；与几何解析速度不同。
 class ApparentState extends ApparentPosition {
   final double longitudeSpeedDegPerDay,
       latitudeSpeedDegPerDay,

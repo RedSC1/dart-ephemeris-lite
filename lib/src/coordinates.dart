@@ -7,7 +7,11 @@ const arcsecToRad = math.pi / 648000;
 const _century = 36525.0;
 const _eps0 = 84381.406 * arcsecToRad;
 const _tau = 2 * math.pi;
+
+/// 按行存放的 3×3 矩阵；坐标转换时乘以列向量。
 typedef Matrix3 = List<List<double>>;
+
+/// 标量及其相对 TT 日的解析导数；角度标量采用弧度。
 typedef ScalarState = ({double value, double rate});
 
 /// Matrix plus analytic derivative per TT day. Both matrices are immutable.
@@ -120,8 +124,11 @@ _VectorState _crossState(
 }
 
 /// IAU 2006 mean obliquity in radians.
+/// IAU 2006 平黄赤交角，输入 TT 儒略日，返回弧度。
 double meanObliquityIau2006(double jdTT) =>
     meanObliquityIau2006State(jdTT).value;
+
+/// IAU 2006 平黄赤交角及其每日解析导数，单位为弧度、弧度/日。
 ScalarState meanObliquityIau2006State(double jdTT) {
   _finite(jdTT);
   const a = [
@@ -171,6 +178,8 @@ const _arguments = [
   [1072260.70369, 1602961601.2090],
   [450160.398036, -6962890.5431],
 ];
+
+/// IAU 2000B 章动结果，输入为 TT 儒略日，角度采用弧度。
 NutationState iau2000bNutation(double jdTT) => iau2000bNutationState(jdTT);
 NutationState iau2000bNutationState(double jdTT, {int? termCount}) {
   _finite(jdTT);
@@ -295,6 +304,7 @@ MatrixState vondrak2011PrecessionMatrixState(double jdTT) {
   );
 }
 
+/// 返回 Vondrák 2011 岁差矩阵；输入为 TT 儒略日。
 Matrix3 vondrak2011PrecessionMatrix(double jdTT) =>
     vondrak2011PrecessionMatrixState(jdTT).matrix;
 final _fixed = _multiply(
@@ -304,6 +314,7 @@ final _fixed = _multiply(
 final _fixedInverse = _transpose(_fixed);
 
 /// ICRF equatorial vector to fixed mean J2000 ecliptic axes.
+/// 将 ICRF 赤道三维向量转换到 J2000 平黄道；保持向量原有单位。
 List<double> icrfEquatorialToJ2000Ecliptic(List<double> v) {
   if (v.length != 3 || !v.every((x) => x.isFinite)) {
     throw ArgumentError('Vector must contain three finite numbers');

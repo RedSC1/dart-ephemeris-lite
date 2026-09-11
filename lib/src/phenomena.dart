@@ -5,6 +5,7 @@ import 'disc_radii.dart';
 import 'ephemeris.dart';
 import 'sky_math.dart';
 
+/// 天体相位角、照明比例与视圆面等观测量。
 class BodyPhenomena {
   final SkyBody body;
   final double jdTT,
@@ -35,6 +36,7 @@ class BodyPhenomena {
   };
 }
 
+/// 月球照明与盈亏结果；照明比例不是月龄的线性比例。
 class MoonIllumination extends BodyPhenomena {
   final double phaseCycle;
   final bool waxing;
@@ -58,8 +60,11 @@ class MoonIllumination extends BodyPhenomena {
   };
 }
 
-/// Geocentric disc/illumination geometry, without a magnitude or terrain model.
-/// The Sun has null phase angle and illuminated fraction.
+/// 计算天体相位与圆面信息，输入为 TT 儒略日。
+///
+/// 采用本库视位置和简化圆面模型，不含地形或形状细节。
+///
+/// 太阳的相位角与照明比例返回 null；不包含星等模型。
 BodyPhenomena bodyPhenomena(
   SkyBody body,
   double jdTT, {
@@ -101,6 +106,7 @@ BodyPhenomena bodyPhenomena(
   );
 }
 
+/// 计算月球照明比例与盈亏，输入为 TT 儒略日。
 MoonIllumination moonIllumination(
   double jdTT, {
   ApparentOptions options = const ApparentOptions(),

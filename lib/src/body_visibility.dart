@@ -10,6 +10,9 @@ import 'solar_time.dart';
 import 'solar_visibility.dart';
 import 'time.dart';
 
+/// 通用升落的圆面、折射、地平线高度与视位置选项。
+///
+/// 默认判定上缘、启用折射、地平线为 0°；视位置参考系必须为 trueOfDate。
 class BodyVisibilityOptions {
   final DiscLimb limb;
   final bool refraction;
@@ -23,6 +26,10 @@ class BodyVisibilityOptions {
   });
 }
 
+/// 站心地平坐标结果。
+///
+/// 角度为度，方位角从北向东增加；距离为 AU，时间同时保留 UT1 与 TT。
+/// 几何高度与应用折射后的高度分别返回。
 class BodyHorizontalPosition {
   final SkyBody body;
   final double jdUT1,
@@ -60,6 +67,10 @@ class BodyHorizontalPosition {
   };
 }
 
+/// 连续一天内的全部升落、上中天与下中天事件。
+///
+/// 事件列表不可修改；空列表表示窗口内没有该类事件，
+/// 需结合 altitudeState 区分始终可见、始终不可见等情况。
 class BodyRiseSetResult {
   final SkyBody body;
   final double dayStartUT1, dayEndUT1;
@@ -84,8 +95,12 @@ class BodyRiseSetResult {
       lowerTransits = List.unmodifiable(lower);
 }
 
-/// Topocentric true-of-date coordinates; azimuth is north through east.
-/// No terrain, horizon dip, polar motion or diurnal aberration is included.
+/// 计算 UT1 儒略日时刻的站心地平坐标。
+///
+/// 观测经纬度、海拔和大气参数来自 Observer；折射与圆面选项独立配置。
+///
+/// 结果为日期真参考系；方位角从北向东增加。
+/// 不包含地形、地平线下沉、极移或周日光行差。
 BodyHorizontalPosition bodyHorizontalPosition(
   SkyBody body,
   double jdUT1,
@@ -154,8 +169,11 @@ BodyHorizontalPosition bodyHorizontalPosition(
   );
 }
 
-/// All crossings in the exact interval [dayStartUT1,dayStartUT1+1).
-/// No implicit timezone or longitude-based day is inferred.
+/// 搜索从 [dayStartUT1] 开始的连续一天内的升落和中天事件。
+///
+/// 起点为 UT1 儒略日，不自动取当地午夜；极区可能没有升落或有多个事件。
+///
+/// 搜索区间严格为起点至起点加一天，左闭右开，不推断时区或经度日界。
 BodyRiseSetResult bodyRiseSetForDay(
   SkyBody body,
   double dayStartUT1,

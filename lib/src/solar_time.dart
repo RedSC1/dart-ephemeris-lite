@@ -31,6 +31,9 @@ void _longitude(double longitude) {
   throw ArgumentError('Expected ZonedTime, JulianTime or numeric UT1 JD');
 }
 
+/// 计算格林尼治平恒星时，返回归一化弧度。
+///
+/// UT1 用于地球自转，TT 用于日期参考系，两者应对应同一瞬间。
 double greenwichMeanSiderealTimeRadians(double jdUT1, double jdTT) {
   _finite(jdUT1, 'jdUT1');
   _finite(jdTT, 'jdTT');
@@ -46,6 +49,9 @@ double greenwichMeanSiderealTimeRadians(double jdUT1, double jdTT) {
   return _normalize(era + correction * arcsecToRad);
 }
 
+/// 计算格林尼治视恒星时，返回归一化弧度。
+///
+/// [jdUT1] 与 [jdTT] 应对应同一瞬间；可复用该时刻的章动结果。
 double greenwichApparentSiderealTimeRadians(
   double jdUT1,
   double jdTT, {
@@ -91,6 +97,10 @@ double greenwichSiderealTime(double jdUT1, {double? jdTT}) => normDeg(
   );
 }
 
+/// 同一瞬间的均时差与计算中间量。
+///
+/// 均时差为视太阳时减平太阳时；equationDays 为日，equationSeconds 为秒。
+/// 赤经及恒星时中间量以弧度表示。
 class EquationOfTime {
   final double jdUT1, jdTT, equationDays, apparentSunRightAscensionRad, gastRad;
   const EquationOfTime({
@@ -170,12 +180,25 @@ SolarClock _clock(Object time, double longitude, bool apparent) {
   );
 }
 
+/// 计算指定经度的地方平太阳钟。
+///
+/// time 接受 ZonedTime、JulianTime 或 UT1 儒略日数值；longitudeDeg
+/// 为东正西负的经度（±180°）。返回虚拟钟面，物理瞬间保留在 instant。
 SolarClock meanSolarTime(Object time, double longitudeDeg) =>
     _clock(time, longitudeDeg, false);
+
+/// 计算指定经度的地方真太阳钟（地方视太阳时）。
+///
+/// time 接受 ZonedTime、JulianTime 或 UT1 儒略日数值；经度为东正西负的度数。
+/// 返回虚拟钟面，不能当作新的物理瞬间；均时差使用专用太阳时链计算。
 SolarClock trueSolarTime(Object time, double longitudeDeg) =>
     _clock(time, longitudeDeg, true);
+
+/// [meanSolarTime] 的别名，输入语义和单位相同。
 SolarClock localMeanSolarTime(Object time, double longitudeDeg) =>
     meanSolarTime(time, longitudeDeg);
+
+/// [trueSolarTime] 的别名，输入语义和单位相同。
 SolarClock localApparentSolarTime(Object time, double longitudeDeg) =>
     trueSolarTime(time, longitudeDeg);
 double localMeanToApparentSolarTime(double jdLocalMean, double longitudeDeg) {

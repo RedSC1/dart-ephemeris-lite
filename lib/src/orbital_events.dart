@@ -21,11 +21,13 @@ String _frame(SkyFrame f) => switch (f) {
   SkyFrame.trueOfDate => 'true-of-date',
 };
 
+/// 具有物理事件时刻与 JSON 表示的轨道事件。
 abstract class OrbitalEvent {
   JulianTime get time;
   Map<String, Object> toJson();
 }
 
+/// 月球近远地点或地球近远日点；距离同时提供 km 与 AU。
 class ApsisEvent implements OrbitalEvent {
   final ApsisBody body;
   @override
@@ -51,6 +53,7 @@ class ApsisEvent implements OrbitalEvent {
   };
 }
 
+/// 月球穿越参考黄道的事件；角度为度，距离为 km。
 class LunarNodeEvent implements OrbitalEvent {
   @override
   final JulianTime time;
@@ -78,6 +81,7 @@ class LunarNodeEvent implements OrbitalEvent {
   };
 }
 
+/// 水星或金星大距；距角及黄道坐标以度表示。
 class ElongationEvent implements OrbitalEvent {
   final SkyBody body;
   @override
@@ -106,6 +110,7 @@ class ElongationEvent implements OrbitalEvent {
   };
 }
 
+/// 两天体达到指定赤经差的事件；角度均以度表示。
 class RelativeRightAscensionEvent implements OrbitalEvent {
   final SkyBody body, other;
   @override
@@ -138,6 +143,7 @@ class RelativeRightAscensionEvent implements OrbitalEvent {
   };
 }
 
+/// 赤经速度过零的留事件；坐标为度，速度为度/日。
 class RightAscensionStationEvent implements OrbitalEvent {
   final SkyBody body;
   @override
@@ -201,7 +207,11 @@ List<ApsisEvent> _apsides(
   );
 }
 
-/// Geocentric geometric distance extrema, without light-time corrections.
+/// 在 TT 儒略日起止区间内搜索月球地心距离近点与远点。
+///
+/// 返回事件时刻及对应观测量。数值求根容差不代表天文模型的绝对精度。
+///
+/// 采用全量地心几何距离，不含光行时修正。
 List<ApsisEvent> searchLunarApsides(
   double startTT,
   double endTT, {
@@ -209,7 +219,11 @@ List<ApsisEvent> searchLunarApsides(
   double toleranceDays = 1e-8,
 }) => _apsides(ApsisBody.moon, startTT, endTT, stepDays, toleranceDays);
 
-/// Heliocentric geometric Earth distance extrema, without apparent corrections.
+/// 在 TT 儒略日起止区间内搜索地球日心距离近点与远点。
+///
+/// 返回事件时刻及对应观测量。数值求根容差不代表天文模型的绝对精度。
+///
+/// 采用全量日心几何距离，不含视位置修正。
 List<ApsisEvent> searchEarthApsides(
   double startTT,
   double endTT, {
@@ -217,7 +231,11 @@ List<ApsisEvent> searchEarthApsides(
   double toleranceDays = 1e-8,
 }) => _apsides(ApsisBody.earth, startTT, endTT, stepDays, toleranceDays);
 
-/// Actual Moon crossings of the selected ecliptic plane, not mean orbital nodes.
+/// 在 TT 儒略日起止区间内搜索月球穿越所选黄道的升交点与降交点。
+///
+/// 返回事件时刻及对应观测量。数值求根容差不代表天文模型的绝对精度。
+///
+/// 求月球实际穿越参考黄道平面的时刻，不是平均轨道交点。
 List<LunarNodeEvent> searchLunarNodes(
   double startTT,
   double endTT, {
@@ -280,8 +298,12 @@ List<LunarNodeEvent> searchLunarNodes(
   return (a: a, cosine: cosine, rate: rate);
 }
 
-/// Maxima of 3D apparent separation from the Sun. East/west labels always use
-/// date ecliptic longitudes, independently of the selected output frame.
+/// 在 TT 儒略日起止区间内搜索水星或金星的东大距与西大距。
+///
+/// 返回事件时刻及对应观测量。数值求根容差不代表天文模型的绝对精度。
+///
+/// 求与太阳三维视角距离的极大值；东／西标签始终使用日期黄经，
+/// 与选定的输出参考系无关。
 List<ElongationEvent> searchGreatestElongations(
   SkyBody body,
   double startTT,
@@ -336,8 +358,12 @@ List<ElongationEvent> searchGreatestElongations(
   );
 }
 
-/// Right ascension body-other. A zero crossing is an RA conjunction, not a
-/// minimum 3D angular separation. Search interval is [startTT,endTT).
+/// 在 TT 儒略日起止区间内搜索两天体的目标赤经差。
+///
+/// 返回事件时刻及对应观测量。数值求根容差不代表天文模型的绝对精度。
+///
+/// 角度为 body 减 other 的赤经差（度）；0 表示赤经合，
+/// 不代表三维角距离最小。区间左闭右开。
 List<RelativeRightAscensionEvent> searchRelativeRightAscension(
   SkyBody body,
   SkyBody other,
@@ -382,6 +408,9 @@ List<RelativeRightAscensionEvent> searchRelativeRightAscension(
   );
 }
 
+/// 在 TT 儒略日起止区间内搜索天体赤经留（赤经速度过零）。
+///
+/// 返回事件时刻及对应观测量。数值求根容差不代表天文模型的绝对精度。
 List<RightAscensionStationEvent> searchRightAscensionStations(
   SkyBody body,
   double startTT,

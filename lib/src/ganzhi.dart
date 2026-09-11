@@ -21,7 +21,10 @@ const earthlyBranches = [
 
 enum Wuxing { water, wood, metal, earth, fire }
 
-/// Choice of day pillar and hour stem during 23:00–00:00.
+/// 子时换日规则。
+///
+/// nextDay 在晚子时换日；currentDay 保留当日日柱和时干推导日；
+/// currentDayTomorrowStem 保留当日日柱，仅按次日日干推导时干。
 enum RatHourMode { nextDay, currentDay, currentDayTomorrowStem }
 
 enum PillarHistoricalMode { followCalendar, off, on }
@@ -223,6 +226,7 @@ int calculateDayPillar(CalendarDate date) {
   return makeGanzhi(index % 10, index % 12);
 }
 
+/// 年、月、日、时四柱的编码结果。
 class FourPillars {
   final int year, month, day, hour;
   const FourPillars({
@@ -239,6 +243,7 @@ class FourPillars {
   };
 }
 
+/// 将四柱编码转换为年、月、日、时柱的中文干支名称。
 Map<String, String> describeFourPillars(FourPillars pillars) =>
     Map.unmodifiable({
       'year': ganzhiName(pillars.year),
@@ -295,9 +300,10 @@ CalendarSolarTerm getPreviousPillarJie(
   throw StateError('previous pillar Jie boundary not found');
 }
 
-/// Year/month use the physical UT1 instant; day/hour use [virtualTime], which
-/// may be a wall clock or an independently resolved mean/apparent solar clock.
-/// This low-level four-pillar API uses Li Chun, not Lunar New Year, as year start.
+/// 按实际瞬间与虚拟钟面计算四柱。
+///
+/// [jdUT1] 控制年、月节气边界；virtualTime 控制日、时柱，可传入
+/// 平太阳钟或真太阳钟。历史节气规则和子时规则由命名参数分别控制。
 FourPillars calculateFourPillars(
   double jdUT1,
   CalendarDate virtualTime, {
@@ -346,6 +352,9 @@ FourPillars calculateFourPillars(
   );
 }
 
+/// 按固定时区民用时间计算四柱基础信息。
+///
+/// 以立春换年、节换月；子时默认 nextDay。完整排盘规则由独立上层包提供。
 FourPillars fourPillarsForZonedTime(
   ZonedTime time, {
   CalendarOptions? options,

@@ -19,3 +19,18 @@ plan.md
 /scratch/
 /experiments/
 /tmp/
+
+# Generated Dartdoc HTML. Keep handwritten doc/*.md in Git.
+/doc/api/
+
+# Local credentials, editor state and diagnostic output.
+.env
+.env.*
+!.env.example
+!.env.sample
+.npmrc
+.idea/
+.vscode/
+*.log
+*.stacktrace
+/debug/

@@ -5,6 +5,7 @@ import 'event_mid.dart';
 import 'historical_calendar.dart';
 import 'time.dart';
 
+/// 二十四节气名称，索引从春分 0 开始，每项相隔黄经 15°。
 const solarTermNames = [
   '春分',
   '清明',
@@ -31,10 +32,14 @@ const solarTermNames = [
   '雨水',
   '惊蛰',
 ];
+
+/// 四个主要月相名称，以日月黄经差的度数为键。
 const lunarPhaseNames = <int, String>{0: '朔', 90: '上弦', 180: '望', 270: '下弦'};
 
+/// 气朔年表的事件分类：节气、候或月相。
 enum QiShuoEventKind { solarTerm, pentad, lunarPhase }
 
+/// 事件指定日期的来源，区分历史资料、中国天文归日和本地天文归日。
 enum CalendarAssignmentSource {
   historicalProfile,
   chinaAstronomical,
@@ -50,9 +55,17 @@ class QiShuoEvent {
 
   /// Solar longitude or lunar elongation, in radians.
   final double targetAngle;
+
+  /// 事件的实际天文时刻，包含 TT 与 UT1，不被历史归日覆盖。
   final JulianTime time;
+
+  /// 按请求的固定时区显示的实际事件时间。
   final ZonedTime localTime;
+
+  /// 实际本地日期与历法指定日期的整数日标签；历史模式下可能不同。
   final int localCivilDayNumber, assignedCivilDayNumber;
+
+  /// 历法指定日期采用的数据来源。
   final CalendarAssignmentSource assignmentSource;
   QiShuoEvent._({
     required this.kind,
@@ -68,14 +81,23 @@ class QiShuoEvent {
     required this.assignmentSource,
   });
   double get targetAngleDeg => targetAngle * 180 / math.pi;
+
+  /// 实际事件所在的本地民用日期。
   CalendarDate get localDate =>
       calendarDateFromJulianDay(localCivilDayNumber - 0.5);
+
+  /// 历法指定日对应的民用日期，不代表事件实际发生在该日。
   CalendarDate get assignedDate =>
       calendarDateFromJulianDay(assignedCivilDayNumber - 0.5);
+
+  /// 历法指定日是否不同于实际本地日期。
   bool get assignmentDiffersFromLocalDate =>
       localCivilDayNumber != assignedCivilDayNumber;
 }
 
+/// 一个固定时区民用年内的气朔事件列表，按天文时刻排序。
+///
+/// startJdUT1 与 endJdUT1 为年界，events 不可修改；这不是农历月序。
 class QiShuoYear {
   final int civilYear;
   final CalendarOptions options;

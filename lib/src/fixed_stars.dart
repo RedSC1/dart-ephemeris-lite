@@ -120,7 +120,11 @@ class Tsc1StarRecord {
       );
 }
 
-/// Owns an immutable snapshot; 64-bit IDs/hashes use BigInt on VM and web.
+/// 只读 TSC1 恒星目录，支持记录遍历和标识／别名查找。
+///
+/// 星表不内置在包中；调用者负责加载字节数据。
+///
+/// 目录保存输入数据的不可变快照；64 位 ID 与哈希在 VM 和 Web 上均使用 BigInt。
 class Tsc1Catalog extends Iterable<Tsc1StarRecord> {
   final Uint8List bytes;
   late final ByteData _view;
@@ -285,6 +289,9 @@ int _compare(List<int> a, List<int> b) {
   return a.length - b.length;
 }
 
+/// 解析外部提供的 TSC1 字节数据，支持完整表与 lite 表。
+///
+/// 不进行网络或文件读取；目录的天体和别名集合由输入数据决定。
 Tsc1Catalog parseTsc1Catalog(Uint8List bytes) => Tsc1Catalog(bytes);
 Tsc1StarRecord _resolve(Tsc1Catalog c, Object star) => switch (star) {
   int i => c.getStar(i),
@@ -293,6 +300,7 @@ Tsc1StarRecord _resolve(Tsc1Catalog c, Object star) => switch (star) {
   _ => throw ArgumentError('Expected catalog key, index or record'),
 };
 
+/// 恒星在 ICRF 下经空间运动传播后的状态。
 class FixedStarIcrfState {
   final Tsc1StarRecord star;
   final double jdTT, referenceJdTT;
@@ -314,6 +322,7 @@ class FixedStarIcrfState {
   };
 }
 
+/// 恒星视位置的参考系和光行差、引力偏折选项。
 class FixedStarOptions {
   final SkyFrame frame;
   final bool aberration, solarDeflection;
@@ -420,6 +429,9 @@ class FixedStarState extends FixedStarPosition {
   };
 }
 
+/// 将星表记录传播到 [jdTT]（TT 儒略日），返回 ICRF 状态。
+///
+/// star 的查找规则与目录一致；原始自行、视差和径向速度取自记录。
 FixedStarIcrfState fixedStarIcrfState(
   Tsc1Catalog catalog,
   Object star,
@@ -473,6 +485,9 @@ FixedStarIcrfState fixedStarIcrfState(
   );
 }
 
+/// 计算目录中恒星的视位置，输入为 TT 儒略日。
+///
+/// 目录外置；参考系和修正由 FixedStarOptions 控制。
 FixedStarPosition fixedStarPosition(
   Tsc1Catalog catalog,
   Object star,
@@ -534,6 +549,7 @@ FixedStarPosition fixedStarPosition(
   );
 }
 
+/// 计算恒星视位置及完整修正链的差分速度，输入为 TT 儒略日。
 FixedStarState fixedStarState(
   Tsc1Catalog catalog,
   Object star,

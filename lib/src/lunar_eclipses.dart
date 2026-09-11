@@ -26,6 +26,7 @@ enum LunarEclipseContact {
 
 enum LunarHorizonClipped { moonrise, moonset, both }
 
+/// 全球月食结果，接触和食甚均用 JulianTime 表示。
 class LunarEclipse {
   final LunarEclipseKind kind;
   final JulianTime maximum;
@@ -52,6 +53,7 @@ class LunarEclipse {
   };
 }
 
+/// 一次月食接触在指定地点的高度与可见性。
 class LunarContactCircumstance {
   final JulianTime time;
   final double azimuthDeg, geometricAltitudeDeg, apparentAltitudeDeg;
@@ -71,6 +73,7 @@ class LunarContactCircumstance {
   };
 }
 
+/// 地方月食可见性，包括接触高度与月出、月落截断的可见区间。
 class LocalLunarEclipse {
   final LunarEclipse global;
   final Observer observer;

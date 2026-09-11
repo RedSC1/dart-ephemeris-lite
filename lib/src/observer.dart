@@ -38,6 +38,8 @@ void validateVisibilityObserver(Observer o, {bool solar = false}) {
   }
 }
 
+/// 一天内目标高度相对阈值的状态，包括跨越、始终在上／下及相切。
 enum AltitudeState { notFound, crosses, alwaysAbove, alwaysBelow, tangent }
 
+/// 升落判定所用圆面位置：上缘、中心或下缘。
 enum DiscLimb { upper, center, lower }

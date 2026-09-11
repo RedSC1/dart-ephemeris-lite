@@ -1,48 +1,44 @@
 # ephemeris_lite
 
-`js-ephemeris-lite` 的纯 Dart 移植，运行时不依赖 `sxwnl_spa_dart`、JavaScript 引擎或 FFI。
-算法、系数和数值语义以 [JS 原库](https://github.com/RedSC1/js-ephemeris-lite) 为基准；API 使用 Dart 的命名参数、枚举和不可变结果。
+用于 Dart 与 Flutter 的天文与历法计算库。提供天体位置、节气与月相、
+农历与算术回历转换、干支、太阳时、天体升落和日月食计算。
+采用纯 Dart 实现，无运行时依赖，可运行于 Dart VM 和 Dart Web。
 
-**首个公开测试版本，提供纯 Dart 天文与中国历法内核。八字、紫微保持为独立上层包，不随本包发布。**
-当前版本 `1.0.0-beta.1`，源自 JS `1.0.0-rc.1` 并同步后续日月依赖拆分；具体源码提交和数据哈希见 [doc/upstream.json](doc/upstream.json)。
+本项目移植自 [js-ephemeris-lite](https://github.com/RedSC1/js-ephemeris-lite)。
+行星模型基于 VSOP2013/TOP2013，月球模型基于 ELP/MPP02，部分系数采用 DE441 校准；
+历史历法、算术回历及纪年资料的来源见[第三方声明](https://github.com/RedSC1/ephemeris_lite/blob/main/THIRD_PARTY_NOTICES.zh-CN.md)。
+API 使用 Dart 的命名参数、枚举和结果类型，不依赖 JavaScript 引擎或 FFI。
 
-## 已实现
+当前版本为 `1.0.0-beta.1`。算法与数值语义以对应 JS 实现为基准，
+源码版本和数据哈希记录在 [上游记录](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/upstream.json) 中。
 
-- 儒略日、历史儒略历/格里高利历转换、天文学纪年、固定时区。
-- 与 JS 一致的 ΔT、UT1/TT 转换、`JulianTime` 和 `ZonedTime`。
-- 水星至海王星的几何位置和解析速度，`fast` / `mid` / `accurate` 三档系数截断。
-- 月球 ELP 系数求值、解析速度、三档截断和 J2000 坐标转换。
-- 地心行星、地心太阳、日心月球及地月质心的几何状态。
-- 冥王星近区模型、粗略远区模型及平滑过渡；推荐精度区间仍为 1600～2200。
-- IAU2000B 章动、Vondrák2011 岁差、J2000/日期坐标矩阵及解析导数。
-- 三种参考系的视位置、光行时、相对论光行差与太阳引力偏折，以及完整链路差分速度。
-- `solveSolarLongitude` / `solveLunarPhase` / `solveNewMoon` 的 fast、mid、accurate 三档；快速与精确档的展开角入口。
-- 平太阳时、真太阳时、均时差、恒星时及太阳钟反算。
-- 历史气朔归日表；固定时区或经线归日选项。
-- 农历月序、特殊历史月名、正反转换、前后节气与指定节气查询。
-- 干支编码、纳音五行、四柱基础计算、三种子时规则和历史节气边界开关。
-- 中文纪年候选查询，保留来源、有效区间及日／年级精度。
-- 太阳快速升落、通用天体地平坐标与全天升落／上下中天，支持极区状态及折射选项。
-- 天体相位角、月球照明与盈亏、视圆面；黄经穿越、相对黄经、留和顺逆行入宫查询。
-- 按民用年列出的节气、候与月相，分别保留天文时刻、本地日期和历法指定日期。
+## 功能概览
 
-- 月地近远点、月球交点、水金大距、相对赤经与赤经留。
+| 模块 | 主要功能 |
+| --- | --- |
+| 时间 | 儒略日、固定时区、UT1/TT、ΔT、历史儒略历／格里高利历 |
+| 天体位置 | 日月与行星几何位置、解析速度、地心视位置、参考系转换 |
+| 气朔与历法 | 定气定朔、月相年表、历史归日、农历与算术回历正反转换 |
+| 干支与纪年 | 四柱基础计算、子时规则、纳音、历史纪年候选查询 |
+| 太阳时与可见性 | 平太阳时、真太阳时、均时差、恒星时、升落与中天 |
+| 天象事件 | 合冲、留、黄经穿越、近远点、交点、大距与赤经事件 |
+| 日月食 | 全球搜索、接触时刻、地方食况与地平线可见性 |
+| 恒星 | 外部 TSC1 星表解析、别名查找、空间运动传播与视位置 |
 
-- 全球月食搜索、接触时刻和地方可见性（含月出／月落截断）。
-
-- 全球与地方日食、中心线接触地点、最大食地点、带宽与中心食持续时间（不含地图渲染）。
-- TSC1 恒星表解析与别名查找、自行／视差／径向速度、三种参考系视位置和完整链路速度。
-
-完整清单见 [移植状态](doc/port-status.md)，200 个 JS 公共导出的对应关系见 [API 对照表](doc/api-map.md)。
+本包提供天文与历法内核，不包含完整八字／紫微排盘、黄历宜忌或地图渲染。
+恒星目录由调用者加载，支持完整表和 lite 表，不内置目录数据。
 
 ## 安装
 
-首次接入可固定测试版本，确认兼容后再调整版本约束：
+在 `pubspec.yaml` 中添加依赖，执行 `dart pub get`；Flutter 项目使用 `flutter pub get`。
+测试版本可先固定版本号，确认兼容后再调整约束：
 
 ```yaml
 dependencies:
   ephemeris_lite: 1.0.0-beta.1
 ```
+
+## 快速开始
 
 ```dart
 import 'package:ephemeris_lite/ephemeris_lite.dart';
@@ -61,7 +57,24 @@ void main() {
 }
 ```
 
-### 计算约定
+## 文档导航
+
+公共 API 的参数、单位和边界约定写在源码的 `///` 注释中，可在 IDE 中查看，
+也可通过 Dartdoc 生成可搜索的 HTML 文档。以下指南补充跨接口的使用约定：
+
+| 需求 | 文档 |
+| --- | --- |
+| 从 JavaScript API 迁移 | [API 对照表](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/api-map.md) |
+| 历史月名、归日与反查限制 | [历史历法](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/calendar-history.md) |
+| 算术回历 | [回历转换](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/hijri-calendar.md) |
+| 升落、极区状态与折射 | [可见性](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/visibility.md) |
+| 合冲、留、大距与近远点 | [天象事件](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/sky-events.md) |
+| 全球搜索与地方食况 | [日食](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/solar-eclipses.md)、[月食](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/lunar-eclipses.md) |
+| 外部星表与恒星计算 | [恒星](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/fixed-stars.md) |
+| 日月独立入口与 Web 体积 | [模块加载](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/module-loading.md) |
+| 生成 API 文档与运行验证 | [文档与开发](#文档生成与开发验证) |
+
+## 时间、单位与精度约定
 
 - 星历输入为 **TT 儒略日**，默认 `Accuracy.accurate`。
 - 输出为**几何 J2000 平黄道/平春分点**状态，不包含光行时、光行差等视位置修正。
@@ -76,7 +89,11 @@ void main() {
 - 与 JS lite 相同，UTC 标签近似视为 UT1；这不是完整的 UTC/TAI 闰秒模型。
 - ΔT 的未来部分包含实验性拟合，移植一致性不等于未来真实地球自转精度。
 
-## 气朔与太阳时
+## 使用示例
+
+以下片段均使用主入口导入；各片段中的变量独立。
+
+### 气朔与太阳时
 
 ```dart
 final near = julianDay(year: 2026, month: 6, day: 21, hour: 12);
@@ -91,36 +108,6 @@ final clock = trueSolarTime(solstice, 116.4074);
 
 `SolarClock` 是虚拟太阳钟，不是携带时区的物理时刻；原始瞬间保留在 `clock.instant` 中。
 底层 `solarLongitudeTimeFast/Accurate` 与 `lunarPhaseTimeFast/Accurate` 接受的是**展开角**，每加 2π 选择下一个周期；普通应用优先使用带 `nearJdTT` 的 `solve*` 接口。
-
-## 验证
-
-```sh
-dart pub get
-dart analyze
-dart test
-dart run example/main.dart
-dart compile js example/main.dart -o /tmp/ephemeris-demo.js
-node /tmp/ephemeris-demo.js
-```
-
-回归数据包含 1107 组 JS 位置/速度结果：41 个历元 × 3 档 × 9 个天体，含固定端点和固定种子的宽年代样本。
-另测 ΔT 分段接缝、历法切换、时间尺度、非法日期、时区和输出不可变性。
-新增 65 个历元的坐标矩阵/导数、39 组冥王星边界状态、564 组视位置、392 个快速根、112 个精确根、224 组最近气朔查询及 120 组太阳时样本。
-另有 45 组气朔根在 Dart 编译到 JS 后实际计算验证。
-这些测试证明**移植与 JS 的一致性**，不是新的独立 DE441 精度评估。
-
-系数和对拍数据的重建说明见 [开发文档](doc/development.md)。
-
-## 后续排盘包
-
-计划继续保留 `bazi_core` 和 `ziwei_core` 的名字与独立发包方式，让它们平级依赖本包。
-当前未修改或切换旧包依赖，也不承诺旧 `sxwnl_spa_dart` 类型兼容。
-
-## 许可证与来源
-
-本项目采用 MPL-2.0，移植自 RedSC1 的 `js-ephemeris-lite`。
-上游数值模型和数据来源说明保留在 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 与 [中文版](THIRD_PARTY_NOTICES.zh-CN.md)。
-这两份文件保留 JS 上游来源说明，并注明 Dart 移植范围。黄历兄弟包不在此包中；恒星表测试夹具单独保留数据来源声明。
 
 ### 气朔年表
 
@@ -150,8 +137,7 @@ print(solar.toJson());
 ```
 
 **历史边界限制**：秦汉和 762 年改历的重复年份/月标，沿用上游首个匹配反查时存在歧义。
-移植一致性不等于所有历史日期都能正确往返，详见 [历史历法说明](doc/calendar-history.md)。
-旧排盘包暂不切换底层。
+移植一致性不等于所有历史日期都能正确往返，详见 [历史历法说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/calendar-history.md)。
 
 ### 干支与纪年
 
@@ -167,7 +153,7 @@ print(describeFourPillars(pillars));
 final eras = getChineseEraNames(clock.toJulianTime().jdUT1);
 ```
 
-四柱基础接口以立春换年、节换月，不提供春节换年开关；完整八字／紫微排盘属于后续独立包。
+四柱基础接口以立春换年、节换月，不提供春节换年开关；完整八字／紫微排盘由独立上层包提供。
 `calculateFourPillars(jdUT1, virtualTime)` 的日时柱可使用另行求得的平太阳钟或真太阳钟，年、月边界仍比较实际 UT1 时刻。
 子时默认 `nextDay`；`currentDay` 保持当天日柱与时干，`currentDayTomorrowStem` 保持当天日柱但取次日日干计算时干。
 历史节气开关由 `PillarHistoricalMode` 控制，默认跟随历法模式；历史归日的柱界使用 UTC+8 当日零点。
@@ -187,7 +173,7 @@ print(moon.upperTransits);
 ```
 
 通用接口的起点是 UT1 儒略日，返回该起点后一天内的全部事件；极昼／极夜不会填入虚构的升落时刻。
-模型差异、时间窗口和地形等限制见 [可见性说明](doc/visibility.md)。
+模型差异、时间窗口和地形等限制见 [可见性说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/visibility.md)。
 
 ### 月球照明与行星留
 
@@ -199,7 +185,7 @@ final stations = searchStations(SkyBody.mercury, start.jdTT, end.jdTT);
 ```
 
 事件区间使用 TT，合冲按黄经差定义；数值容差与实际模型精度不同。
-参考系、逆行及圆面模型限制见 [天象事件说明](doc/sky-events.md)。
+参考系、逆行及圆面模型限制见 [天象事件说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/sky-events.md)。
 
 ### 近远点、大距与赤经事件
 
@@ -216,7 +202,7 @@ final conjunctions = searchRelativeRightAscension(
 );
 ```
 
-近远点使用全量几何状态；视赤经与大距接口使用视位置选项。月球交点可选择参考黄道，详见 [天象事件说明](doc/sky-events.md)。
+近远点使用全量几何状态；视赤经与大距接口使用视位置选项。月球交点可选择参考黄道，详见 [天象事件说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/sky-events.md)。
 
 ### 月食
 
@@ -229,7 +215,7 @@ final local = getLocalLunarEclipse(eclipses.first.maximum,
 print(local?.toJson());
 ```
 
-日月食入口使用 `JulianTime`，避免裸数字的 TT/UT1 歧义；没有额外精度档位。范围、标准大气与圆面限制见 [月食说明](doc/lunar-eclipses.md)。
+日月食入口使用 `JulianTime`，避免裸数字的 TT/UT1 歧义；没有额外精度档位。范围、标准大气与圆面限制见 [月食说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/lunar-eclipses.md)。
 
 ### 日食与恒星
 
@@ -248,13 +234,42 @@ print(star.toJson());
 ```
 
 恒星目录外置，底层无网络或文件系统依赖，不把测试用星表加入发布产物。Gaia ID 使用 BigInt，JSON 中转十进制字符串；缺测数值转 null。
-详见 [日食说明](doc/solar-eclipses.md) 与 [恒星说明](doc/fixed-stars.md)。
+详见 [日食说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/solar-eclipses.md) 与 [恒星说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/fixed-stars.md)。
 
-算术回历正反转换、月长与闰年接口见 [算术回历说明](doc/hijri-calendar.md)。示例：`dart run example/hijri_calendar.dart`。
+算术回历正反转换、月长与闰年接口见 [算术回历说明](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/hijri-calendar.md)。示例：`dart run example/hijri_calendar.dart`。
 
 ## 日月独立入口
 
 只用日月几何位置时，可导入 `package:ephemeris_lite/sun_moon.dart`。
 原主入口保持兼容；气朔、太阳时已脱离其他行星目录，便于编译器按需裁剪。
 拆分不减少系数、不改变精度，也不减少 pub 源码包总量。
-详见[模块拆分与 Dart Web 实测](doc/module-loading.md)。
+详见[模块拆分与 Dart Web 实测](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/module-loading.md)。
+
+## 文档生成与开发验证
+
+Dart SDK 自带 `dart doc`，可直接从公共 API 注释生成 HTML 文档：
+
+```sh
+dart pub get
+dart doc --validate-links
+```
+
+输出位于 `doc/api/index.html`。生成目录已加入 `.gitignore`，不提交生成的 HTML。
+文档注释随包源码发布，pub.dev 也会据此生成 API 文档；仓库中的 `doc/*.md`
+则用于说明模型、使用方式和适用范围。
+
+```sh
+dart analyze
+dart test
+dart run example/main.dart
+```
+
+测试覆盖 JS/Dart 数值对拍、时间尺度、历法边界、气朔、天象事件及非法输入。
+跨运行时验证还包含 Dart 编译到 JavaScript 后的结果对照。
+移植一致性测试不等于独立的 DE441 精度评估，也不构成未来 ΔT 精度保证。
+系数和对拍数据的重建方式见[开发文档](https://github.com/RedSC1/ephemeris_lite/blob/main/doc/development.md)。
+
+## 许可证与来源
+
+本项目采用 [MPL-2.0](https://github.com/RedSC1/ephemeris_lite/blob/main/LICENSE)。数值模型与数据的来源、版权及许可证说明见
+[中文第三方声明](https://github.com/RedSC1/ephemeris_lite/blob/main/THIRD_PARTY_NOTICES.zh-CN.md)和[英文第三方声明](https://github.com/RedSC1/ephemeris_lite/blob/main/THIRD_PARTY_NOTICES.md)。

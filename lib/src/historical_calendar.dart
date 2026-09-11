@@ -5,16 +5,27 @@ import 'accuracy.dart';
 /// Historical assignment affects calendar dates, not astronomical event roots.
 enum CalendarMode { historical, chinaAstronomical, localAstronomical }
 
+/// 本地归日边界：固定时区，或指定经线的平太阳时。
 enum CalendarDayBoundaryMode { fixedUtcOffset, meanSolarMeridian }
 
+/// 历史归日表支持的事件类型：节气与朔。
 enum HistoricalEventKind { solarTerm, newMoon }
 
 /// Calendar structure and astronomical solver choices are independent.
 class CalendarOptions {
+  /// 历法归日模式；默认历史模式，不改变气朔求解器返回的物理时刻。
   final CalendarMode mode;
+
+  /// 本地日界的定义方式；仅本地天文模式用于构造月序。
   final CalendarDayBoundaryMode dayBoundaryMode;
+
+  /// 显示时区的分钟偏移，东正西负，范围 ±840，默认 UTC+8。
   final double utcOffsetMinutes;
+
+  /// 平太阳时日界的经度（度），东正西负；仅 meanSolarMeridian 模式必填。
   final double? meridianDeg;
+
+  /// 气朔天文求解档位，默认 mid，与历史归日模式独立。
   final Accuracy eventAccuracy;
   CalendarOptions({
     this.mode = CalendarMode.historical,
@@ -35,10 +46,14 @@ class CalendarOptions {
       throw ArgumentError('meridianDeg is required only for meanSolarMeridian');
     }
   }
+
+  /// 本地日界相对 UT1 的偏移，单位为日。
   double get localOffset =>
       dayBoundaryMode == CalendarDayBoundaryMode.fixedUtcOffset
       ? utcOffsetMinutes / 1440
       : meridianDeg! / 360;
+
+  /// 农历结构采用的归日偏移，单位为日；非本地天文模式固定 UTC+8。
   double get structureOffset =>
       mode == CalendarMode.localAstronomical ? localOffset : 480 / 1440;
 }

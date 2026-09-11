@@ -1,5 +1,24 @@
 # 开发与数据同步
 
+## API 文档
+
+公共接口使用 `///` Dartdoc 注释。修改接口时同步维护参数的时间尺度、角度／距离单位、
+默认值、可空结果及边界限制；位置截断与气朔求解档位需分别说明。
+
+在仓库根目录运行：
+
+```sh
+dart pub get
+dart doc --validate-links
+```
+
+文档首页为 `doc/api/index.html`。该目录同时由 `.gitignore` 和 `.pubignore` 排除，
+不提交或发布生成的 HTML；手写指南保留在 `doc/*.md`。
+README 的仓库文件链接使用绝对 URL，以兼容 GitHub、pub.dev 与生成的 HTML。
+链接校验检查生成文档的内部引用，不验证外部仓库访问权限。
+
+## 数据同步
+
 本库正常使用及测试不需要 JS 仓库。只有重新生成系数和 JS 对拍数据时需要 Node.js 与上游 checkout。
 在仓库根目录运行：
 

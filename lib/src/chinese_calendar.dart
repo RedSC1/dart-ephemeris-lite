@@ -9,16 +9,22 @@ import 'time.dart';
 /// Values preserve the JS MONTH_NAME codes; do not infer leap status from names.
 enum MonthName { normal, thirteen, laterNine, altTwelve, altOne, laterSameName }
 
+/// 以指定时刻为参照，向前或向后查找节气。
 enum SolarTermDirection { previous, next }
 
+/// 节气筛选范围：全部二十四节气、十二节或十二中气。
 enum SolarTermFilter { any, jie, qi }
 
+/// 朔的天文时刻及历法指定日；两者在历史模式下可能落在不同日期。
 class CalendarNewMoon {
   final JulianTime time;
   final int civilDayNumber;
   const CalendarNewMoon(this.time, this.civilDayNumber);
 }
 
+/// 节气的天文时刻、历法指定日与目标黄经。
+///
+/// indexFromWinterSolstice 从冬至计数，targetLongitude 为弧度。
 class CalendarSolarTerm extends CalendarNewMoon {
   final int indexFromWinterSolstice;
   final double targetLongitude;
@@ -30,6 +36,9 @@ class CalendarSolarTerm extends CalendarNewMoon {
   );
 }
 
+/// 计算所得农历月，含月长、闰月标志、历史月名与朔时刻。
+///
+/// firstCivilDayNumber 是历法归日标签，newMoon 是天文时刻，不应混用。
 class LunarMonth {
   final int lunarYear,
       historicalYear,
@@ -53,6 +62,7 @@ class LunarMonth {
   });
 }
 
+/// 以冬至为结构边界的农历月序及气朔数据，不等同于民用年事件列表。
 class ChineseCalendarYear {
   final List<CalendarSolarTerm> solarTerms;
   final List<CalendarNewMoon> newMoons;
@@ -94,6 +104,7 @@ class LunarDate {
   };
 }
 
+/// 农历转换结果，除输入日期字段外包含历史年份标签与当月天数。
 class LunarCalendarDate extends LunarDate {
   final int historicalYear, monthDays;
   const LunarCalendarDate({
@@ -227,8 +238,12 @@ void _assignYears(List<_Month> months) {
   }
 }
 
-/// 25 solar terms, 15 new moons and 14 months around the preceding winter
-/// solstice. Uses assigned civil days for month structure, not rounded TT.
+/// 构造 [jdUT1] 所在冬至周期的气朔与农历月序。
+///
+/// 输入为 UT1 儒略日；历法模式及天文精度由 CalendarOptions 分别控制。
+///
+/// 包含前一个冬至附近的 25 个节气、15 个朔与 14 个月。
+/// 月序使用历法指定日构造，而不是对 TT 直接取整。
 ChineseCalendarYear calculateChineseCalendarYear(
   double jdUT1, {
   CalendarOptions? options,
@@ -380,6 +395,10 @@ ChineseCalendarYear calculateChineseCalendarYear(
   );
 }
 
+/// 将民用历日期转换为农历日期。
+///
+/// 历史特殊月名与闰月标志分别保留；日期不是 DateTime 时间戳。
+/// 改历期间重复的年份／月标可能使反向转换存在歧义。
 LunarCalendarDate solarToLunar(CalendarDate date, {CalendarOptions? options}) {
   final o = options ?? CalendarOptions();
   final target =
@@ -416,6 +435,7 @@ LunarCalendarDate solarToLunar(CalendarDate date, {CalendarOptions? options}) {
   throw RangeError('solar date is outside the calculated lunar window');
 }
 
+/// 将 UT1 儒略日代表的物理瞬间转换为所选历法的农历日期。
 LunarCalendarDate instantToLunar(double jdUT1, {CalendarOptions? options}) {
   final o = options ?? CalendarOptions();
   return solarToLunar(_date(civilDayNumber(jdUT1, o.localOffset)), options: o);
@@ -436,8 +456,10 @@ Iterable<LunarMonth> _lunarYearMonths(int year, CalendarOptions o) sync* {
   }
 }
 
-/// Mirrors the upstream first-match lookup. Reform-era repeated year/month
-/// labels can be ambiguous; see doc/calendar-history.md before historical use.
+/// 将农历标签反查为民用日期。
+///
+/// 历史特殊月份应同时提供 monthName 和 isLeap。改历期间重复标签
+/// 沿用首个匹配结果，不保证所有历史边界都能无歧义往返。
 CalendarDate lunarToSolar(LunarDate date, {CalendarOptions? options}) {
   if (date.month < 1 || date.month > 13 || date.day < 1 || date.day > 30) {
     throw RangeError('invalid lunar date');
@@ -457,6 +479,7 @@ CalendarDate lunarToSolar(LunarDate date, {CalendarOptions? options}) {
   throw RangeError('lunar date not found');
 }
 
+/// 返回指定农历月份的天数；闰月和历史月名由命名参数区分。
 int getLunarMonthDays(
   int lunarYear,
   int monthNumber, {
@@ -535,7 +558,11 @@ CalendarSolarTerm findSolarTerm(
   return best;
 }
 
-/// 0=vernal equinox, 18=winter solstice; 19..23 refer to Jan–Mar of civilYear.
+/// 查询民用年内指定的节气。
+///
+/// 节气序号从春分 0 开始；结果分别保留天文时刻和历法归日。
+///
+/// 春分为 0，冬至为 18；19～23 对应该民用年一月至三月的节气。
 CalendarSolarTerm getSpecificSolarTerm(
   int civilYear,
   int termIndexFromVernalEquinox, {

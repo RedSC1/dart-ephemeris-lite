@@ -238,7 +238,9 @@ SkyEvent _skyEvent(
   );
 }
 
-/// Ecliptic longitude crossings in [startTT,endTT). All epochs are JD(TT).
+/// 在 TT 儒略日起止区间内搜索目标黄经穿越。
+///
+/// 返回事件时刻及对应观测量。数值求根容差不代表天文模型的绝对精度。
 List<LongitudeCrossing> searchLongitudeCrossings(
   SkyBody body,
   double targetDeg,
@@ -263,7 +265,11 @@ List<LongitudeCrossing> searchLongitudeCrossings(
   ),
 );
 
-/// Relative ecliptic longitude body-other; not closest angular approach.
+/// 在 TT 儒略日起止区间内搜索两天体的目标黄经差。
+///
+/// 返回事件时刻及对应观测量。数值求根容差不代表天文模型的绝对精度。
+///
+/// 角度定义为 body 减 other 的黄经差（度），不是三维角距离的极小值。
 List<RelativeLongitudeEvent> searchRelativeLongitude(
   SkyBody body,
   SkyBody other,
@@ -297,6 +303,9 @@ List<RelativeLongitudeEvent> searchRelativeLongitude(
   );
 }
 
+/// 在 TT 儒略日起止区间内搜索天体黄经留（黄经速度过零）。
+///
+/// 返回事件时刻及对应观测量。数值求根容差不代表天文模型的绝对精度。
 List<SkyEvent> searchStations(
   SkyBody body,
   double startTT,
@@ -327,7 +336,11 @@ List<SkyEvent> searchStations(
   );
 }
 
-/// Every 30-degree boundary, including retrograde re-entry; signs are 0..11.
+/// 在 TT 儒略日起止区间内搜索天体顺行或逆行跨越黄道十二宫边界。
+///
+/// 返回事件时刻及对应观测量。数值求根容差不代表天文模型的绝对精度。
+///
+/// 每 30° 为一个边界，宫序号为 0～11，包含逆行重新进入。
 List<IngressEvent> searchIngresses(
   SkyBody body,
   double startTT,

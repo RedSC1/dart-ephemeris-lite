@@ -2,7 +2,10 @@
 import 'dart:math' as math;
 import 'generated/delta_t_data.dart';
 
+/// 一天的秒数，用于儒略日与秒的换算。
 const secondsPerDay = 86400.0;
+
+/// Unix 时间原点（1970-01-01 00:00）的儒略日。
 const unixEpochJd = 2440587.5;
 
 /// Civil fields in the hybrid Julian/Gregorian calendar; year 0 is 1 BCE.
@@ -59,6 +62,10 @@ double julianDay({
       1524.5;
 }
 
+/// 将儒略日转换为儒略历／格里高利历混合历法的日期字段。
+///
+/// 本函数只转换日数与日期，不转换时间尺度或时区；输入日数采用什么
+/// 时间尺度，返回字段就采用什么时间尺度。1582-10-15 起使用格里高利历。
 CalendarDate calendarDateFromJulianDay(double jd) {
   if (!jd.isFinite) throw ArgumentError.value(jd, 'jd');
   final shifted = jd + 0.5, z = shifted.floor();
@@ -87,6 +94,7 @@ CalendarDate calendarDateFromJulianDay(double jd) {
   );
 }
 
+/// 将儒略日转换为十进制年份，用于 ΔT 模型的时间参数。
 double decimalYearFromJulianDay(double jd) {
   if (!jd.isFinite) return jd;
   final year = calendarDateFromJulianDay(jd).year;
@@ -135,8 +143,12 @@ double _hermite(double x, double p0, double p1, double m0, double m1) {
       (x3 - x2) * m1;
 }
 
-/// Estimated TT − UT1 in seconds, matching the pinned JS model.
-/// The post-2027 transition/future fit is experimental, not an IERS forecast.
+/// 估算十进制年份 [year] 的 ΔT = TT − UT1，单位为秒。
+///
+/// 历史拟合、近现代年表与未来模型分段衔接。未来段包含实验性拟合，
+/// 不能视作实际地球自转的精确预报，也不是 UTC 与 TAI 的闰秒差。
+///
+/// 2027 年后的过渡与未来段为实验性拟合，不是 IERS 预测。
 double deltaTSeconds(double year) {
   if (!year.isFinite) return year;
   if (year >= -720 && year < 1953) return _s15(year);
@@ -182,8 +194,11 @@ double deltaTSeconds(double year) {
   return _future(year);
 }
 
+/// 根据 UT1 儒略日估算 ΔT，返回秒。
 double deltaTSecondsFromUt1(double jd) =>
     deltaTSeconds(decimalYearFromJulianDay(jd));
+
+/// 根据 TT 儒略日迭代估算 ΔT，返回秒。
 double deltaTSecondsFromTt(double jd) {
   var ut1 = jd, dt = 0.0;
   for (var i = 0; i < 2; i++) {
@@ -193,27 +208,45 @@ double deltaTSecondsFromTt(double jd) {
   return dt;
 }
 
+/// 将 [jdTT] 转为 UT1 儒略日。
+///
+/// [deltaT] 为可选的 TT − UT1（秒）；省略时使用内置 ΔT 模型。
 double ttToUt1(double jdTT, {double? deltaT}) =>
     jdTT - (deltaT ?? deltaTSecondsFromTt(jdTT)) / secondsPerDay;
+
+/// 将 [jdUT1] 转为 TT 儒略日。
+///
+/// [deltaT] 为可选的 TT − UT1（秒）；省略时使用内置 ΔT 模型。
 double ut1ToTt(double jdUT1, {double? deltaT}) =>
     jdUT1 + (deltaT ?? deltaTSecondsFromUt1(jdUT1)) / secondsPerDay;
 
 /// Physical instant. UTC labels are treated as UT1, as in the JS lite runtime.
 /// This is not a leap-second-aware UTC/TAI implementation.
 class JulianTime {
+  /// 同一瞬间的 UT1、TT 儒略日，以及两者差值 ΔT（秒）。
   final double jdUT1, jdTT, deltaT;
+
+  /// TT − UT1，单位为秒。
   double get deltaTSeconds => deltaT;
   const JulianTime._(this.jdUT1, this.jdTT, this.deltaT);
+
+  /// 从有限的 UT1 儒略日构造瞬间，使用内置 ΔT 推导 TT。
   factory JulianTime.fromUT1(double jd) {
     if (!jd.isFinite) throw ArgumentError.value(jd, 'jdUT1');
     final dt = deltaTSecondsFromUt1(jd);
     return JulianTime._(jd, ut1ToTt(jd, deltaT: dt), dt);
   }
+
+  /// 从有限的 TT 儒略日构造瞬间，使用内置 ΔT 推导 UT1。
   factory JulianTime.fromTT(double jd) {
     if (!jd.isFinite) throw ArgumentError.value(jd, 'jdTT');
     final dt = deltaTSecondsFromTt(jd);
     return JulianTime._(ttToUt1(jd, deltaT: dt), jd, dt);
   }
+
+  /// 用显式的 UT1、TT 和 ΔT（秒）构造瞬间。
+  ///
+  /// 三个值必须有限且彼此一致，否则抛出 ArgumentError。可用于外部 ΔT 数据。
   factory JulianTime.fromValues({
     required double jdUT1,
     required double jdTT,
@@ -231,13 +264,21 @@ class JulianTime {
     }
     return JulianTime._(jdUT1, jdTT, deltaTSeconds);
   }
+
+  /// 从 Unix 毫秒时间戳构造瞬间；UTC 标签按 UT1 近似处理。
   factory JulianTime.fromUnixMilliseconds(double ms) {
     if (!ms.isFinite) throw ArgumentError.value(ms, 'milliseconds');
     return JulianTime.fromUT1(unixEpochJd + ms / 86400000);
   }
+
+  /// 按 DateTime 的时间戳导入瞬间，而非重新解释其年月日。
+  ///
+  /// UTC 标签按 UT1 近似处理，不单独计入闰秒。
   factory JulianTime.fromDateTime(DateTime date) => JulianTime.fromUT1(
     unixEpochJd + date.microsecondsSinceEpoch / 86400000000,
   );
+
+  /// 返回 Unix 毫秒时间戳；精度受 double 儒略日分辨率限制。
   double toUnixMilliseconds() => (jdUT1 - unixEpochJd) * 86400000;
 
   /// Converts with microsecond rounding, limited by the resolution of double JD.
@@ -245,6 +286,8 @@ class JulianTime {
     ((jdUT1 - unixEpochJd) * 86400000000).round(),
     isUtc: true,
   );
+
+  /// 按东正西负的固定时区偏移（分钟）显示同一瞬间，不应用夏令时。
   ZonedTime toZonedTime(int offsetMinutes) =>
       ZonedTime.fromJulianTime(this, offsetMinutes: offsetMinutes);
   Map<String, double> toJson() => {
@@ -256,6 +299,7 @@ class JulianTime {
 
 /// Validated civil time with an explicit fixed offset; no automatic DST.
 class ZonedTime extends CalendarDate {
+  /// 相对 UT1 的固定偏移，单位分钟，东正西负；允许范围 ±840。
   final int offsetMinutes;
   ZonedTime({
     required super.year,
@@ -287,6 +331,8 @@ class ZonedTime extends CalendarDate {
       throw ArgumentError('Invalid hybrid-calendar date');
     }
   }
+
+  /// 将物理瞬间转换为指定固定时区的民用日期。
   factory ZonedTime.fromJulianTime(
     JulianTime time, {
     required int offsetMinutes,
@@ -303,8 +349,12 @@ class ZonedTime extends CalendarDate {
       offsetMinutes: offsetMinutes,
     );
   }
+
+  /// 按时间戳导入 DateTime，再转换为指定固定时区。
   factory ZonedTime.fromDateTime(DateTime date, {required int offsetMinutes}) =>
       JulianTime.fromDateTime(date).toZonedTime(offsetMinutes);
+
+  /// 将已验证的民用日期和固定时区转换为物理瞬间。
   JulianTime toJulianTime() => JulianTime.fromUT1(
     julianDay(
           year: year,
@@ -316,6 +366,8 @@ class ZonedTime extends CalendarDate {
         ) -
         offsetMinutes / 1440,
   );
+
+  /// 转换为 UTC DateTime；历史日期按同一时间戳对应。
   DateTime toDateTime() => toJulianTime().toDateTime();
   @override
   Map<String, num> toJson() => {
